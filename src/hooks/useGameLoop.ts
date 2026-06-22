@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react'
-import { TOTAL_ROUNDS, type TileId } from '../types/game'
+import type { TileId } from '../types/game'
+import type { StageConfig } from '../types/stage'
 import { gameCardToCardValue } from '../types/card'
 import {
   PLACEMENT_ANIMATION_MS,
@@ -11,10 +12,10 @@ import {
 import { countPlacedTiles, hasTemporaryPlacement } from '../utils/placement'
 import { canResetCurrentPlacement } from '../utils/undo'
 
-export function useGameLoop() {
+export function useGameLoop(config: StageConfig) {
   const [state, dispatch] = useReducer(gameReducer, gameInitialState)
 
-  const startGame = useCallback(() => dispatch({ type: 'START_GAME' }), [])
+  const startGame = useCallback(() => dispatch({ type: 'START_GAME', config }), [config])
 
   const revealCurrentCard = useCallback(() => {
     dispatch({ type: 'CARD_TO_CENTER' })
@@ -23,10 +24,14 @@ export function useGameLoop() {
   const completeCardReveal = useCallback(() => dispatch({ type: 'CARD_TO_PANEL' }), [])
 
   useEffect(() => {
-    if (state.phase === 'playing' && state.cardPhase === 'hidden' && state.round <= TOTAL_ROUNDS) {
+    if (
+      state.phase === 'playing' &&
+      state.cardPhase === 'hidden' &&
+      state.round <= config.boardSize
+    ) {
       revealCurrentCard()
     }
-  }, [state.phase, state.cardPhase, state.round, revealCurrentCard])
+  }, [state.phase, state.cardPhase, state.round, revealCurrentCard, config.boardSize])
 
   useEffect(() => {
     if (state.cardPhase !== 'placing') return

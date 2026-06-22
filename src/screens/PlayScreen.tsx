@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
-import { STAGE_1_1, ASSETS, type TileId } from '../types/game'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { StageConfig } from '../types/stage'
+import { type TileId } from '../types/game'
 import { useGameLoop } from '../hooks/useGameLoop'
+import { calculateGameResult } from '../utils/scoring'
 import { ControlBar, CurrentCard, PlayHud } from '../components/PlayUI'
 import { CardRevealFlight } from '../components/CardRevealFlight'
 import { CardPanelPlacementFlight } from '../components/CardPanelPlacementFlight'
@@ -13,6 +15,7 @@ const TUTORIAL_DEMO_CARD = 5
 const TUTORIAL_DEMO_TILE: TileId = 7
 
 interface PlayScreenProps {
+  stage: StageConfig
   onBack: () => void
   onComplete: (payload: Omit<ResultPayload, 'isNewRecord'>) => void
   forceTutorial?: boolean
@@ -20,13 +23,19 @@ interface PlayScreenProps {
 }
 
 export function PlayScreen({
+  stage,
   onBack,
   onComplete,
   forceTutorial = false,
   onTutorialFinished,
 }: PlayScreenProps) {
-  const game = useGameLoop()
+  const game = useGameLoop(stage)
   const completedRef = useRef(false)
+
+  const liveScore = useMemo(() => {
+    const r = calculateGameResult(game.board)
+    return { longestRun: r.longestSegmentLength, runCount: r.nonDecreasingSegmentCount, score: r.finalScore }
+  }, [game.board])
   const cardRef = useRef<HTMLDivElement>(null)
   const boardAreaRef = useRef<HTMLElement>(null)
   const boardRef = useRef<HTMLDivElement>(null)
@@ -105,15 +114,15 @@ export function PlayScreen({
     <div className={`play-screen ${tutorialActive ? 'play-screen--tutorial' : ''}`}>
       <div
         className="play-screen__bg"
-        style={{ backgroundImage: `url(${ASSETS.playfieldBg})` }}
+        style={{ backgroundImage: `url(${stage.backgroundAsset})` }}
         aria-hidden
       />
       <div className="play-screen__vignette" aria-hidden />
 
       <header className="play-screen__hud">
         <PlayHud
-          stageLabel={STAGE_1_1.label}
-          topic={STAGE_1_1.topic}
+          stageLabel={stage.title}
+          topic={stage.subtitle}
           round={game.round}
           score={game.score}
           onMenu={onBack}
@@ -140,6 +149,7 @@ export function PlayScreen({
             tutorialEmptyPulse={tutorialActive && tutorialStep === 1}
             placingTileId={placementFlightTileId}
             placingValue={placementFlightValue}
+            trailOverlay={stage.trailAsset}
           />
         </div>
       </main>
@@ -155,6 +165,7 @@ export function PlayScreen({
           confirmButtonRef={confirmRef}
           resetButtonRef={resetRef}
           highlightConfirm={tutorialActive && tutorialStep === 2}
+          liveScore={liveScore}
           currentCard={
             <CurrentCard
               value={panelCardValue}

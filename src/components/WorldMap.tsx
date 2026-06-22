@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import { STAGE_1_1, ASSETS, GAME_TITLE } from '../types/game'
+import type { StageConfig } from '../types/stage'
+import { ASSETS, GAME_TITLE } from '../types/game'
 import { GameMenuModal } from './GameMenuModal'
 
 interface WorldMapProps {
+  stage: StageConfig
   totalStars: number
   onEnterStage: () => void
   onReplayTutorial: () => void
 }
 
-export function WorldMap({ totalStars, onEnterStage, onReplayTutorial }: WorldMapProps) {
+export function WorldMap({ stage, totalStars, onEnterStage, onReplayTutorial }: WorldMapProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -22,7 +24,7 @@ export function WorldMap({ totalStars, onEnterStage, onReplayTutorial }: WorldMa
 
       <header className="world-map__hud">
         <h1 className="world-map__game-title">{GAME_TITLE}</h1>
-        <div className="world-map__chapter">{STAGE_1_1.chapter}</div>
+        <div className="world-map__chapter">{stage.worldTitle}</div>
         <div className="world-map__hud-right">
           <span className="world-map__stars">★ {totalStars}</span>
           <button
@@ -41,7 +43,7 @@ export function WorldMap({ totalStars, onEnterStage, onReplayTutorial }: WorldMa
           type="button"
           className="world-stage-node"
           onClick={onEnterStage}
-          aria-label={`${STAGE_1_1.label} — ${STAGE_1_1.topic}`}
+          aria-label={`${stage.title} — ${stage.subtitle}`}
         >
           <span className="world-stage-node__glow" aria-hidden />
           <span className="world-stage-node__spark world-stage-node__spark--1" aria-hidden>✦</span>
@@ -55,17 +57,17 @@ export function WorldMap({ totalStars, onEnterStage, onReplayTutorial }: WorldMa
               alt=""
               draggable={false}
             />
-            <span className="world-stage-node__id">{STAGE_1_1.id}</span>
+            <span className="world-stage-node__id">{stage.id}</span>
           </span>
 
           <span className="world-stage-node__meta">
-            <strong className="world-stage-node__title">{STAGE_1_1.label}</strong>
-            <span className="world-stage-node__topic">{STAGE_1_1.topic}</span>
+            <strong className="world-stage-node__title">{stage.title}</strong>
+            <span className="world-stage-node__topic">{stage.subtitle}</span>
           </span>
         </button>
       </main>
 
-      <footer className="world-map__footer">수의 숲 탐험을 시작해 보세요!</footer>
+      <footer className="world-map__footer">{stage.worldTitle} 탐험을 시작해 보세요!</footer>
 
       {menuOpen && (
         <GameMenuModal onClose={() => setMenuOpen(false)} onReplayTutorial={onReplayTutorial} />

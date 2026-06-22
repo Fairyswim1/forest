@@ -32,6 +32,7 @@ export const ASSETS = {
   stageNodeOpen: '/assets/processed/worldmap/open.png',
   stageNodeDefault: '/assets/processed/worldmap/node.png',
   stageNodeClosed: '/assets/processed/worldmap/close.png',
+  scoreBreakdownPanel: '/assets/processed/panels/score-breakdown-panel.png',
 } as const
 
 export type TileId = number

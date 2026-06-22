@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { TOTAL_ROUNDS, TOTAL_TILES } from '../types/game'
+import { ACTIVE_STAGE } from '../data/worlds'
 import { createDeck } from './deck'
 import { createEmptyBoard, countPlacedTiles } from './placement'
 import { scoreForSegmentLength } from './segmentScore'
@@ -50,7 +51,7 @@ describe('instant placement flow', () => {
   }
 
   it('places on click, resets only current turn, repositions, commits, and advances', () => {
-    let state = gameReducer(gameInitialState, { type: 'START_GAME' })
+    let state = gameReducer(gameInitialState, { type: 'START_GAME', config: ACTIVE_STAGE })
     const deckSnapshot = state.deck.map((c) => ({ ...c }))
 
     state = startRound(state)
@@ -94,7 +95,7 @@ describe('instant placement flow', () => {
   })
 
   it('warns when time expires without placement then commits after click', () => {
-    let state = startRound(gameReducer(gameInitialState, { type: 'START_GAME' }))
+    let state = startRound(gameReducer(gameInitialState, { type: 'START_GAME', config: ACTIVE_STAGE }))
 
     for (let t = 0; t < 24; t++) {
       state = gameReducer(state, { type: 'TICK' })
@@ -114,7 +115,7 @@ describe('instant placement flow', () => {
   })
 
   it('finishes after 23 committed turns', () => {
-    let state = gameReducer(gameInitialState, { type: 'START_GAME' })
+    let state = gameReducer(gameInitialState, { type: 'START_GAME', config: ACTIVE_STAGE })
 
     for (let round = 1; round <= TOTAL_TILES; round++) {
       state = startRound(state)

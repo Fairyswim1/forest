@@ -9,7 +9,7 @@ import {
   type TileId,
 } from '../types/game'
 import type { GameCard } from '../types/card'
-import { createDeck } from './deck'
+import type { StageConfig } from '../types/stage'
 import {
   applyPlacement,
   countPlacedTiles,
@@ -38,10 +38,11 @@ export interface GameState {
   score: number
   successTileIds: Set<TileId>
   gameResult: GameResult | null
+  stageConfig: StageConfig | null
 }
 
 export type GameAction =
-  | { type: 'START_GAME' }
+  | { type: 'START_GAME'; config: StageConfig }
   | { type: 'CARD_TO_CENTER' }
   | { type: 'CARD_TO_PANEL' }
   | { type: 'PLACE_ON_TILE'; tileId: TileId }
@@ -64,6 +65,7 @@ export const gameInitialState: GameState = {
   score: 0,
   successTileIds: new Set(),
   gameResult: null,
+  stageConfig: null,
 }
 
 export function getCardForRound(deck: GameCard[], round: number): GameCard | null {
@@ -107,6 +109,10 @@ function createTurnPlacement(card: GameCard, tileId: TileId | null): CurrentTurn
   return { cardId: card.id, tileId, isCommitted: false }
 }
 
+function getBoardSize(state: GameState): number {
+  return state.stageConfig?.boardSize ?? TOTAL_ROUNDS
+}
+
 function commitTurn(state: GameState): GameState {
   const tileId = state.currentTurnPlacement?.tileId
   const card = state.currentCard
@@ -117,7 +123,7 @@ function commitTurn(state: GameState): GameState {
 
   const board = applyPlacement(state.board, tileId, card)
 
-  if (state.round >= TOTAL_ROUNDS || isBoardFull(board)) {
+  if (state.round >= getBoardSize(state) || isBoardFull(board)) {
     const gameResult = calculateGameResult(board)
     return {
       ...state,
@@ -153,15 +159,16 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...gameInitialState,
         phase: 'playing',
-        deck: createDeck(),
+        deck: action.config.cardGenerator(),
         board: createEmptyBoard(),
         round: 1,
         currentCard: null,
         cardPhase: 'hidden',
+        stageConfig: action.config,
       }
 
     case 'CARD_TO_CENTER': {
-      if (state.round > TOTAL_ROUNDS || state.phase !== 'playing') return state
+      if (state.round > getBoardSize(state) || state.phase !== 'playing') return state
       const card = getCardForRound(state.deck, state.round)
       if (!card) return state
       return {

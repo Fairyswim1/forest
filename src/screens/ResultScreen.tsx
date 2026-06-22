@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
-import { ASSETS, STAGE_1_1, type StageInfo } from '../types/game'
+import type { StageConfig } from '../types/stage'
 import { ResultBoardSummary } from '../components/ResultBoardSummary'
+import { RunScorePanel } from '../components/RunScorePanel'
 import { useCountUp } from '../hooks/useCountUp'
 import {
   formatBreakDebugLines,
@@ -17,7 +18,7 @@ export interface ResultPayload {
 }
 
 interface ResultScreenProps {
-  stage?: StageInfo
+  stage: StageConfig
   payload: ResultPayload
   onRetry: () => void
   onWorldMap: () => void
@@ -33,7 +34,7 @@ function useDebugMode(explicit?: boolean): boolean {
 }
 
 export function ResultScreen({
-  stage = STAGE_1_1,
+  stage,
   payload,
   onRetry,
   onWorldMap,
@@ -50,14 +51,14 @@ export function ResultScreen({
     <div className={`result-screen ${debug ? 'result-screen--debug' : ''}`}>
       <div
         className="result-screen__bg"
-        style={{ backgroundImage: `url(${ASSETS.playfieldBg})` }}
+        style={{ backgroundImage: `url(${stage.backgroundAsset})` }}
         aria-hidden
       />
       <div className="result-screen__overlay" aria-hidden />
 
       <header className="result-screen__header">
-        <h1 className="result-screen__title">{stage.label} 완료!</h1>
-        <p className="result-screen__subtitle">{stage.topic}</p>
+        <h1 className="result-screen__title">{stage.title} 완료!</h1>
+        <p className="result-screen__subtitle">{stage.subtitle}</p>
       </header>
 
       <main className="result-screen__main">
@@ -90,7 +91,7 @@ export function ResultScreen({
           </dl>
 
           <ul className="result-card__feedback" aria-label="학습 피드백">
-            {feedback.map((message) => (
+            {feedback.slice(0, 2).map((message) => (
               <li key={message}>{message}</li>
             ))}
           </ul>
@@ -108,9 +109,14 @@ export function ResultScreen({
         </section>
 
         <section className="result-screen__board-panel wood-panel" aria-label="보드 결과">
-          <h2 className="result-screen__board-title">오솔길 결과</h2>
-          <ResultBoardSummary board={payload.board} result={result} />
+          <ResultBoardSummary
+            board={payload.board}
+            result={result}
+            trailOverlay={stage.trailAsset}
+          />
         </section>
+
+        <RunScorePanel result={result} />
       </main>
 
       <footer className="result-screen__actions">

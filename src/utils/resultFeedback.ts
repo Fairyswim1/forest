@@ -39,7 +39,7 @@ function analyzeBreakTips(result: GameResult): string[] {
     const { leftValue: left, rightValue: right } = brk
 
     if (left === 0 && right < 0 && !sawZeroNegative) {
-      tips.push('0 다음에 음수가 오면 순서가 끊겨요.')
+      tips.push('0 다음에 더 작은 수가 오면 흐름이 끊겨요.')
       sawZeroNegative = true
       continue
     }

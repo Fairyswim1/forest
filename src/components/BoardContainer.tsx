@@ -7,14 +7,15 @@ interface BoardContainerProps {
   children?: ReactNode
   /** tiles-layer와 동일 좌표계 (예: 결과 화면 끊김 표시 SVG) */
   overlayLayer?: ReactNode
+  trailOverlay?: string
 }
 
-export function BoardContainer({ className, children, overlayLayer }: BoardContainerProps) {
+export function BoardContainer({ className, children, overlayLayer, trailOverlay }: BoardContainerProps) {
   return (
     <div className={['board-container', className].filter(Boolean).join(' ')}>
       <img
         className="trail-overlay"
-        src={ASSETS.trailOverlay}
+        src={trailOverlay ?? ASSETS.trailOverlay}
         alt=""
         draggable={false}
         aria-hidden

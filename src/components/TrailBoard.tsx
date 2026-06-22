@@ -15,6 +15,7 @@ interface TrailBoardProps {
   placingTileId?: TileId | null
   placingValue?: number | null
   className?: string
+  trailOverlay?: string
 }
 
 export function TrailBoard({
@@ -28,11 +29,12 @@ export function TrailBoard({
   placingTileId = null,
   placingValue = null,
   className,
+  trailOverlay,
 }: TrailBoardProps) {
   const positions = useMemo(() => getTilePositions(), [])
 
   return (
-    <BoardContainer className={className}>
+    <BoardContainer className={className} trailOverlay={trailOverlay}>
       {positions.map((pos) => {
         const value =
           placingTileId === pos.id && placingValue !== null ? placingValue : board[pos.id]

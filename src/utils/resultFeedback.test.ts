@@ -15,7 +15,7 @@ describe('buildResultFeedback', () => {
     const messages = buildResultFeedback(result)
 
     expect(messages.some((m) => m.includes('칸까지 만들었어요'))).toBe(true)
-    expect(messages.some((m) => m.includes('0 다음에 음수'))).toBe(true)
+    expect(messages.some((m) => m.includes('0 다음에 더 작은 수'))).toBe(true)
   })
 
   it('explains negative absolute value ordering', () => {

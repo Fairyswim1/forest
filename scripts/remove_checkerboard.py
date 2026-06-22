@@ -18,6 +18,7 @@ PUBLIC_ASSETS = ROOT / "public" / "assets"
 TILE_FILES = ["empty_tile.png", "selected_tile.png", "placed_tile.png", "success_tile.png"]
 ACTION_FILES = ["confirm_button.png", "undo_button.png"]
 WORLDMAP_NODE_FILES = ["open.png", "node.png", "close.png"]
+PANEL_FILES = ["score-breakdown-panel.png", "live-score-panel.png"]
 HUD_FILES = {
     "stage_frame.png": "hud/stage_frame.png",
     "round_frame.png": "hud/round_frame.png",
@@ -225,6 +226,14 @@ def main() -> None:
             count += 1
         else:
             print(f"SKIP worldmap node: {name}")
+
+    for name in PANEL_FILES:
+        src = ROOT / "assets" / "panels" / name
+        if src.exists():
+            process(src, f"panels/{name}")
+            count += 1
+        else:
+            print(f"SKIP panel: {name}")
 
     print(f"\nDone - {count} asset(s) processed/copied.")
 
