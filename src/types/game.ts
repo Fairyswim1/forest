@@ -1,3 +1,5 @@
+import type { GameCard } from './card'
+
 export const GAME_TITLE = '넘버 트레일 : 수의 모험'
 
 export const SHOW_TILE_INDEX = false
@@ -5,8 +7,8 @@ export const SHOW_TILE_INDEX = false
 /** 타일 anchor(빨간 점) + 번호 — 길 중심 정렬 확인용 */
 export const DEBUG_BOARD_PATH = false
 
-export const TOTAL_TILES = 22
-export const TOTAL_ROUNDS = 22
+export const TOTAL_TILES = 23
+export const TOTAL_ROUNDS = 23
 export const TURN_SECONDS = 24
 
 /** assets/processed — 체크무늬 제거 후 투명 PNG (public/assets/processed 서빙) */
@@ -40,16 +42,21 @@ export interface TilePlacement {
   value: number
 }
 
-export interface HistoryEntry {
-  round: number
-  tileId: TileId
-  value: number
-  board: Record<TileId, number | null>
-}
-
 export type GamePhase = 'intro' | 'playing' | 'finished'
 
-export type CardPhase = 'hidden' | 'center' | 'panel'
+export type CardPhase = 'hidden' | 'center' | 'panel' | 'placing'
+
+/** 현재 턴 임시 배치 상태 */
+export interface CurrentTurnPlacement {
+  cardId: string
+  tileId: TileId | null
+  isCommitted: boolean
+}
+
+export interface PendingPlacement {
+  tileId: TileId
+  card: GameCard
+}
 
 export interface StageInfo {
   id: string
@@ -75,3 +82,11 @@ export const FOREST_STAGES: StageInfo[] = [
   { id: '1-5', chapter: '수의 숲', label: '수의 숲 1-5', topic: '분수의 대소관계', locked: true },
   { id: '1-6', chapter: '수의 숲', label: '수의 숲 1-6', topic: '유리수의 대소관계', locked: true },
 ]
+
+export const PLACEMENT_ANIMATION_MS = 650
+
+/** 중앙 공개 유지 시간 */
+export const CARD_REVEAL_HOLD_MS = 900
+
+/** 중앙 → 하단 패널 이동 시간 */
+export const CARD_REVEAL_FLY_MS = 550

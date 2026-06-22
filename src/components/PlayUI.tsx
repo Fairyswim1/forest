@@ -1,5 +1,5 @@
+import { TURN_SECONDS } from '../types/game'
 import type { ReactNode, RefObject } from 'react'
-import type { CardValue } from '../types/card'
 import { CurrentCardPanel } from './CurrentCardPanel'
 import { PlayHud } from './hud/PlayHud'
 import { ControlActions } from './hud/ControlActions'
@@ -7,48 +7,62 @@ import { ControlActions } from './hud/ControlActions'
 export { PlayHud }
 
 interface CurrentCardProps {
-  value: CardValue | null
-  phase: 'hidden' | 'center' | 'panel'
+  value: import('../types/card').CardValue | null
+  phase: 'hidden' | 'panel'
   panelClassName?: string
+  showHint?: boolean
+  turnWarning?: boolean
 }
 
-export function CurrentCard({ value, phase, panelClassName }: CurrentCardProps) {
+export function CurrentCard({ value, phase, panelClassName, showHint, turnWarning }: CurrentCardProps) {
   return (
-    <>
-      {phase === 'center' && value !== null && (
-        <div className="card-reveal-layer" aria-hidden>
-          <CurrentCardPanel value={value} phase="reveal" variant="reveal" />
-        </div>
+    <div className="control-bar__card-stack">
+      <div className="current-card-wrapper">
+        <CurrentCardPanel
+          value={value}
+          phase={phase}
+          variant="panel"
+          className={panelClassName}
+        />
+      </div>
+      {showHint && (
+        <p className="control-bar__card-hint">빈 칸을 클릭해 배치한 뒤, 배치 완료를 누르세요.</p>
       )}
-      <CurrentCardPanel value={value} phase={phase} variant="panel" className={panelClassName} />
-    </>
+      {turnWarning && (
+        <p className="control-bar__turn-warning" role="status">
+          시간이 끝났습니다. 배치 후 배치 완료를 누르세요.
+        </p>
+      )}
+    </div>
   )
 }
 
 interface ControlBarProps {
   timeLeft: number
   canConfirm: boolean
-  canUndo: boolean
+  canReset: boolean
   onConfirm: () => void
-  onUndo: () => void
+  onReset: () => void
   currentCard: ReactNode
   cardContainerRef?: RefObject<HTMLDivElement | null>
   confirmButtonRef?: RefObject<HTMLDivElement | null>
+  resetButtonRef?: RefObject<HTMLDivElement | null>
   highlightConfirm?: boolean
 }
 
 export function ControlBar({
   timeLeft,
   canConfirm,
-  canUndo,
+  canReset,
   onConfirm,
-  onUndo,
+  onReset,
   currentCard,
   cardContainerRef,
   confirmButtonRef,
+  resetButtonRef,
   highlightConfirm = false,
 }: ControlBarProps) {
-  const pct = Math.max(0, Math.min(100, (timeLeft / 24) * 100))
+  const pct = Math.max(0, Math.min(100, (timeLeft / TURN_SECONDS) * 100))
 
   return (
     <div className="control-bar">
@@ -68,19 +82,19 @@ export function ControlBar({
         </div>
       </aside>
 
-      <div className="control-bar__center">
-        <div ref={cardContainerRef} className="control-bar__card">
-          {currentCard}
-        </div>
-        <ControlActions
-          canConfirm={canConfirm}
-          canUndo={canUndo}
-          onConfirm={onConfirm}
-          onUndo={onUndo}
-          confirmButtonRef={confirmButtonRef}
-          highlightConfirm={highlightConfirm}
-        />
+      <div ref={cardContainerRef} className="control-bar__card control-bar__card-wrapper">
+        {currentCard}
       </div>
+
+      <ControlActions
+        canConfirm={canConfirm}
+        canReset={canReset}
+        onConfirm={onConfirm}
+        onReset={onReset}
+        confirmButtonRef={confirmButtonRef}
+        resetButtonRef={resetButtonRef}
+        highlightConfirm={highlightConfirm}
+      />
     </div>
   )
 }

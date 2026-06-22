@@ -5,4 +5,28 @@ export type CardValue =
 
 export type CardTone = 'negative' | 'zero' | 'positive'
 
-export type CardPanelPhase = 'hidden' | 'center' | 'panel' | 'reveal'
+export type CardPanelPhase = 'hidden' | 'center' | 'panel' | 'reveal' | 'placing'
+
+export type CardKind = 'integer' | 'fraction' | 'rational'
+
+/** 게임 덱 카드 — displayValue와 numericValue 분리 (향후 분수·유리수 확장) */
+export interface GameCard {
+  id: string
+  displayValue: string
+  numericValue: number
+  type: CardKind
+}
+
+export function createIntegerCard(id: string, value: number): GameCard {
+  return {
+    id,
+    displayValue: String(value),
+    numericValue: value,
+    type: 'integer',
+  }
+}
+
+export function gameCardToCardValue(card: GameCard): CardValue {
+  if (card.type === 'integer') return card.numericValue
+  return card.numericValue
+}

@@ -12,6 +12,8 @@ interface TrailBoardProps {
   disabled?: boolean
   tutorialEmptyPulse?: boolean
   forcedSelectedTileId?: TileId | null
+  placingTileId?: TileId | null
+  placingValue?: number | null
   className?: string
 }
 
@@ -23,6 +25,8 @@ export function TrailBoard({
   disabled,
   tutorialEmptyPulse = false,
   forcedSelectedTileId,
+  placingTileId = null,
+  placingValue = null,
   className,
 }: TrailBoardProps) {
   const positions = useMemo(() => getTilePositions(), [])
@@ -30,10 +34,13 @@ export function TrailBoard({
   return (
     <BoardContainer className={className}>
       {positions.map((pos) => {
-        const value = board[pos.id]
+        const value =
+          placingTileId === pos.id && placingValue !== null ? placingValue : board[pos.id]
         const effectiveSelectedId = forcedSelectedTileId ?? selectedTileId
+        const isPlacing = placingTileId === pos.id && placingValue !== null
         let state: 'empty' | 'selected' | 'placed' | 'success' = 'empty'
         if (successTileIds.has(pos.id)) state = 'success'
+        else if (isPlacing || (effectiveSelectedId === pos.id && value !== null)) state = 'placed'
         else if (effectiveSelectedId === pos.id) state = 'selected'
         else if (value !== null) state = 'placed'
 
@@ -49,6 +56,7 @@ export function TrailBoard({
             disabled={disabled}
             tutorialPulse={tutorialEmptyPulse}
             pathIndex={pos.pathIndex}
+            placing={isPlacing}
           />
         )
       })}
