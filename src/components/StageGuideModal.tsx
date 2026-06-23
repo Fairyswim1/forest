@@ -1,4 +1,5 @@
 import type { StageConfig } from '../types/stage'
+import { MathRichText } from './MathRichText'
 
 interface StageGuideModalProps {
   stage: StageConfig
@@ -47,19 +48,27 @@ export function StageGuideModal({ stage, variant, backgroundUrl, onConfirm }: St
 
           <section className="stage-guide__section stage-guide__section--range">
             <h3 className="stage-guide__section-title">이번 스테이지에서 나오는 수</h3>
-            <p className="stage-guide__range-label">{guide.numberRangeLabel}</p>
-            <p className="stage-guide__range-desc">{guide.numberRangeDescription}</p>
+            <p className="stage-guide__range-label">
+              <MathRichText text={guide.numberRangeLabel} />
+            </p>
+            <p className="stage-guide__range-desc">
+              <MathRichText text={guide.numberRangeDescription} />
+            </p>
           </section>
 
           <section className="stage-guide__section">
             <h3 className="stage-guide__section-title">목표</h3>
-            <p className="stage-guide__text">{guide.objectiveText}</p>
+            <p className="stage-guide__text">
+              <MathRichText text={guide.objectiveText} />
+            </p>
           </section>
 
           {guide.strategyHint && (
             <section className="stage-guide__section stage-guide__section--hint">
               <h3 className="stage-guide__section-title">전략 힌트</h3>
-              <p className="stage-guide__text">{guide.strategyHint}</p>
+              <p className="stage-guide__text">
+                <MathRichText text={guide.strategyHint} />
+              </p>
             </section>
           )}
 

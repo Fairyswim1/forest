@@ -1,6 +1,7 @@
 import type { CardValue } from '../types/card'
 import { getCardTone, getCardValueSizeClass, getDisplayLabelSizeClass } from '../utils/cardDisplay'
-import { parseSqrtLabel, SqrtDisplay } from './SqrtDisplay'
+import { displayValueToLatex } from '../utils/mathLatex'
+import { MathLatex } from './MathLatex'
 
 interface CardValueTextProps {
   value: CardValue
@@ -9,24 +10,23 @@ interface CardValueTextProps {
   variant?: 'panel' | 'tile'
 }
 
-function renderSqrtValue(
+function renderLatexValue(
   label: string,
   tone: ReturnType<typeof getCardTone>,
   sizeClass: string,
   className: string,
   variant: 'panel' | 'tile',
 ) {
-  const sqrt = parseSqrtLabel(label)
-  if (!sqrt) return null
+  const latex = displayValueToLatex(label)
+  if (!latex) return null
 
-  const variantClass = variant === 'tile' ? 'math-sqrt--tile' : 'math-sqrt--panel'
+  const latexVariant = variant === 'tile' ? 'math-latex--tile' : 'math-latex--panel'
 
   return (
     <span
-      className={`current-card-panel__value current-card-panel__value--sqrt current-card-panel__value--${tone} ${sizeClass} ${className}`.trim()}
-      aria-label={label}
+      className={`current-card-panel__value current-card-panel__value--latex current-card-panel__value--${tone} ${sizeClass} ${className}`.trim()}
     >
-      <SqrtDisplay sign={sqrt.sign} radicand={sqrt.radicand} className={variantClass} />
+      <MathLatex latex={latex} className={latexVariant} ariaLabel={label} />
     </span>
   )
 }
@@ -46,8 +46,8 @@ export function CardValueText({
       : ''
 
   if (displayLabel !== undefined) {
-    const sqrtMarkup = renderSqrtValue(displayLabel, tone, sizeClass, className, variant)
-    if (sqrtMarkup) return sqrtMarkup
+    const latexMarkup = renderLatexValue(displayLabel, tone, sizeClass, className, variant)
+    if (latexMarkup) return latexMarkup
 
     return (
       <span
@@ -71,8 +71,8 @@ export function CardValueText({
   }
 
   if (value.type === 'label') {
-    const sqrtMarkup = renderSqrtValue(value.text, tone, sizeClass, className, variant)
-    if (sqrtMarkup) return sqrtMarkup
+    const latexMarkup = renderLatexValue(value.text, tone, sizeClass, className, variant)
+    if (latexMarkup) return latexMarkup
 
     return (
       <span
@@ -83,6 +83,10 @@ export function CardValueText({
       </span>
     )
   }
+
+  const fractionLabel = `${value.numerator}/${value.denominator}`
+  const fractionMarkup = renderLatexValue(fractionLabel, tone, sizeClass, className, variant)
+  if (fractionMarkup) return fractionMarkup
 
   const sign = value.numerator < 0 ? '−' : ''
   const num = Math.abs(value.numerator)

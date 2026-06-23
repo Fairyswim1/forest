@@ -3,6 +3,7 @@ import type { GameBoard } from '../types/board'
 import type { StageConfig } from '../types/stage'
 import { ResultBoardSummary } from '../components/ResultBoardSummary'
 import { RunScorePanel } from '../components/RunScorePanel'
+import { MathRichText } from '../components/MathRichText'
 import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import { useCountUp } from '../hooks/useCountUp'
 import {
@@ -94,7 +95,9 @@ export function ResultScreen({
 
           <ul className="result-card__feedback" aria-label="학습 피드백">
             {feedback.map((message) => (
-              <li key={message}>{message}</li>
+              <li key={message}>
+                <MathRichText text={message} />
+              </li>
             ))}
           </ul>
 

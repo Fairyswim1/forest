@@ -89,10 +89,11 @@ export const REAL_1_1: StageConfig = {
   trailAsset: ASSETS.starlightTrailOverlay,
   scoringMode: 'nonDecreasingRuns',
   guide: {
-    numberRangeLabel: '0부터 √10까지의 수',
+    numberRangeLabel: '$0$부터 $\\sqrt{10}$까지의 수',
     numberRangeDescription: '정수와 제곱근이 함께 나옵니다.',
     objectiveText: '작은 수부터 큰 수까지 이어지는 길을 길게 만드세요.',
-    strategyHint: '√n의 크기는 n이 어떤 두 완전제곱수 사이에 있는지 생각하면 알 수 있습니다.',
+    strategyHint:
+      '$\\sqrt{n}$의 크기는 $n$이 어떤 두 완전제곱수 사이에 있는지 생각하면 알 수 있습니다.',
   },
   feedback: sqrtFeedback,
   cardGenerator: generateBasicSqrtDeck,
@@ -111,7 +112,7 @@ export const REAL_1_2: StageConfig = {
   trailAsset: ASSETS.starlightTrailOverlay,
   scoringMode: 'nonDecreasingRuns',
   guide: {
-    numberRangeLabel: '-√7부터 √5까지의 수',
+    numberRangeLabel: '$-\\sqrt{7}$부터 $\\sqrt{5}$까지의 수',
     numberRangeDescription: '음의 제곱근까지 포함한 실수가 나옵니다.',
     objectiveText: '작은 수부터 큰 수까지 이어지는 길을 길게 만드세요.',
     strategyHint: '음의 제곱근은 절댓값이 클수록 더 작은 수입니다.',
@@ -133,10 +134,11 @@ export const REAL_1_3: StageConfig = {
   trailAsset: ASSETS.starlightTrailOverlay,
   scoringMode: 'nonDecreasingRuns',
   guide: {
-    numberRangeLabel: '√2, √3, π 등의 무리수',
+    numberRangeLabel: '$\\sqrt{2}$, $\\sqrt{3}$, $\\pi$ 등의 무리수',
     numberRangeDescription: '제곱근과 원주율을 유리수 기준점과 함께 비교합니다.',
     objectiveText: '작은 수부터 큰 수까지 이어지는 길을 길게 만드세요.',
-    strategyHint: 'π ≈ 3.14, √2 ≈ 1.41처럼 어림값을 기준점과 비교해 보세요.',
+    strategyHint:
+      '$\\pi \\approx 3.14$, $\\sqrt{2} \\approx 1.41$처럼 어림값을 기준점과 비교해 보세요.',
   },
   feedback: integerFeedback,
   cardGenerator: generateRealDeck,

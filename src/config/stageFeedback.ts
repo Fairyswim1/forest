@@ -1,5 +1,15 @@
 import type { StageFeedback } from '../types/stage'
 import { BASIC_SQRT_VALUES } from '../game/cards/realValues'
+import { displayValueToLatex } from '../utils/mathLatex'
+
+function latexInline(display: string): string {
+  const latex = displayValueToLatex(display)
+  return latex ? `$${latex}$` : display
+}
+
+function latexOrNumber(display: string | undefined, value: number): string {
+  return display ? latexInline(display) : `$${value}$`
+}
 
 /** 수의 숲 — 정수(자연수 구간 위주) */
 export const integerFeedback: StageFeedback = {
@@ -23,10 +33,10 @@ export const rationalFeedback: StageFeedback = {
 }
 
 const SQRT_TIP_BY_DISPLAY: Record<string, string> = {
-  '√2': '√2는 1과 2 사이에 있어요.',
-  '√3': '√3은 2보다 작은 수예요.',
-  '√5': '√5는 2와 3 사이에 있어요.',
-  '√7': '√7은 3보다 작은 수예요.',
+  '√2': `${latexInline('√2')}는 $1$과 $2$ 사이에 있어요.`,
+  '√3': `${latexInline('√3')}은 $2$보다 작은 수예요.`,
+  '√5': `${latexInline('√5')}는 $2$와 $3$ 사이에 있어요.`,
+  '√7': `${latexInline('√7')}은 $3$보다 작은 수예요.`,
 }
 
 function sqrtDisplayForValue(value: number): string | undefined {
@@ -47,8 +57,8 @@ function sqrtBreakTip(left: number, right: number): string {
     return SQRT_TIP_BY_DISPLAY[leftLabel]!
   }
 
-  const rightText = rightLabel ?? String(right)
-  const leftText = leftLabel ?? String(left)
+  const rightText = latexOrNumber(rightLabel, right)
+  const leftText = latexOrNumber(leftLabel, left)
   return `${rightText}는 ${leftText}보다 작은 수예요.`
 }
 
