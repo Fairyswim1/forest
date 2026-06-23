@@ -7,6 +7,7 @@ import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 interface CardRevealFlightProps {
   value: CardValue | null
+  displayLabel?: string
   active: boolean
   targetRef: RefObject<HTMLElement | null>
   boardAreaRef?: RefObject<HTMLElement | null>
@@ -23,6 +24,7 @@ function getScreenCenter() {
 
 export function CardRevealFlight({
   value,
+  displayLabel,
   active,
   targetRef,
   boardAreaRef,
@@ -105,7 +107,7 @@ export function CardRevealFlight({
     <div className="card-reveal-flight" aria-hidden>
       <div ref={heroRef} className="card-reveal-flight__hero" key={revealKey}>
         <div className="card-reveal-flight__glow" />
-        <CardValueText value={value} className="card-reveal-flight__value" />
+        <CardValueText value={value} displayLabel={displayLabel} className="card-reveal-flight__value" />
         <span className="card-reveal-flight__spark card-reveal-flight__spark--1">✦</span>
         <span className="card-reveal-flight__spark card-reveal-flight__spark--2">✦</span>
       </div>

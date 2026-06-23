@@ -1,32 +1,13 @@
 import { TOTAL_ROUNDS } from '../types/game'
-import { createIntegerCard, type GameCard } from '../types/card'
-
-const MIN_VALUE = -20
-const MAX_VALUE = 20
-
-function randomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-function shuffle<T>(items: T[]): T[] {
-  const copy = [...items]
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[copy[i], copy[j]] = [copy[j]!, copy[i]!]
-  }
-  return copy
-}
+import type { GameCard } from '../types/card'
+import { generateIntegerDeck } from '../game/cards/generators'
 
 /**
- * 23장 정수 덱 생성 (-20~20, 중복 허용).
- * 각 정수는 동일 확률로 독립 추출한 뒤 셔플한다.
+ * 정수 덱 생성 — 실제 규칙은 game/cards/generators 의 generateIntegerDeck 로 분리되었다.
+ * 기존 import 경로(`./deck`) 호환을 위해 얇은 위임 함수로 유지한다.
  */
 export function createDeck(size = TOTAL_ROUNDS): GameCard[] {
-  const values = Array.from({ length: size }, () => randomInt(MIN_VALUE, MAX_VALUE))
-
-  return shuffle(values).map((value, index) =>
-    createIntegerCard(`card-${String(index + 1).padStart(2, '0')}`, value),
-  )
+  return generateIntegerDeck(size)
 }
 
 export function getNumberTone(value: number): 'negative' | 'zero' | 'positive' {

@@ -8,18 +8,20 @@ export { PlayHud }
 
 interface CurrentCardProps {
   value: import('../types/card').CardValue | null
+  displayLabel?: string
   phase: 'hidden' | 'panel'
   panelClassName?: string
   showHint?: boolean
   turnWarning?: boolean
 }
 
-export function CurrentCard({ value, phase, panelClassName, showHint, turnWarning }: CurrentCardProps) {
+export function CurrentCard({ value, displayLabel, phase, panelClassName, showHint, turnWarning }: CurrentCardProps) {
   return (
     <div className="control-bar__card-stack">
       <div className="current-card-wrapper">
         <CurrentCardPanel
           value={value}
+          displayLabel={displayLabel}
           phase={phase}
           variant="panel"
           className={panelClassName}

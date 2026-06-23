@@ -29,6 +29,20 @@ CARD_NAMES = ("current_card.png", "card_frame.png", "current_card_panel.png")
 STATIC_BG = "forest_playfield_bg.png"
 TRAIL_OVERLAY = "board_trail_overlay.png"
 
+PUBLIC_WORLD_ASSETS: list[tuple[str, str, bool]] = [
+    ("integer-cave-trail-overlay.png", "integer-cave-trail-overlay.png", False),
+    ("integer-cave-node-open.png", "integer-cave/node-open.png", True),
+    ("integer-cave-node-locked.png", "integer-cave/node-locked.png", True),
+    ("rational-meadow-trail-overlay.png", "rational-meadow-trail-overlay.png", False),
+    ("rational-meadow-node-open.png", "rational-meadow/node-open.png", True),
+    ("rational-meadow-node-locked.png", "rational-meadow/node-locked.png", True),
+    ("rational-meadow-node-complete.png", "rational-meadow/node-complete.png", True),
+    ("real-starlight-space-trail-overlay.png", "real-starlight-space-trail-overlay.png", False),
+    ("real-starlight-space-node-open.png", "real-starlight-space/node-open.png", True),
+    ("real-starlight-space-node-locked.png", "real-starlight-space/node-locked.png", True),
+    ("real-starlight-space-node-complete.png", "real-starlight-space/node-complete.png", True),
+]
+
 
 def find_tile_src(name: str) -> Path | None:
     for rel in (f"assets/{name}", f"assets/tiles/{name}"):
@@ -179,6 +193,19 @@ def copy_static(src_rel: str, public_name: str | None = None) -> None:
     print(f"COPY: {dest}")
 
 
+def process_public_src(public_name: str, dest_rel: str, *, crop: bool = True) -> bool:
+    src = PUBLIC_ASSETS / public_name
+    if not src.exists():
+        print(f"SKIP public: {public_name}")
+        return False
+    dest = PUBLIC_PROCESSED / dest_rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    result = remove_checkerboard(Image.open(src), crop=crop)
+    result.save(dest, format="PNG", optimize=True)
+    print(f"OK public: {dest_rel} ({result.size[0]}x{result.size[1]}) <- {public_name}")
+    return True
+
+
 def main() -> None:
     count = 0
 
@@ -225,6 +252,10 @@ def main() -> None:
             count += 1
         else:
             print(f"SKIP worldmap node: {name}")
+
+    for public_name, dest_rel, crop in PUBLIC_WORLD_ASSETS:
+        if process_public_src(public_name, dest_rel, crop=crop):
+            count += 1
 
     print(f"\nDone - {count} asset(s) processed/copied.")
 

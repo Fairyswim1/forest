@@ -1,12 +1,13 @@
 import type { CSSProperties } from 'react'
+import type { BoardCell } from '../types/board'
 import { ASSETS, type TileId, type TileState } from '../types/game'
-import { getNumberTone } from '../utils/deck'
+import { TileValueText } from './TileValueText'
 
 interface TrailTileProps {
   id: TileId
   x: number
   y: number
-  value: number | null
+  cell: BoardCell | null
   state: TileState
   onClick: (id: TileId) => void
   disabled?: boolean
@@ -34,7 +35,7 @@ export function TrailTile({
   id,
   x,
   y,
-  value,
+  cell,
   state,
   onClick,
   disabled,
@@ -52,8 +53,6 @@ export function TrailTile({
   isRunEnd = false,
   isScoringRun = false,
 }: TrailTileProps) {
-  const tone = value !== null ? getNumberTone(value) : null
-
   const positionStyle: CSSProperties = {
     left: `${x}%`,
     top: `${y}%`,
@@ -86,8 +85,8 @@ export function TrailTile({
         .join(' ')}
       style={positionStyle}
       onClick={() => onClick(id)}
-      disabled={disabled || value !== null}
-      aria-label={`타일 ${id}${value !== null ? `: ${value}` : ''}`}
+      disabled={disabled || cell !== null}
+      aria-label={`타일 ${id}${cell !== null ? `: ${cell.displayValue}` : ''}`}
       data-tile-id={id}
     >
       <span className="trail-tile__sprite" aria-hidden>
@@ -96,9 +95,7 @@ export function TrailTile({
           <span className="trail-tile__result-ring" aria-hidden />
         )}
       </span>
-      {value !== null && (
-        <span className={`trail-tile__value trail-tile__value--${tone}`}>{value}</span>
-      )}
+      {cell !== null && <TileValueText cell={cell} />}
       {state === 'success' && isScoringRun && (
         <span className="trail-tile__fx" aria-hidden>
           <span className="trail-tile__star trail-tile__star--1">✦</span>

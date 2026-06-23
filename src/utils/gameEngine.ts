@@ -8,12 +8,14 @@ import {
   type PendingPlacement,
   type TileId,
 } from '../types/game'
+import type { GameBoard } from '../types/board'
 import type { GameCard } from '../types/card'
-import { createDeck } from './deck'
+import type { StageConfig } from '../types/stage'
 import {
   applyPlacement,
   countPlacedTiles,
   createEmptyBoard,
+  getAutoPlacementTileId,
   hasTemporaryPlacement,
   isBoardFull,
 } from './placement'
@@ -27,21 +29,22 @@ export interface GameState {
   phase: GamePhase
   round: number
   deck: GameCard[]
-  /** 확정된 타일만 저장 (이전 턴 immutable) */
-  board: Record<TileId, number | null>
+  board: GameBoard
   currentCard: GameCard | null
   cardPhase: CardPhase
   currentTurnPlacement: CurrentTurnPlacement | null
   pendingPlacement: PendingPlacement | null
   timeLeft: number
   turnWarning: boolean
+  lastCommittedTileId: TileId | null
   score: number
   successTileIds: Set<TileId>
   gameResult: GameResult | null
+  stageId: string | null
 }
 
 export type GameAction =
-  | { type: 'START_GAME' }
+  | { type: 'START_GAME'; stage: StageConfig }
   | { type: 'CARD_TO_CENTER' }
   | { type: 'CARD_TO_PANEL' }
   | { type: 'PLACE_ON_TILE'; tileId: TileId }
@@ -61,27 +64,36 @@ export const gameInitialState: GameState = {
   pendingPlacement: null,
   timeLeft: TURN_SECONDS,
   turnWarning: false,
+  lastCommittedTileId: null,
   score: 0,
   successTileIds: new Set(),
   gameResult: null,
+  stageId: null,
 }
 
 export function getCardForRound(deck: GameCard[], round: number): GameCard | null {
   return deck[round - 1] ?? null
 }
 
-export function getDisplayBoard(state: GameState): Record<TileId, number | null> {
+export function getDisplayBoard(state: GameState): GameBoard {
   const display = { ...state.board }
 
   if (state.pendingPlacement) {
-    display[state.pendingPlacement.tileId] = state.pendingPlacement.card.numericValue
+    const { tileId, card } = state.pendingPlacement
+    display[tileId] = {
+      displayValue: card.displayValue,
+      numericValue: card.numericValue,
+    }
     return display
   }
 
   if (hasTemporaryPlacement(state.currentTurnPlacement)) {
     const card = getCardForRound(state.deck, state.round)
     if (card && state.currentTurnPlacement?.tileId) {
-      display[state.currentTurnPlacement.tileId] = card.numericValue
+      display[state.currentTurnPlacement.tileId] = {
+        displayValue: card.displayValue,
+        numericValue: card.numericValue,
+      }
     }
   }
 
@@ -131,6 +143,7 @@ function commitTurn(state: GameState): GameState {
       successTileIds: gameResult.successTileIds,
       gameResult,
       turnWarning: false,
+      lastCommittedTileId: tileId,
     }
   }
 
@@ -144,7 +157,24 @@ function commitTurn(state: GameState): GameState {
     round: state.round + 1,
     timeLeft: resetTurnTimer(),
     turnWarning: false,
+    lastCommittedTileId: tileId,
   }
+}
+
+function autoPlaceAndCommitTurn(state: GameState): GameState {
+  const tileId = getAutoPlacementTileId(state.board)
+  const card = state.currentCard
+
+  if (!tileId || !card || state.board[tileId] !== null) {
+    return { ...state, timeLeft: 0, turnWarning: true }
+  }
+
+  return commitTurn({
+    ...state,
+    timeLeft: 0,
+    turnWarning: false,
+    currentTurnPlacement: createTurnPlacement(card, tileId),
+  })
 }
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
@@ -153,11 +183,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...gameInitialState,
         phase: 'playing',
-        deck: createDeck(),
+        deck: action.stage.cardGenerator(action.stage.deckSize),
         board: createEmptyBoard(),
         round: 1,
         currentCard: null,
         cardPhase: 'hidden',
+        lastCommittedTileId: null,
+        stageId: action.stage.id,
       }
 
     case 'CARD_TO_CENTER': {
@@ -186,36 +218,28 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
     case 'PLACE_ON_TILE': {
       if (!canPlaceOnTile(state, action.tileId) || !state.currentCard) return state
-
       return {
         ...state,
         cardPhase: 'placing',
         turnWarning: false,
-        pendingPlacement: {
-          tileId: action.tileId,
-          card: state.currentCard,
-        },
+        pendingPlacement: { tileId: action.tileId, card: state.currentCard },
         currentTurnPlacement: createTurnPlacement(state.currentCard, null),
       }
     }
 
     case 'COMPLETE_PLACE_ANIMATION': {
       if (!state.pendingPlacement || state.cardPhase !== 'placing') return state
-
       const { tileId, card } = state.pendingPlacement
-      const next: GameState = {
+      return {
         ...state,
         cardPhase: 'panel',
         pendingPlacement: null,
         currentTurnPlacement: createTurnPlacement(card, tileId),
       }
-
-      return next
     }
 
     case 'RESET_CURRENT_PLACEMENT': {
       if (!hasTemporaryPlacement(state.currentTurnPlacement) || !state.currentCard) return state
-
       return {
         ...state,
         currentTurnPlacement: createTurnPlacement(state.currentCard, null),
@@ -231,16 +255,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case 'TICK': {
       if (state.phase !== 'playing' || state.cardPhase !== 'panel') return state
       if (state.timeLeft <= 0) return state
-
-      if (state.timeLeft > 1) {
-        return { ...state, timeLeft: state.timeLeft - 1 }
-      }
-
+      if (state.timeLeft > 1) return { ...state, timeLeft: state.timeLeft - 1 }
       const expired = { ...state, timeLeft: 0 }
-      if (hasTemporaryPlacement(expired.currentTurnPlacement)) {
-        return commitTurn(expired)
-      }
-      return { ...expired, turnWarning: true }
+      if (hasTemporaryPlacement(expired.currentTurnPlacement)) return commitTurn(expired)
+      return autoPlaceAndCommitTurn(expired)
     }
 
     default:

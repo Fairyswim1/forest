@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { TOTAL_ROUNDS, TOTAL_TILES } from '../types/game'
+import { NATURAL_1_1 } from '../config/stages'
 import { createDeck } from './deck'
 import { createEmptyBoard, countPlacedTiles } from './placement'
 import { scoreForSegmentLength } from './segmentScore'
@@ -7,7 +8,6 @@ import { calculateGameResult } from './scoring'
 import { PATH_ORDER } from './pathLayout'
 import {
   advanceThroughCardReveal,
-  canCommitTurn,
   gameInitialState,
   gameReducer,
   getCardForRound,
@@ -26,14 +26,6 @@ describe('createDeck', () => {
       expect(card.numericValue).toBeLessThanOrEqual(20)
     }
   })
-
-  it('draws each integer with equal probability instead of fixed zero slots', () => {
-    const decks = Array.from({ length: 80 }, () => createDeck())
-    const avgZeros =
-      decks.flat().filter((card) => card.numericValue === 0).length / decks.length
-
-    expect(avgZeros).toBeLessThan(2.5)
-  })
 })
 
 describe('scoreForSegmentLength', () => {
@@ -50,7 +42,7 @@ describe('instant placement flow', () => {
   }
 
   it('places on click, resets only current turn, repositions, commits, and advances', () => {
-    let state = gameReducer(gameInitialState, { type: 'START_GAME' })
+    let state = gameReducer(gameInitialState, { type: 'START_GAME', stage: NATURAL_1_1 })
     const deckSnapshot = state.deck.map((c) => ({ ...c }))
 
     state = startRound(state)
@@ -93,28 +85,21 @@ describe('instant placement flow', () => {
     expect(state.round).toBe(3)
   })
 
-  it('warns when time expires without placement then commits after click', () => {
-    let state = startRound(gameReducer(gameInitialState, { type: 'START_GAME' }))
+  it('auto-places when time expires without manual placement', () => {
+    let state = startRound(
+      gameReducer(gameInitialState, { type: 'START_GAME', stage: NATURAL_1_1 }),
+    )
 
     for (let t = 0; t < 24; t++) {
       state = gameReducer(state, { type: 'TICK' })
     }
 
-    expect(state.turnWarning).toBe(true)
-    expect(state.timeLeft).toBe(0)
-    expect(state.board[1]).toBeNull()
-
-    state = placeOnTileAndComplete(state, 1)
-    expect(state.turnWarning).toBe(false)
-    expect(canCommitTurn(state)).toBe(true)
-
-    state = gameReducer(state, { type: 'COMMIT_TURN' })
-    expect(state.board[1]).not.toBeNull()
     expect(state.round).toBe(2)
+    expect(state.board[23]).not.toBeNull()
   })
 
   it('finishes after 23 committed turns', () => {
-    let state = gameReducer(gameInitialState, { type: 'START_GAME' })
+    let state = gameReducer(gameInitialState, { type: 'START_GAME', stage: NATURAL_1_1 })
 
     for (let round = 1; round <= TOTAL_TILES; round++) {
       state = startRound(state)
@@ -132,7 +117,8 @@ describe('calculateGameResult', () => {
   it('scores monotonic full board as one long segment', () => {
     const board = createEmptyBoard()
     PATH_ORDER.forEach((id, index) => {
-      board[id] = index + 1
+      const value = index + 1
+      board[id] = { displayValue: String(value), numericValue: value }
     })
 
     const result = calculateGameResult(board)

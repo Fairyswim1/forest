@@ -8,6 +8,7 @@ import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 interface CardPanelPlacementFlightProps {
   value: CardValue | null
+  displayLabel?: string
   tileId: TileId | null
   active: boolean
   sourceRef: RefObject<HTMLElement | null>
@@ -16,6 +17,7 @@ interface CardPanelPlacementFlightProps {
 
 export function CardPanelPlacementFlight({
   value,
+  displayLabel,
   tileId,
   active,
   sourceRef,
@@ -75,7 +77,7 @@ export function CardPanelPlacementFlight({
   return createPortal(
     <div className="card-panel-flight" aria-hidden>
       <div ref={heroRef} className="card-panel-flight__hero" key={flightKey}>
-        <CardValueText value={value} className="card-panel-flight__value" />
+        <CardValueText value={value} displayLabel={displayLabel} className="card-panel-flight__value" />
       </div>
     </div>,
     document.body,

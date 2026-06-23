@@ -32,6 +32,23 @@ export const ASSETS = {
   stageNodeOpen: '/assets/processed/worldmap/open.png',
   stageNodeDefault: '/assets/processed/worldmap/node.png',
   stageNodeClosed: '/assets/processed/worldmap/close.png',
+  // 정수 동굴 전용 지역 노드 (상태별) — 통합 월드맵에서 사용
+  caveNodeOpen: '/assets/integer-cave-node-open.png',
+  caveNodeLocked: '/assets/integer-cave-node-locked.png',
+  caveNodeComplete: '/assets/integer-cave-node-complete.png',
+  integerCavePlayfieldBg: '/assets/integer-cave-play-bg.png',
+  integerCaveTrailOverlay: '/assets/processed/integer-cave-trail-overlay.png',
+  rationalMeadowPlayfieldBg: '/assets/rational-meadow-play-bg.png',
+  rationalMeadowTrailOverlay: '/assets/processed/rational-meadow-trail-overlay.png',
+  rationalMeadowWorldmapBg: '/assets/rational-meadow-worldmap-bg.png',
+  meadowNodeOpen: '/assets/processed/rational-meadow/node-open.png',
+  meadowNodeLocked: '/assets/processed/rational-meadow/node-locked.png',
+  meadowNodeComplete: '/assets/processed/rational-meadow/node-complete.png',
+  starlightPlayfieldBg: '/assets/real-starlight-space-play-bg.png',
+  starlightTrailOverlay: '/assets/processed/real-starlight-space-trail-overlay.png',
+  starlightNodeOpen: '/assets/processed/real-starlight-space/node-open.png',
+  starlightNodeLocked: '/assets/processed/real-starlight-space/node-locked.png',
+  starlightNodeComplete: '/assets/processed/real-starlight-space/node-complete.png',
 } as const
 
 export type TileId = number
@@ -57,31 +74,6 @@ export interface PendingPlacement {
   tileId: TileId
   card: GameCard
 }
-
-export interface StageInfo {
-  id: string
-  chapter: string
-  label: string
-  topic: string
-  locked: boolean
-}
-
-export const STAGE_1_1: StageInfo = {
-  id: '1-1',
-  chapter: '수의 숲',
-  label: '수의 숲 1-1',
-  topic: '정수의 대소관계',
-  locked: false,
-}
-
-export const FOREST_STAGES: StageInfo[] = [
-  STAGE_1_1,
-  { id: '1-2', chapter: '수의 숲', label: '수의 숲 1-2', topic: '음수의 대소관계', locked: true },
-  { id: '1-3', chapter: '수의 숲', label: '수의 숲 1-3', topic: '절댓값 비교', locked: true },
-  { id: '1-4', chapter: '수의 숲', label: '수의 숲 1-4', topic: '양수와 음수 비교', locked: true },
-  { id: '1-5', chapter: '수의 숲', label: '수의 숲 1-5', topic: '분수의 대소관계', locked: true },
-  { id: '1-6', chapter: '수의 숲', label: '수의 숲 1-6', topic: '유리수의 대소관계', locked: true },
-]
 
 export const PLACEMENT_ANIMATION_MS = 650
 

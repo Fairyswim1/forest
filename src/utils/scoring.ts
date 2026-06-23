@@ -1,4 +1,6 @@
 import type { TileId } from '../types/game'
+import type { GameBoard } from '../types/board'
+import { getBoardNumericValue } from '../types/board'
 import { PATH_ORDER } from './pathLayout'
 
 export type Run = {
@@ -33,34 +35,33 @@ export function calculateScore(runs: Run[]): number {
 }
 
 /**
- * PATH_ORDER 순서로 값을 추출한다. null/미배치 칸은 비교 시 구간을 끊는다.
+ * PATH_ORDER 순서로 numericValue를 추출한다. null/미배치 칸은 비교 시 구간을 끊는다.
  */
-export function extractPathValues(board: Record<TileId, number | null>): Array<number | null> {
-  return PATH_ORDER.map((id) => board[id] ?? null)
+export function extractPathValues(board: GameBoard): Array<number | null> {
+  return PATH_ORDER.map((id) => getBoardNumericValue(board, id))
 }
 
 /**
  * 비내림차순 연속 구간(run)을 PATH_ORDER 기준으로 분할한다.
- * 각 타일은 정확히 하나의 run에만 속한다.
+ * 비교는 numericValue만 사용한다.
  */
-export function findNonDecreasingRuns(
-  pathOrder: TileId[],
-  board: Record<TileId, number | null>,
-): Run[] {
+export function findNonDecreasingRuns(pathOrder: TileId[], board: GameBoard): Run[] {
   const runs: Run[] = []
   let startIndex = 0
 
   for (let i = 1; i <= pathOrder.length; i++) {
     const isEnd = i === pathOrder.length
-    const previousValue = board[pathOrder[i - 1]!] ?? null
-    const currentValue = isEnd ? null : (board[pathOrder[i]!] ?? null)
+    const previousValue = getBoardNumericValue(board, pathOrder[i - 1]!)
+    const currentValue = isEnd ? null : getBoardNumericValue(board, pathOrder[i]!)
 
     const continues =
       !isEnd && previousValue !== null && currentValue !== null && previousValue <= currentValue
 
     if (!continues) {
       const tileIds = pathOrder.slice(startIndex, i)
-      const values = tileIds.map((id) => board[id] ?? null).filter((v): v is number => v !== null)
+      const values = tileIds
+        .map((id) => getBoardNumericValue(board, id))
+        .filter((v): v is number => v !== null)
 
       runs.push({
         startIndex,
@@ -77,17 +78,14 @@ export function findNonDecreasingRuns(
   return runs
 }
 
-export function findBreaks(
-  pathOrder: TileId[],
-  board: Record<TileId, number | null>,
-): BreakInfo[] {
+export function findBreaks(pathOrder: TileId[], board: GameBoard): BreakInfo[] {
   const breaks: BreakInfo[] = []
 
   for (let i = 0; i < pathOrder.length - 1; i++) {
     const afterTileId = pathOrder[i]!
     const beforeTileId = pathOrder[i + 1]!
-    const leftValue = board[afterTileId]
-    const rightValue = board[beforeTileId]
+    const leftValue = getBoardNumericValue(board, afterTileId)
+    const rightValue = getBoardNumericValue(board, beforeTileId)
 
     if (leftValue !== null && rightValue !== null && leftValue > rightValue) {
       breaks.push({
@@ -140,7 +138,7 @@ export interface GameResult {
   successTileCount: number
 }
 
-export function calculateGameResult(board: Record<TileId, number | null>): GameResult {
+export function calculateGameResult(board: GameBoard): GameResult {
   const runs = findNonDecreasingRuns(PATH_ORDER, board)
   const scoringRuns = getScoringRuns(runs)
   const successTileIds = getSuccessTileIds(runs)

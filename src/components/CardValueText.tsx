@@ -1,14 +1,37 @@
 import type { CardValue } from '../types/card'
-import { getCardTone, getCardValueSizeClass } from '../utils/cardDisplay'
+import { getCardTone, getCardValueSizeClass, getDisplayLabelSizeClass } from '../utils/cardDisplay'
 
 interface CardValueTextProps {
   value: CardValue
+  displayLabel?: string
   className?: string
+  variant?: 'panel' | 'tile'
 }
 
-export function CardValueText({ value, className = '' }: CardValueTextProps) {
+export function CardValueText({
+  value,
+  displayLabel,
+  className = '',
+  variant = 'panel',
+}: CardValueTextProps) {
   const tone = getCardTone(value)
-  const sizeClass = getCardValueSizeClass(value)
+  const sizeClass =
+    variant === 'panel'
+      ? displayLabel
+        ? getDisplayLabelSizeClass(displayLabel)
+        : getCardValueSizeClass(value)
+      : ''
+
+  if (displayLabel !== undefined) {
+    return (
+      <span
+        className={`current-card-panel__value current-card-panel__value--${tone} ${sizeClass} ${className}`.trim()}
+        aria-label={displayLabel}
+      >
+        {displayLabel}
+      </span>
+    )
+  }
 
   if (typeof value === 'number') {
     return (
@@ -17,6 +40,17 @@ export function CardValueText({ value, className = '' }: CardValueTextProps) {
         aria-label={String(value)}
       >
         {value}
+      </span>
+    )
+  }
+
+  if (value.type === 'label') {
+    return (
+      <span
+        className={`current-card-panel__value current-card-panel__value--label current-card-panel__value--${tone} ${sizeClass} ${className}`.trim()}
+        aria-label={value.text}
+      >
+        {value.text}
       </span>
     )
   }

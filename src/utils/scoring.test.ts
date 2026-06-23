@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import type { GameBoard } from '../types/board'
 import { createEmptyBoard } from './placement'
 import {
   calculateGameResult,
@@ -10,10 +11,14 @@ import {
 } from './scoring'
 import { PATH_ORDER } from './pathLayout'
 
-function fillBoard(values: number[]): ReturnType<typeof createEmptyBoard> {
+function cell(numeric: number, displayValue = String(numeric)) {
+  return { displayValue, numericValue: numeric }
+}
+
+function fillBoard(values: number[]): GameBoard {
   const board = createEmptyBoard()
   PATH_ORDER.forEach((id, index) => {
-    board[id] = values[index] ?? 0
+    board[id] = cell(values[index] ?? 0)
   })
   return board
 }
@@ -22,12 +27,12 @@ describe('findNonDecreasingRuns', () => {
   it('splits at 13 > -15 on consecutive path tiles', () => {
     const board = createEmptyBoard()
     PATH_ORDER.forEach((id) => {
-      board[id] = 0
+      board[id] = cell(0)
     })
-    board[10] = -17
-    board[11] = 13
-    board[12] = -15
-    board[13] = -14
+    board[10] = cell(-17)
+    board[11] = cell(13)
+    board[12] = cell(-15)
+    board[13] = cell(-14)
 
     const runs = findNonDecreasingRuns(PATH_ORDER, board)
     const runWith13 = runs.find((run) => run.values.includes(13))
@@ -60,8 +65,8 @@ describe('findNonDecreasingRuns', () => {
 
   it('includes length-1 runs with zero score', () => {
     const board = createEmptyBoard()
-    board[1] = 5
-    board[2] = 3
+    board[1] = cell(5)
+    board[2] = cell(3)
 
     const runs = findNonDecreasingRuns(PATH_ORDER, board)
     expect(runs[0]?.values).toEqual([5])
@@ -73,11 +78,11 @@ describe('findNonDecreasingRuns', () => {
 describe('findBreaks', () => {
   it('marks only previous > current boundaries', () => {
     const board = createEmptyBoard()
-    board[10] = -17
-    board[11] = 13
-    board[12] = -15
-    board[13] = -14
-    board[14] = -14
+    board[10] = cell(-17)
+    board[11] = cell(13)
+    board[12] = cell(-15)
+    board[13] = cell(-14)
+    board[14] = cell(-14)
 
     const breaks = findBreaks(PATH_ORDER, board)
     expect(breaks.map((b) => `${b.leftValue} > ${b.rightValue}`)).toContain('13 > -15')
@@ -97,13 +102,13 @@ describe('calculateGameResult', () => {
   it('derives stats from the same run array', () => {
     const board = createEmptyBoard()
     PATH_ORDER.forEach((id) => {
-      board[id] = 0
+      board[id] = cell(0)
     })
-    board[10] = -17
-    board[11] = 13
-    board[12] = -15
-    board[13] = -14
-    board[14] = 0
+    board[10] = cell(-17)
+    board[11] = cell(13)
+    board[12] = cell(-15)
+    board[13] = cell(-14)
+    board[14] = cell(0)
 
     const result = calculateGameResult(board)
 

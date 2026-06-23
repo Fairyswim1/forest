@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
+import type { GameBoard } from '../types/board'
 import type { TileId } from '../types/game'
+import type { StagePathLayout } from '../game/pathLayouts/types'
 import type { GameResult } from '../utils/scoring'
 import { getTileRunMap } from '../utils/scoring'
 import { getBreakMarkerMidpoints, getTilePositions } from '../utils/pathLayout'
@@ -7,7 +9,8 @@ import { BoardContainer } from './BoardContainer'
 import { TrailTile } from './TrailTile'
 
 interface ResultBoardSummaryProps {
-  board: Record<TileId, number | null>
+  layout: StagePathLayout
+  board: GameBoard
   result: GameResult
 }
 
@@ -29,8 +32,8 @@ function BreakMarker({ marker }: { marker: { id: TileId; x: number; y: number } 
   )
 }
 
-export function ResultBoardSummary({ board, result }: ResultBoardSummaryProps) {
-  const positions = useMemo(() => getTilePositions(), [])
+export function ResultBoardSummary({ layout, board, result }: ResultBoardSummaryProps) {
+  const positions = useMemo(() => getTilePositions(layout), [layout])
   const tileRunMap = useMemo(() => getTileRunMap(result.runs), [result.runs])
   const breakBeforeTileIds = useMemo(
     () => new Set(result.breaks.map((b) => b.beforeTileId)),
@@ -38,8 +41,8 @@ export function ResultBoardSummary({ board, result }: ResultBoardSummaryProps) {
   )
 
   const breakMarkers = useMemo(
-    () => getBreakMarkerMidpoints(result.breakAfterTileIds),
-    [result.breakAfterTileIds],
+    () => getBreakMarkerMidpoints(layout, result.breakAfterTileIds),
+    [layout, result.breakAfterTileIds],
   )
 
   const overlayLayer = (
@@ -60,20 +63,20 @@ export function ResultBoardSummary({ board, result }: ResultBoardSummaryProps) {
           ↓ 끊긴 지점
         </span>
       </div>
-      <BoardContainer className="board-container--summary" overlayLayer={overlayLayer}>
+      <BoardContainer layout={layout} className="board-container--summary" overlayLayer={overlayLayer}>
         {positions.map((pos) => {
-          const value = board[pos.id]
+          const cell = board[pos.id]
           const runInfo = tileRunMap.get(pos.id)
           const run = runInfo?.run
           const isScoringRun = (run?.length ?? 0) >= 2
           const isSuccess = result.successTileIds.has(pos.id)
           const isBreakAfter = result.breakAfterTileIds.has(pos.id)
           const isBreakBefore = breakBeforeTileIds.has(pos.id)
-          const isIsolated = value !== null && !isSuccess
+          const isIsolated = cell !== null && !isSuccess
 
           let state: 'empty' | 'selected' | 'placed' | 'success' = 'empty'
           if (isSuccess) state = 'success'
-          else if (value !== null) state = 'placed'
+          else if (cell !== null) state = 'placed'
 
           const runTileIndex = run ? run.tileIds.indexOf(pos.id) : -1
 
@@ -83,7 +86,7 @@ export function ResultBoardSummary({ board, result }: ResultBoardSummaryProps) {
               id={pos.id}
               x={pos.x}
               y={pos.y}
-              value={value}
+              cell={cell}
               state={state}
               onClick={() => {}}
               disabled

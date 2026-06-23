@@ -1,23 +1,24 @@
 import { useMemo } from 'react'
-import { ASSETS, STAGE_1_1, type StageInfo } from '../types/game'
+import type { GameBoard } from '../types/board'
+import type { StageConfig } from '../types/stage'
 import { ResultBoardSummary } from '../components/ResultBoardSummary'
+import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import { useCountUp } from '../hooks/useCountUp'
 import {
   formatBreakDebugLines,
   formatRunDebugLines,
   type GameResult,
 } from '../utils/scoring'
-import type { TileId } from '../types/game'
 import { buildResultFeedback } from '../utils/resultFeedback'
 
 export interface ResultPayload {
   result: GameResult
-  board: Record<TileId, number | null>
+  board: GameBoard
   isNewRecord: boolean
 }
 
 interface ResultScreenProps {
-  stage?: StageInfo
+  stage: StageConfig
   payload: ResultPayload
   onRetry: () => void
   onWorldMap: () => void
@@ -33,16 +34,17 @@ function useDebugMode(explicit?: boolean): boolean {
 }
 
 export function ResultScreen({
-  stage = STAGE_1_1,
+  stage,
   payload,
   onRetry,
   onWorldMap,
   debug: debugProp,
 }: ResultScreenProps) {
   const { result, isNewRecord } = payload
+  const pathLayout = getPathLayoutForTrailAsset(stage.trailAsset)
   const debug = useDebugMode(debugProp)
   const animatedScore = useCountUp(result.finalScore, 1400)
-  const feedback = useMemo(() => buildResultFeedback(result), [result])
+  const feedback = useMemo(() => buildResultFeedback(result, stage.feedback), [result, stage.feedback])
   const runDebugLines = useMemo(() => formatRunDebugLines(result), [result])
   const breakDebugLines = useMemo(() => formatBreakDebugLines(result), [result])
 
@@ -50,14 +52,14 @@ export function ResultScreen({
     <div className={`result-screen ${debug ? 'result-screen--debug' : ''}`}>
       <div
         className="result-screen__bg"
-        style={{ backgroundImage: `url(${ASSETS.playfieldBg})` }}
+        style={{ backgroundImage: `url(${stage.backgroundAsset})` }}
         aria-hidden
       />
       <div className="result-screen__overlay" aria-hidden />
 
       <header className="result-screen__header">
-        <h1 className="result-screen__title">{stage.label} 완료!</h1>
-        <p className="result-screen__subtitle">{stage.topic}</p>
+        <h1 className="result-screen__title">{stage.title} 완료!</h1>
+        <p className="result-screen__subtitle">{stage.subtitle}</p>
       </header>
 
       <main className="result-screen__main">
@@ -109,7 +111,7 @@ export function ResultScreen({
 
         <section className="result-screen__board-panel wood-panel" aria-label="보드 결과">
           <h2 className="result-screen__board-title">오솔길 결과</h2>
-          <ResultBoardSummary board={payload.board} result={result} />
+          <ResultBoardSummary layout={pathLayout} board={payload.board} result={result} />
         </section>
       </main>
 

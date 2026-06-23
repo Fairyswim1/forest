@@ -2,46 +2,41 @@
 
 PC 웹 수학 보드게임 (React + Vite)
 
-## 프로젝트 경로
+## 프로젝트 경로 (본진)
 
-`C:\coding\streams`
+`C:\coding\forest`
+
+> `streams` 폴더는 이전 작업 복제본입니다. 앞으로는 **forest**만 사용하세요.
 
 ## 에셋
 
-**원본:** `assets/` 폴더 (프로젝트 루트)
+**원본:** `public/assets/` — 월드별 PNG를 여기에 추가
 
-- `empty_tile.png` — 빈 돌 타일
-- `selected_tile.png` — 선택된 타일
-- `placed_tile.png` — 배치 스타일 참고용
-- `success_tile.png` — 성공 스타일 참고용
-
-**게임용 (체크무늬 제거·투명 PNG):** `assets/tiles/` → `public/assets/tiles/` (`/assets/tiles/...`)
-
-원본을 교체한 뒤 전처리:
+**게임용 (체크무늬 제거·투명 PNG):** `public/assets/processed/`
 
 ```powershell
-cd C:\coding\streams
-pip install pillow numpy
-python scripts/remove_checkerboard.py
+cd C:\coding\forest
+npm run process-tiles
 ```
-
-또는 `npm run process-tiles` (Pillow 필요)
 
 ## 실행
 
 ```powershell
-cd C:\coding\streams
+cd C:\coding\forest
 npm install
 npm run dev
 ```
 
-또는 `start.bat` 더블클릭 → http://localhost:5173/
+## 월드 (통합 월드맵)
 
-## 화면
+1. 자연수의 숲 (`natural-1-1`)
+2. 정수 동굴 (`integer-1-1`)
+3. 유리수 초원 (`rational-1-1`)
+4. 실수의 별빛 우주 (`real-1-1`)
 
-1. **월드맵** — 수의 숲, 1-1 클릭
-2. **플레이** — 스네이크형 20칸 오솔길, 투명 타일 PNG, 하단 컨트롤 바
+해금 순서: natural → integer → rational → real
 
 ## 설정
 
-- 타일 번호 표시: 개발 모드(`npm run dev`)에서만 자동 표시 (`SHOW_TILE_INDEX`)
+- 타일 번호 표시: 개발 모드에서만 (`SHOW_TILE_INDEX`)
+- 고정 덱 테스트: `?deck=fixed` (개발 모드)

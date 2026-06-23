@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { STAGE_1_1, ASSETS, type TileId } from '../types/game'
+import { type TileId } from '../types/game'
+import type { StageConfig } from '../types/stage'
 import { useGameLoop } from '../hooks/useGameLoop'
 import { ControlBar, CurrentCard, PlayHud } from '../components/PlayUI'
 import { CardRevealFlight } from '../components/CardRevealFlight'
 import { CardPanelPlacementFlight } from '../components/CardPanelPlacementFlight'
 import { TrailBoard } from '../components/TrailBoard'
 import { PlayTutorial } from '../components/PlayTutorial'
+import { StageGuideModal } from '../components/StageGuideModal'
+import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import type { ResultPayload } from '../screens/ResultScreen'
 import { isTutorialCompleted, markTutorialCompleted } from '../utils/tutorialStorage'
 
@@ -13,6 +16,7 @@ const TUTORIAL_DEMO_CARD = 5
 const TUTORIAL_DEMO_TILE: TileId = 7
 
 interface PlayScreenProps {
+  stage: StageConfig
   onBack: () => void
   onComplete: (payload: Omit<ResultPayload, 'isNewRecord'>) => void
   forceTutorial?: boolean
@@ -20,12 +24,19 @@ interface PlayScreenProps {
 }
 
 export function PlayScreen({
+  stage,
   onBack,
   onComplete,
   forceTutorial = false,
   onTutorialFinished,
 }: PlayScreenProps) {
-  const game = useGameLoop()
+  // 시작 안내 모달: 스테이지 진입 시 카드 공개 전에 먼저 보여준다.
+  const [guideOpen, setGuideOpen] = useState(true)
+  // 플레이 중 ? 버튼으로 다시 여는 재확인 패널 (열려 있는 동안 게임 일시정지)
+  const [helpOpen, setHelpOpen] = useState(false)
+
+  const game = useGameLoop(stage, helpOpen || guideOpen)
+  const pathLayout = getPathLayoutForTrailAsset(stage.trailAsset)
   const completedRef = useRef(false)
   const cardRef = useRef<HTMLDivElement>(null)
   const boardAreaRef = useRef<HTMLElement>(null)
@@ -50,8 +61,8 @@ export function PlayScreen({
   }, [forceTutorial])
 
   useEffect(() => {
-    if (!tutorialActive && game.phase === 'intro') game.startGame()
-  }, [tutorialActive, game.phase, game.startGame])
+    if (!guideOpen && !tutorialActive && game.phase === 'intro') game.startGame()
+  }, [guideOpen, tutorialActive, game.phase, game.startGame])
 
   useEffect(() => {
     if (game.phase !== 'finished' || !game.gameResult || completedRef.current) return
@@ -74,18 +85,26 @@ export function PlayScreen({
   }
 
   const panelCardValue = tutorialActive ? TUTORIAL_DEMO_CARD : game.displayCardValue
+  const panelCardLabel = tutorialActive ? undefined : game.displayCardLabel
   const panelCardPhase = tutorialActive ? 'panel' : game.cardPhase === 'panel' ? 'panel' : 'hidden'
 
   const revealCardValue = tutorialActive ? null : game.revealCardValue
+  const revealCardLabel = tutorialActive ? undefined : game.revealCardLabel
   const revealActive = !tutorialActive && game.cardPhase === 'center' && revealCardValue !== null
   const revealKey = `${game.round}-${game.currentCard?.id ?? 'none'}`
 
-  const placementFlightValue =
-    !tutorialActive && game.cardPhase === 'placing' && game.pendingPlacement
-      ? game.pendingPlacement.card.numericValue
-      : null
+  const placementFlightValue = !tutorialActive ? game.placingCardValue : null
+  const placementFlightLabel = !tutorialActive ? game.placingCardLabel : undefined
   const placementFlightTileId =
     game.cardPhase === 'placing' ? (game.pendingPlacement?.tileId ?? null) : null
+  const placingCell =
+    game.pendingPlacement && placementFlightTileId !== null
+      ? {
+          displayValue: game.pendingPlacement.card.displayValue,
+          numericValue: game.pendingPlacement.card.numericValue,
+        }
+      : null
+
   const placementFlightKey = `${game.round}-${placementFlightTileId ?? 'none'}-fly`
 
   const tutorialSelectedTile = tutorialStep === 1 ? TUTORIAL_DEMO_TILE : null
@@ -105,18 +124,20 @@ export function PlayScreen({
     <div className={`play-screen ${tutorialActive ? 'play-screen--tutorial' : ''}`}>
       <div
         className="play-screen__bg"
-        style={{ backgroundImage: `url(${ASSETS.playfieldBg})` }}
+        style={{ backgroundImage: `url(${stage.backgroundAsset})` }}
         aria-hidden
       />
       <div className="play-screen__vignette" aria-hidden />
 
       <header className="play-screen__hud">
         <PlayHud
-          stageLabel={STAGE_1_1.label}
-          topic={STAGE_1_1.topic}
+          stageLabel={stage.title}
+          topic={stage.subtitle}
+          totalRounds={stage.deckSize}
           round={game.round}
           score={game.score}
           onMenu={onBack}
+          onGuide={() => setHelpOpen(true)}
         />
       </header>
 
@@ -131,6 +152,7 @@ export function PlayScreen({
             .join(' ')}
         >
           <TrailBoard
+            layout={pathLayout}
             board={game.displayBoard}
             selectedTileId={tempTileId}
             forcedSelectedTileId={tutorialSelectedTile}
@@ -139,7 +161,7 @@ export function PlayScreen({
             disabled={interactionsBlocked}
             tutorialEmptyPulse={tutorialActive && tutorialStep === 1}
             placingTileId={placementFlightTileId}
-            placingValue={placementFlightValue}
+            placingCell={placingCell}
           />
         </div>
       </main>
@@ -158,6 +180,7 @@ export function PlayScreen({
           currentCard={
             <CurrentCard
               value={panelCardValue}
+              displayLabel={panelCardLabel}
               phase={panelCardPhase}
               showHint={!tutorialActive && game.cardPhase === 'panel'}
               turnWarning={!tutorialActive && game.turnWarning}
@@ -171,6 +194,7 @@ export function PlayScreen({
 
       <CardRevealFlight
         value={revealCardValue}
+        displayLabel={revealCardLabel}
         active={revealActive}
         targetRef={cardRef}
         boardAreaRef={boardAreaRef}
@@ -180,13 +204,14 @@ export function PlayScreen({
 
       <CardPanelPlacementFlight
         value={placementFlightValue}
+        displayLabel={placementFlightLabel}
         tileId={placementFlightTileId}
         active={game.cardPhase === 'placing' && placementFlightValue !== null}
         sourceRef={cardRef}
         flightKey={placementFlightKey}
       />
 
-      {tutorialActive && (
+      {!guideOpen && tutorialActive && (
         <PlayTutorial
           step={tutorialStep}
           cardRef={cardRef}
@@ -195,6 +220,24 @@ export function PlayScreen({
           resetRef={resetRef}
           onNext={() => setTutorialStep((step) => step + 1)}
           onStart={finishTutorial}
+        />
+      )}
+
+      {guideOpen && (
+        <StageGuideModal
+          stage={stage}
+          variant="start"
+          backgroundUrl={stage.backgroundAsset}
+          onConfirm={() => setGuideOpen(false)}
+        />
+      )}
+
+      {helpOpen && (
+        <StageGuideModal
+          stage={stage}
+          variant="inplay"
+          backgroundUrl={stage.backgroundAsset}
+          onConfirm={() => setHelpOpen(false)}
         />
       )}
     </div>

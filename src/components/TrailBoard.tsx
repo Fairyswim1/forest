@@ -1,11 +1,14 @@
 import { useMemo } from 'react'
+import type { GameBoard } from '../types/board'
 import type { TileId } from '../types/game'
+import type { StagePathLayout } from '../game/pathLayouts/types'
 import { getTilePositions } from '../utils/pathLayout'
 import { BoardContainer } from './BoardContainer'
 import { TrailTile } from './TrailTile'
 
 interface TrailBoardProps {
-  board: Record<TileId, number | null>
+  layout: StagePathLayout
+  board: GameBoard
   selectedTileId: TileId | null
   successTileIds: Set<TileId>
   onSelectTile: (id: TileId) => void
@@ -13,11 +16,12 @@ interface TrailBoardProps {
   tutorialEmptyPulse?: boolean
   forcedSelectedTileId?: TileId | null
   placingTileId?: TileId | null
-  placingValue?: number | null
+  placingCell?: GameBoard[TileId]
   className?: string
 }
 
 export function TrailBoard({
+  layout,
   board,
   selectedTileId,
   successTileIds,
@@ -26,23 +30,23 @@ export function TrailBoard({
   tutorialEmptyPulse = false,
   forcedSelectedTileId,
   placingTileId = null,
-  placingValue = null,
+  placingCell = null,
   className,
 }: TrailBoardProps) {
-  const positions = useMemo(() => getTilePositions(), [])
+  const positions = useMemo(() => getTilePositions(layout), [layout])
 
   return (
-    <BoardContainer className={className}>
+    <BoardContainer layout={layout} className={className}>
       {positions.map((pos) => {
-        const value =
-          placingTileId === pos.id && placingValue !== null ? placingValue : board[pos.id]
         const effectiveSelectedId = forcedSelectedTileId ?? selectedTileId
-        const isPlacing = placingTileId === pos.id && placingValue !== null
+        const isPlacing = placingTileId === pos.id && placingCell !== null
+        const cell = isPlacing ? placingCell : board[pos.id]
+
         let state: 'empty' | 'selected' | 'placed' | 'success' = 'empty'
         if (successTileIds.has(pos.id)) state = 'success'
-        else if (isPlacing || (effectiveSelectedId === pos.id && value !== null)) state = 'placed'
+        else if (isPlacing || (effectiveSelectedId === pos.id && cell !== null)) state = 'placed'
         else if (effectiveSelectedId === pos.id) state = 'selected'
-        else if (value !== null) state = 'placed'
+        else if (cell !== null) state = 'placed'
 
         return (
           <TrailTile
@@ -50,7 +54,7 @@ export function TrailBoard({
             id={pos.id}
             x={pos.x}
             y={pos.y}
-            value={value}
+            cell={cell}
             state={state}
             onClick={onSelectTile}
             disabled={disabled}

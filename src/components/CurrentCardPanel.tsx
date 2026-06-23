@@ -5,6 +5,7 @@ import { useAssetLoaded } from '../utils/assetLoad'
 
 interface CurrentCardPanelProps {
   value: CardValue | null
+  displayLabel?: string
   phase?: CardPanelPhase
   variant?: 'panel' | 'reveal'
   className?: string
@@ -12,12 +13,23 @@ interface CurrentCardPanelProps {
 
 export function CurrentCardPanel({
   value,
+  displayLabel,
   phase = 'panel',
   variant = 'panel',
   className,
 }: CurrentCardPanelProps) {
   const isEmpty = value === null
   const { loaded, onLoad, onError } = useAssetLoaded()
+
+  const valueLabel =
+    displayLabel ??
+    (value === null
+      ? ''
+      : typeof value === 'number'
+        ? String(value)
+        : value.type === 'label'
+          ? value.text
+          : `${value.numerator}/${value.denominator}`)
 
   return (
     <article
@@ -32,11 +44,7 @@ export function CurrentCardPanel({
         .filter(Boolean)
         .join(' ')}
       data-phase={phase}
-      aria-label={
-        isEmpty
-          ? '현재 카드 없음'
-          : `현재 카드 ${typeof value === 'number' ? value : `${value.numerator}/${value.denominator}`}`
-      }
+      aria-label={isEmpty ? '현재 카드 없음' : `현재 카드 ${valueLabel}`}
     >
       <div className="current-card-panel__frame-wrap" aria-hidden>
         <img
@@ -61,7 +69,7 @@ export function CurrentCardPanel({
                 —
               </span>
             ) : (
-              <CardValueText value={value} />
+              <CardValueText value={value} displayLabel={displayLabel} />
             )}
           </div>
         </div>

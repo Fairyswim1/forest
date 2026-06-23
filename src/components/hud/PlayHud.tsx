@@ -10,10 +10,14 @@ interface PlayHudProps {
   round: number
   score: number
   onMenu: () => void
+  /** 스테이지 안내 다시보기 (? 버튼) */
+  onGuide?: () => void
+  /** 활성 스테이지의 총 라운드 수 (StageConfig.deckSize). 기본 TOTAL_ROUNDS */
+  totalRounds?: number
 }
 
-export function PlayHud({ stageLabel, topic, round, score, onMenu }: PlayHudProps) {
-  const displayRound = Math.min(Math.max(round, 1), TOTAL_ROUNDS)
+export function PlayHud({ stageLabel, topic, round, score, onMenu, onGuide, totalRounds = TOTAL_ROUNDS }: PlayHudProps) {
+  const displayRound = Math.min(Math.max(round, 1), totalRounds)
 
   return (
     <header className="play-hud">
@@ -31,17 +35,29 @@ export function PlayHud({ stageLabel, topic, round, score, onMenu }: PlayHudProp
         variant="round"
         frameSrc={ASSETS.hudRoundFrame}
         className="play-hud__round"
-        ariaLabel={`라운드 ${displayRound} / ${TOTAL_ROUNDS}`}
+        ariaLabel={`라운드 ${displayRound} / ${totalRounds}`}
       >
         <span className="play-hud__round-label">Round</span>
         <span className="play-hud__round-value">
           <strong>{displayRound}</strong>
           <span className="play-hud__round-sep">/</span>
-          {TOTAL_ROUNDS}
+          {totalRounds}
         </span>
       </HudFramePanel>
 
       <div className="play-hud__right">
+        {onGuide && (
+          <HudFrameButton
+            variant="menu"
+            frameSrc={ASSETS.hudMenuFrame}
+            className="play-hud__help"
+            ariaLabel="스테이지 안내 다시보기"
+            onClick={onGuide}
+          >
+            <span className="play-hud__help-glyph" aria-hidden>?</span>
+          </HudFrameButton>
+        )}
+
         <HudFramePanel
           variant="score"
           frameSrc={ASSETS.hudScoreFrame}

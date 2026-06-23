@@ -1,24 +1,45 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { WorldMap } from './components/WorldMap'
 import { PlayScreen } from './screens/PlayScreen'
 import { ResultScreen, type ResultPayload } from './screens/ResultScreen'
-import { STAGE_1_1 } from './types/game'
-import { getStageBestScore, updateStageBestScore } from './utils/gameRecords'
+import { NATURAL_1_1 } from './config/stages'
+import { getActiveStage, getStageById, getStageByWorldId } from './config/stageRegistry'
+import { WORLDS } from './config/worlds'
+import { getStageBestScore, markStageComplete, updateStageBestScore } from './utils/gameRecords'
+import { getStageProgressStatus } from './utils/stageProgress'
 
 type Screen = 'map' | 'play' | 'result'
 
 const FADE_MS = 420
 
 export function AppRoot() {
+  const [selectedStageId, setSelectedStageId] = useState(() => getActiveStage().id)
+  const selectedStage = getStageById(selectedStageId) ?? NATURAL_1_1
+
   const [screen, setScreen] = useState<Screen>('map')
   const [visible, setVisible] = useState(true)
   const [playKey, setPlayKey] = useState(0)
   const [forceTutorial, setForceTutorial] = useState(false)
   const [resultPayload, setResultPayload] = useState<ResultPayload | null>(null)
+  const [progressTick, setProgressTick] = useState(0)
+
   const [totalStars, setTotalStars] = useState(() => {
-    const best = getStageBestScore(STAGE_1_1.id)
-    return best !== null ? Math.floor(best / 10) : 0
+    const scores = [NATURAL_1_1, ...WORLDS.map((w) => getStageByWorldId(w.id)).filter(Boolean)]
+      .map((stage) => getStageBestScore(stage!.id))
+      .filter((score): score is number => score !== null)
+    if (scores.length === 0) return 0
+    return Math.floor(Math.max(...scores) / 10)
   })
+
+  const regions = useMemo(
+    () =>
+      WORLDS.map((world) => {
+        const stage = getStageByWorldId(world.id)
+        const status = stage ? getStageProgressStatus(stage.id) : 'locked'
+        return { world, stage, status }
+      }),
+    [screen, progressTick],
+  )
 
   const transitionTo = useCallback((next: Screen) => {
     setVisible(false)
@@ -30,10 +51,25 @@ export function AppRoot() {
 
   const handleComplete = useCallback(
     (payload: Omit<ResultPayload, 'isNewRecord'>) => {
-      const { isNewRecord, bestScore } = updateStageBestScore(STAGE_1_1.id, payload.result.finalScore)
+      const { isNewRecord, bestScore } = updateStageBestScore(
+        selectedStage.id,
+        payload.result.finalScore,
+      )
+      markStageComplete(selectedStage.id)
       setResultPayload({ ...payload, isNewRecord })
-      setTotalStars(Math.floor(bestScore / 10))
+      setTotalStars((prev) => Math.max(prev, Math.floor(bestScore / 10)))
+      setProgressTick((tick) => tick + 1)
       transitionTo('result')
+    },
+    [selectedStage.id, transitionTo],
+  )
+
+  const handleEnterStage = useCallback(
+    (stageId: string) => {
+      setSelectedStageId(stageId)
+      setForceTutorial(false)
+      setPlayKey((key) => key + 1)
+      transitionTo('play')
     },
     [transitionTo],
   )
@@ -46,6 +82,7 @@ export function AppRoot() {
   }, [transitionTo])
 
   const handleReplayTutorial = useCallback(() => {
+    setSelectedStageId(NATURAL_1_1.id)
     setForceTutorial(true)
     setPlayKey((key) => key + 1)
     transitionTo('play')
@@ -60,19 +97,18 @@ export function AppRoot() {
     <div className={`app-root ${visible ? 'app-root--visible' : 'app-root--hidden'}`}>
       {screen === 'map' && (
         <WorldMap
+          regions={regions}
           totalStars={totalStars}
-          onEnterStage={() => {
-            setForceTutorial(false)
-            transitionTo('play')
-          }}
+          onEnterStage={handleEnterStage}
           onReplayTutorial={handleReplayTutorial}
         />
       )}
 
       {screen === 'play' && (
         <PlayScreen
-          key={playKey}
-          forceTutorial={forceTutorial}
+          key={`${selectedStage.id}-${playKey}`}
+          stage={selectedStage}
+          forceTutorial={forceTutorial && selectedStage.id === NATURAL_1_1.id}
           onTutorialFinished={() => setForceTutorial(false)}
           onBack={() => transitionTo('map')}
           onComplete={handleComplete}
@@ -80,7 +116,12 @@ export function AppRoot() {
       )}
 
       {screen === 'result' && resultPayload && (
-        <ResultScreen payload={resultPayload} onRetry={handleRetry} onWorldMap={handleWorldMap} />
+        <ResultScreen
+          stage={selectedStage}
+          payload={resultPayload}
+          onRetry={handleRetry}
+          onWorldMap={handleWorldMap}
+        />
       )}
     </div>
   )
