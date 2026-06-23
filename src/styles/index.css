@@ -1433,8 +1433,54 @@ body {
 .trail-tile__value[data-len='3'] { font-size: clamp(1.3rem, 1.85vw, 1.75rem); }
 .trail-tile__value[data-len='4'] { font-size: clamp(1.1rem, 1.6vw, 1.5rem); }
 
-/* √ 표기 카드 값 — 루트 기호와 숫자가 분리되지 않게 */
+/* √ 표기 — 피제수가 루트 기호·가로선 안에 들어가도록 */
+.current-card-panel__value--sqrt,
 .current-card-panel__value--label { white-space: nowrap; }
+
+.math-sqrt {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.math-sqrt__sign {
+  margin-right: 0.06em;
+  font-size: 0.92em;
+}
+
+.math-sqrt__group {
+  display: inline-flex;
+  align-items: flex-end;
+  line-height: 1;
+}
+
+.math-sqrt__radical {
+  flex-shrink: 0;
+  font-size: 1.22em;
+  line-height: 0.82;
+  transform: translateY(0.14em);
+  margin-right: -0.18em;
+}
+
+.math-sqrt__radicand {
+  display: inline-block;
+  border-top: 0.11em solid currentColor;
+  padding: 0.1em 0.14em 0 0.2em;
+  line-height: 1;
+  font-size: 1em;
+}
+
+.math-sqrt--tile .math-sqrt__radical {
+  font-size: 1.18em;
+  transform: translateY(0.12em);
+  margin-right: -0.16em;
+}
+
+.math-sqrt--tile .math-sqrt__radicand {
+  border-top-width: 0.1em;
+  padding: 0.08em 0.12em 0 0.16em;
+}
 
 .trail-tile__fx {
   position: absolute;

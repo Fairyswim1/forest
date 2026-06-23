@@ -1,11 +1,34 @@
 import type { CardValue } from '../types/card'
 import { getCardTone, getCardValueSizeClass, getDisplayLabelSizeClass } from '../utils/cardDisplay'
+import { parseSqrtLabel, SqrtDisplay } from './SqrtDisplay'
 
 interface CardValueTextProps {
   value: CardValue
   displayLabel?: string
   className?: string
   variant?: 'panel' | 'tile'
+}
+
+function renderSqrtValue(
+  label: string,
+  tone: ReturnType<typeof getCardTone>,
+  sizeClass: string,
+  className: string,
+  variant: 'panel' | 'tile',
+) {
+  const sqrt = parseSqrtLabel(label)
+  if (!sqrt) return null
+
+  const variantClass = variant === 'tile' ? 'math-sqrt--tile' : 'math-sqrt--panel'
+
+  return (
+    <span
+      className={`current-card-panel__value current-card-panel__value--sqrt current-card-panel__value--${tone} ${sizeClass} ${className}`.trim()}
+      aria-label={label}
+    >
+      <SqrtDisplay sign={sqrt.sign} radicand={sqrt.radicand} className={variantClass} />
+    </span>
+  )
 }
 
 export function CardValueText({
@@ -23,6 +46,9 @@ export function CardValueText({
       : ''
 
   if (displayLabel !== undefined) {
+    const sqrtMarkup = renderSqrtValue(displayLabel, tone, sizeClass, className, variant)
+    if (sqrtMarkup) return sqrtMarkup
+
     return (
       <span
         className={`current-card-panel__value current-card-panel__value--${tone} ${sizeClass} ${className}`.trim()}
@@ -45,6 +71,9 @@ export function CardValueText({
   }
 
   if (value.type === 'label') {
+    const sqrtMarkup = renderSqrtValue(value.text, tone, sizeClass, className, variant)
+    if (sqrtMarkup) return sqrtMarkup
+
     return (
       <span
         className={`current-card-panel__value current-card-panel__value--label current-card-panel__value--${tone} ${sizeClass} ${className}`.trim()}
