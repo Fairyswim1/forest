@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ASSETS, GAME_TITLE } from '../types/game'
 import type { StageConfig, StageProgressStatus, WorldConfig } from '../types/stage'
 import { canEnterStage } from '../utils/stageProgress'
+import { isUnlockAllMode } from '../utils/devUnlock'
 import { GameMenuModal } from './GameMenuModal'
 
 export interface WorldMapRegion {
@@ -131,8 +132,8 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
       </main>
 
       <footer className="world-map__footer">
-        {import.meta.env.DEV
-          ? '개발 모드: 잠긴 스테이지도 직접 진입할 수 있습니다.'
+        {isUnlockAllMode()
+          ? '모든 스테이지가 열려 있습니다. (?stage=real-1-1 로 바로 진입)'
           : '통합 월드맵에서 지역을 선택해 탐험을 시작하세요!'}
       </footer>
 

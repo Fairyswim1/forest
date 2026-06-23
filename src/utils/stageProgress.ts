@@ -1,4 +1,5 @@
 import type { StageProgressStatus } from '../types/stage'
+import { isUnlockAllMode } from './devUnlock'
 import { isStageComplete } from './gameRecords'
 
 /** 스테이지 잠금 해제 순서 — 이전 스테이지 complete 시 다음 open */
@@ -25,13 +26,15 @@ export function getStageProgressStatus(stageId: string): StageProgressStatus {
   if (index === 0) return 'open'
 
   const previousId = STAGE_UNLOCK_ORDER[index - 1]!
-  return isStageComplete(previousId) ? 'open' : 'locked'
+  const unlocked = isStageComplete(previousId)
+  if (!unlocked && isUnlockAllMode()) return 'open'
+  return unlocked ? 'open' : 'locked'
 }
 
 /** 플레이 진입 가능 여부 */
 export function canEnterStage(stageId: string): boolean {
-  if (!isUnlockableStageId(stageId)) return import.meta.env.DEV
+  if (!isUnlockableStageId(stageId)) return isUnlockAllMode()
   const status = getStageProgressStatus(stageId)
   if (status !== 'locked') return true
-  return import.meta.env.DEV
+  return isUnlockAllMode()
 }

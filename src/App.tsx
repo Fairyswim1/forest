@@ -6,6 +6,7 @@ import { NATURAL_1_1 } from './config/stages'
 import { getActiveStage, getStageById, getStageByWorldId } from './config/stageRegistry'
 import { WORLDS } from './config/worlds'
 import { buildDemoResultPayload } from './utils/demoResultBoard'
+import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
 import { getStageBestScore, markStageComplete, updateStageBestScore } from './utils/gameRecords'
 import { getStageProgressStatus } from './utils/stageProgress'
 
@@ -20,13 +21,17 @@ function initialPreviewResult(): ResultPayload | null {
 }
 
 function initialScreen(): Screen {
-  if (!import.meta.env.DEV || typeof window === 'undefined') return 'map'
-  if (new URLSearchParams(window.location.search).get('previewResult') === '1') return 'result'
+  if (typeof window === 'undefined') return 'map'
+  const params = new URLSearchParams(window.location.search)
+  if (isUnlockAllMode() && getStageIdFromUrl()) return 'play'
+  if (import.meta.env.DEV && params.get('previewResult') === '1') return 'result'
   return 'map'
 }
 
 export function AppRoot() {
-  const [selectedStageId, setSelectedStageId] = useState(() => getActiveStage().id)
+  const [selectedStageId, setSelectedStageId] = useState(
+    () => getStageIdFromUrl() ?? getActiveStage().id,
+  )
   const selectedStage = getStageById(selectedStageId) ?? NATURAL_1_1
 
   const [screen, setScreen] = useState<Screen>(initialScreen)
