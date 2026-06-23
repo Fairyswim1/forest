@@ -24,6 +24,9 @@ interface TrailTileProps {
   isRunStart?: boolean
   isRunEnd?: boolean
   isScoringRun?: boolean
+  runColor?: string
+  runGlow?: string
+  runBadgeLabel?: string
 }
 
 function tileImage(state: TileState): string {
@@ -49,15 +52,21 @@ export function TrailTile({
   breakAfter = false,
   breakBefore = false,
   runIndex,
-  isRunStart = false,
-  isRunEnd = false,
   isScoringRun = false,
+  runColor,
+  runGlow,
+  runBadgeLabel,
 }: TrailTileProps) {
+  const hasRunColor = resultMode && isScoringRun && runColor
+
   const positionStyle: CSSProperties = {
     left: `${x}%`,
     top: `${y}%`,
     transform: 'translate(-50%, -50%)',
-    ...(staggerStars && state === 'success' && isScoringRun
+    ...(hasRunColor
+      ? ({ '--run-color': runColor, '--run-glow': runGlow ?? runColor } as CSSProperties)
+      : {}),
+    ...(staggerStars && state === 'success' && isScoringRun && !resultMode
       ? ({ '--run-index': runIndex ?? 0, '--run-tile-index': pathIndex } as CSSProperties)
       : {}),
   }
@@ -70,11 +79,10 @@ export function TrailTile({
         `trail-tile--${state}`,
         dimmed ? 'trail-tile--dimmed' : '',
         staggerStars && state === 'success' && isScoringRun ? 'trail-tile--stagger-fx' : '',
-        resultMode && state === 'success' && isScoringRun ? 'trail-tile--result-success' : '',
-        resultMode && state === 'success' && isScoringRun && isRunStart
-          ? 'trail-tile--run-start'
+        hasRunColor ? 'trail-tile--run-colored' : '',
+        resultMode && state === 'success' && isScoringRun && !hasRunColor
+          ? 'trail-tile--result-success'
           : '',
-        resultMode && state === 'success' && isScoringRun && isRunEnd ? 'trail-tile--run-end' : '',
         resultMode && breakAfter ? 'trail-tile--break-after' : '',
         resultMode && breakBefore ? 'trail-tile--break-before' : '',
         resultMode && resultIsolated ? 'trail-tile--result-isolated' : '',
@@ -89,28 +97,33 @@ export function TrailTile({
       aria-label={`타일 ${id}${cell !== null ? `: ${cell.displayValue}` : ''}`}
       data-tile-id={id}
     >
+      {runBadgeLabel && (
+        <span className="trail-tile__run-badge" aria-hidden>
+          {runBadgeLabel}
+        </span>
+      )}
+
       <span className="trail-tile__sprite" aria-hidden>
         <img className="trail-tile__img" src={tileImage(state)} alt="" draggable={false} />
-        {resultMode && state === 'success' && isScoringRun && (
-          <span className="trail-tile__result-ring" aria-hidden />
-        )}
       </span>
+
       {cell !== null && <TileValueText cell={cell} />}
-      {state === 'success' && isScoringRun && (
+
+      {!resultMode && state === 'success' && isScoringRun && (
         <span className="trail-tile__fx" aria-hidden>
           <span className="trail-tile__star trail-tile__star--1">✦</span>
           <span className="trail-tile__star trail-tile__star--2">✦</span>
-          {resultMode && <span className="trail-tile__star trail-tile__star--3">✦</span>}
         </span>
       )}
+
       {resultMode && breakBefore && (
         <span className="trail-tile__break-marker trail-tile__break-marker--before" aria-hidden>
-          <span className="trail-tile__break-marker-icon">⚠</span>
+          <span className="trail-tile__break-marker-icon">✕</span>
         </span>
       )}
       {resultMode && breakAfter && (
         <span className="trail-tile__break-marker" aria-hidden title="순서가 끊긴 지점">
-          <span className="trail-tile__break-marker-icon">⚠</span>
+          <span className="trail-tile__break-marker-icon">✕</span>
           <span className="trail-tile__break-marker-arrow">↓</span>
         </span>
       )}

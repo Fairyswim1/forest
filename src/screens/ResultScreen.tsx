@@ -1,9 +1,11 @@
 import { useMemo } from 'react'
 import type { GameBoard } from '../types/board'
 import type { StageConfig } from '../types/stage'
-import { ResultBoardSummary } from '../components/ResultBoardSummary'
-import { RunScorePanel } from '../components/RunScorePanel'
-import { MathRichText } from '../components/MathRichText'
+import { getWorldById } from '../config/worlds'
+import { ResultBoardPanel } from '../components/result/ResultBoardPanel'
+import { ResultHeaderRibbon } from '../components/result/ResultHeaderRibbon'
+import { ResultRunScorePanel } from '../components/result/ResultRunScorePanel'
+import { ResultSummaryPanel } from '../components/result/ResultSummaryPanel'
 import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import { useCountUp } from '../hooks/useCountUp'
 import {
@@ -12,6 +14,7 @@ import {
   type GameResult,
 } from '../utils/scoring'
 import { buildResultFeedback } from '../utils/resultFeedback'
+import { buildRunDisplayMeta, buildScoringRunViews } from '../utils/runDisplay'
 
 export interface ResultPayload {
   result: GameResult
@@ -42,84 +45,80 @@ export function ResultScreen({
   onWorldMap,
   debug: debugProp,
 }: ResultScreenProps) {
-  const { result, isNewRecord } = payload
+  const { result, board, isNewRecord } = payload
   const pathLayout = getPathLayoutForTrailAsset(stage.trailAsset)
+  const worldTheme = getWorldById(stage.worldId)?.theme ?? 'forest'
   const debug = useDebugMode(debugProp)
   const animatedScore = useCountUp(result.finalScore, 1400)
   const feedback = useMemo(() => buildResultFeedback(result, stage.feedback), [result, stage.feedback])
   const runDebugLines = useMemo(() => formatRunDebugLines(result), [result])
   const breakDebugLines = useMemo(() => formatBreakDebugLines(result), [result])
 
+  const scoringRuns = useMemo(() => buildScoringRunViews(result.runs, board), [result.runs, board])
+
+  const isolatedRuns = useMemo(
+    () =>
+      buildRunDisplayMeta(result.runs)
+        .filter((meta) => !meta.isScoring && meta.run.length > 0)
+        .map((meta) => ({
+          runIndex: meta.runIndex,
+          length: meta.run.length,
+          displayValues: meta.run.tileIds
+            .map((id) => board[id]?.displayValue)
+            .filter((value): value is string => value !== undefined),
+        })),
+    [result.runs, board],
+  )
+
   return (
-    <div className={`result-screen ${debug ? 'result-screen--debug' : ''}`}>
+    <div
+      className={`result-screen result-screen--${worldTheme} ${debug ? 'result-screen--debug' : ''}`}
+    >
       <div
         className="result-screen__bg"
         style={{ backgroundImage: `url(${stage.backgroundAsset})` }}
         aria-hidden
       />
       <div className="result-screen__overlay" aria-hidden />
+      <div className="result-screen__sparkles" aria-hidden />
 
       <header className="result-screen__header">
-        <h1 className="result-screen__title">{stage.title} 완료!</h1>
-        <p className="result-screen__subtitle">{stage.subtitle}</p>
+        <ResultHeaderRibbon
+          title={`${stage.title} 완료!`}
+          subtitle={stage.subtitle}
+          isNewRecord={isNewRecord}
+        />
       </header>
 
       <main className="result-screen__main">
-        <section className="result-card wood-panel" aria-label="결과 요약">
-          {isNewRecord && (
-            <span className="result-card__badge" aria-label="새 기록">
-              새 기록!
-            </span>
-          )}
+        <ResultSummaryPanel
+          longestRun={result.longestSegmentLength}
+          runCount={result.nonDecreasingSegmentCount}
+          breakCount={result.breakCount}
+          totalScore={result.finalScore}
+          animatedScore={animatedScore}
+          feedback={feedback}
+        />
 
-          <dl className="result-card__stats">
-            <div className="result-card__stat">
-              <dt>가장 긴 수의 길</dt>
-              <dd>{result.longestSegmentLength}칸</dd>
-            </div>
-            <div className="result-card__stat">
-              <dt>비내림차순 구간</dt>
-              <dd>{result.nonDecreasingSegmentCount}개</dd>
-            </div>
-            <div className="result-card__stat">
-              <dt>끊긴 지점</dt>
-              <dd>{result.breakCount}곳</dd>
-            </div>
-            <div className="result-card__stat result-card__stat--score">
-              <dt>획득 점수</dt>
-              <dd>
-                <strong className="result-card__score-value">{animatedScore}</strong>점
-              </dd>
-            </div>
-          </dl>
+        <ResultBoardPanel
+          layout={pathLayout}
+          board={board}
+          result={result}
+          scoringRuns={scoringRuns}
+        />
 
-          <ul className="result-card__feedback" aria-label="학습 피드백">
-            {feedback.map((message) => (
-              <li key={message}>
-                <MathRichText text={message} />
-              </li>
-            ))}
-          </ul>
-
-          {debug && (
-            <div className="result-card__debug" aria-label="구간 디버그">
-              <h3 className="result-card__debug-title">Runs (PATH_ORDER)</h3>
-              <pre className="result-card__debug-pre">
-                {runDebugLines.join('\n')}
-                {'\n\n'}
-                {breakDebugLines.join('\n')}
-              </pre>
-            </div>
-          )}
-        </section>
-
-        <section className="result-screen__board-panel wood-panel" aria-label="보드 결과">
-          <h2 className="result-screen__board-title">오솔길 결과</h2>
-          <ResultBoardSummary layout={pathLayout} board={payload.board} result={result} />
-        </section>
-
-        <RunScorePanel result={result} />
+        <ResultRunScorePanel scoringRuns={scoringRuns} totalScore={result.finalScore} isolatedRuns={isolatedRuns} />
       </main>
+
+      {debug && (
+        <div className="result-screen__debug" aria-label="구간 디버그">
+          <pre>
+            {runDebugLines.join('\n')}
+            {'\n\n'}
+            {breakDebugLines.join('\n')}
+          </pre>
+        </div>
+      )}
 
       <footer className="result-screen__actions">
         <button type="button" className="game-button game-button--undo" onClick={onRetry}>
@@ -127,9 +126,6 @@ export function ResultScreen({
         </button>
         <button type="button" className="game-button game-button--confirm" onClick={onWorldMap}>
           월드맵으로
-        </button>
-        <button type="button" className="game-button game-button--next" disabled hidden aria-hidden>
-          다음 스테이지
         </button>
       </footer>
     </div>
