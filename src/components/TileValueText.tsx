@@ -35,7 +35,9 @@ export function TileValueText({ cell, className = '' }: TileValueTextProps) {
   const cardValue = cellToCardValue(cell)
   const tone = getCardTone(cardValue)
   const sizeClass = getTileValueSizeClass(cell.displayValue, cardValue)
-  const displayLabel = cell.displayValue.includes('√') ? cell.displayValue : undefined
+  const needsLatexLabel =
+    cell.displayValue.includes('√') || /-?\d+\/\d+/.test(cell.displayValue)
+  const displayLabel = needsLatexLabel ? cell.displayValue : undefined
 
   return (
     <CardValueText

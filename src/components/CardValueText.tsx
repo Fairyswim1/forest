@@ -20,7 +20,13 @@ function renderLatexValue(
   const latex = displayValueToLatex(label)
   if (!latex) return null
 
-  const latexVariant = variant === 'tile' ? 'math-latex--tile' : 'math-latex--panel'
+  const isFraction = latex.includes('\\frac')
+  const latexVariant = [
+    variant === 'tile' ? 'math-latex--tile' : 'math-latex--panel',
+    isFraction ? 'math-latex--fraction' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <span
