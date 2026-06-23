@@ -39,6 +39,12 @@ export function CurrentCard({ value, displayLabel, phase, panelClassName, showHi
   )
 }
 
+interface LiveScore {
+  longestRun: number
+  runCount: number
+  score: number
+}
+
 interface ControlBarProps {
   timeLeft: number
   canConfirm: boolean
@@ -50,6 +56,7 @@ interface ControlBarProps {
   confirmButtonRef?: RefObject<HTMLDivElement | null>
   resetButtonRef?: RefObject<HTMLDivElement | null>
   highlightConfirm?: boolean
+  liveScore?: LiveScore
 }
 
 export function ControlBar({
@@ -63,6 +70,7 @@ export function ControlBar({
   confirmButtonRef,
   resetButtonRef,
   highlightConfirm = false,
+  liveScore,
 }: ControlBarProps) {
   const pct = Math.max(0, Math.min(100, (timeLeft / TURN_SECONDS) * 100))
 
@@ -82,6 +90,25 @@ export function ControlBar({
             </div>
           </div>
         </div>
+
+        {liveScore && (
+          <div className="live-score-mini" aria-label="현재 점수 요약">
+            <div className="live-score-mini__row">
+              <span className="live-score-mini__label">최장 구간</span>
+              <span className="live-score-mini__value">{liveScore.longestRun}칸</span>
+            </div>
+            <div className="live-score-mini__row">
+              <span className="live-score-mini__label">구간 수</span>
+              <span className="live-score-mini__value">{liveScore.runCount}개</span>
+            </div>
+            <div className="live-score-mini__row">
+              <span className="live-score-mini__label">현재 점수</span>
+              <span className="live-score-mini__value live-score-mini__value--score">
+                {liveScore.score}점
+              </span>
+            </div>
+          </div>
+        )}
       </aside>
 
       <div ref={cardContainerRef} className="control-bar__card control-bar__card-wrapper">

@@ -49,6 +49,7 @@ export const ASSETS = {
   starlightNodeOpen: '/assets/processed/real-starlight-space/node-open.png',
   starlightNodeLocked: '/assets/processed/real-starlight-space/node-locked.png',
   starlightNodeComplete: '/assets/processed/real-starlight-space/node-complete.png',
+  scoreBreakdownPanel: '/assets/processed/panels/score-breakdown-panel.png',
 } as const
 
 export type TileId = number

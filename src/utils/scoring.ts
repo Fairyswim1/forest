@@ -30,6 +30,20 @@ export function scoreRun(length: number): number {
   return length * 3
 }
 
+export const RUN_COLORS = [
+  '#ffe566', // gold
+  '#4ecdc4', // teal
+  '#c084fc', // violet
+  '#f87171', // rose
+  '#60c4f8', // sky
+  '#fb923c', // orange
+  '#86efac', // green
+] as const
+
+export function getRunColor(scoringRunIndex: number): string {
+  return RUN_COLORS[scoringRunIndex % RUN_COLORS.length] ?? '#ffe566'
+}
+
 export function calculateScore(runs: Run[]): number {
   return runs.reduce((total, run) => total + scoreRun(run.length), 0)
 }
@@ -115,11 +129,14 @@ export function getSuccessTileIds(runs: Run[]): Set<TileId> {
   return ids
 }
 
-export function getTileRunMap(runs: Run[]): Map<TileId, { runIndex: number; run: Run }> {
-  const map = new Map<TileId, { runIndex: number; run: Run }>()
+export function getTileRunMap(runs: Run[]): Map<TileId, { runIndex: number; run: Run; scoringRunIndex: number }> {
+  const map = new Map<TileId, { runIndex: number; run: Run; scoringRunIndex: number }>()
+  let scoringCount = 0
   runs.forEach((run, runIndex) => {
+    const isScoring = run.length >= 2
+    const scoringRunIndex = isScoring ? scoringCount++ : -1
     for (const tileId of run.tileIds) {
-      map.set(tileId, { runIndex, run })
+      map.set(tileId, { runIndex, run, scoringRunIndex })
     }
   })
   return map

@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import type { GameBoard } from '../types/board'
 import type { StageConfig } from '../types/stage'
 import { ResultBoardSummary } from '../components/ResultBoardSummary'
+import { RunScorePanel } from '../components/RunScorePanel'
 import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import { useCountUp } from '../hooks/useCountUp'
 import {
@@ -113,6 +114,8 @@ export function ResultScreen({
           <h2 className="result-screen__board-title">오솔길 결과</h2>
           <ResultBoardSummary layout={pathLayout} board={payload.board} result={result} />
         </section>
+
+        <RunScorePanel result={result} />
       </main>
 
       <footer className="result-screen__actions">
