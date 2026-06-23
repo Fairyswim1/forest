@@ -93,7 +93,7 @@ export const REAL_1_1: StageConfig = {
     numberRangeDescription: '정수와 제곱근이 함께 나옵니다.',
     objectiveText: '작은 수부터 큰 수까지 이어지는 길을 길게 만드세요.',
     strategyHint:
-      '$\\sqrt{n}$의 크기는 $n$이 어떤 두 완전제곱수 사이에 있는지 생각하면 알 수 있습니다.',
+      '$\\sqrt{n}$의 크기는 $n$이 어떤 두 완전제곱수 사이에 있는지\n생각하면 알 수 있습니다.',
   },
   feedback: sqrtFeedback,
   cardGenerator: generateBasicSqrtDeck,

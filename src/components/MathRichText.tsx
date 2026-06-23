@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, type ReactNode } from 'react'
 import { parseGuideMathText, parseMathSegments, type MathSegment } from '../utils/mathLatex'
 import { MathLatex } from './MathLatex'
 
@@ -10,13 +10,23 @@ interface MathRichTextProps {
 }
 
 function renderSegments(segments: MathSegment[], mathClassName: string) {
-  return segments.map((part, index) =>
-    part.type === 'math' ? (
-      <MathLatex key={index} latex={part.content} className={mathClassName} />
-    ) : (
-      <span key={index}>{part.content}</span>
-    ),
-  )
+  const nodes: ReactNode[] = []
+
+  segments.forEach((part, index) => {
+    if (part.type === 'math') {
+      nodes.push(<MathLatex key={`m-${index}`} latex={part.content} className={mathClassName} />)
+      return
+    }
+
+    part.content.split('\n').forEach((line, lineIndex, lines) => {
+      nodes.push(<span key={`t-${index}-${lineIndex}`}>{line}</span>)
+      if (lineIndex < lines.length - 1) {
+        nodes.push(<br key={`br-${index}-${lineIndex}`} />)
+      }
+    })
+  })
+
+  return nodes
 }
 
 export function MathRichText({ text, className = '', autoMath = false }: MathRichTextProps) {

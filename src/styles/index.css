@@ -763,6 +763,7 @@ body {
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6), inset 0 0 22px rgba(201, 151, 26, 0.18);
   padding: 22px 24px 20px;
   max-height: calc(100vh - 72px);
+  overflow-x: hidden;
   overflow-y: auto;
   color: #4a2f18;
   text-align: center;
@@ -845,6 +846,10 @@ body {
   font-style: italic;
 }
 
+.stage-guide__text .math-rich-text {
+  white-space: normal;
+}
+
 .stage-guide__confirm {
   margin-top: 20px;
 }
@@ -852,6 +857,137 @@ body {
 /* 플레이 중 재확인 패널은 조금 더 작게 */
 .stage-guide--inplay .stage-guide__panel {
   width: min(400px, 90vw);
+}
+
+/* ===== 게임 방법 (전체 규칙) 모달 ===== */
+.game-rules {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.game-rules__backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.45);
+  transform: scale(1.08);
+}
+
+.game-rules::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(20, 60, 40, 0.3), rgba(0, 0, 0, 0.66));
+}
+
+.game-rules__backdrop-close {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.game-rules__panel {
+  position: relative;
+  z-index: 2;
+  width: min(520px, 94vw);
+  max-height: calc(100vh - 48px);
+  padding: 10px;
+  overflow: hidden;
+  animation: resultCardIn 0.34s ease-out both;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.25),
+    0 10px 28px rgba(0, 0, 0, 0.45),
+    0 0 34px rgba(90, 200, 120, 0.25);
+}
+
+.game-rules__sheet {
+  background: linear-gradient(180deg, #fff9ef 0%, #fdeccb 100%);
+  border: 2px solid var(--gold-dark);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6), inset 0 0 22px rgba(201, 151, 26, 0.18);
+  padding: 22px 24px 20px;
+  max-height: calc(100vh - 72px);
+  overflow-y: auto;
+  color: #4a2f18;
+}
+
+.game-rules__header {
+  text-align: center;
+  border-bottom: 2px dashed rgba(201, 151, 26, 0.45);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.game-rules__eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2f7a45;
+}
+
+.game-rules__title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #6b3f12;
+  margin-top: 2px;
+}
+
+.game-rules__list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  list-style: none;
+}
+
+.game-rules__item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.game-rules__icon {
+  font-size: 1.4rem;
+  line-height: 1.25;
+  flex: 0 0 auto;
+}
+
+.game-rules__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.game-rules__item-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: #2f7a45;
+}
+
+.game-rules__item-body {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #5a3f20;
+}
+
+.game-rules__confirm {
+  margin-top: 20px;
+}
+
+.world-map__rules-btn {
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 
 .play-hud {

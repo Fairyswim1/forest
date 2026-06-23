@@ -4,6 +4,8 @@ import type { StageConfig, StageProgressStatus, WorldConfig } from '../types/sta
 import { canEnterStage } from '../utils/stageProgress'
 import { isUnlockAllMode } from '../utils/devUnlock'
 import { GameMenuModal } from './GameMenuModal'
+import { GameRulesModal } from './GameRulesModal'
+import { hasSeenRules, markRulesSeen } from '../utils/rulesStorage'
 
 export interface WorldMapRegion {
   world: WorldConfig
@@ -44,6 +46,13 @@ function regionNodeAsset(world: WorldConfig, status: StageProgressStatus): strin
 
 export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }: WorldMapProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  // 첫 방문 시 게임 방법을 자동으로 한 번 보여주고, 이후에는 버튼으로 다시 볼 수 있다.
+  const [rulesOpen, setRulesOpen] = useState(() => !hasSeenRules())
+
+  const closeRules = () => {
+    markRulesSeen()
+    setRulesOpen(false)
+  }
 
   return (
     <div className="world-map">
@@ -58,6 +67,13 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
         <h1 className="world-map__game-title">{GAME_TITLE}</h1>
         <div className="world-map__chapter">통합 월드맵</div>
         <div className="world-map__hud-right">
+          <button
+            type="button"
+            className="world-map__rules-btn menu-button"
+            onClick={() => setRulesOpen(true)}
+          >
+            게임 방법
+          </button>
           <span className="world-map__stars">★ {totalStars}</span>
           <button
             type="button"
@@ -140,6 +156,8 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
       {menuOpen && (
         <GameMenuModal onClose={() => setMenuOpen(false)} onReplayTutorial={onReplayTutorial} />
       )}
+
+      {rulesOpen && <GameRulesModal onClose={closeRules} />}
     </div>
   )
 }
