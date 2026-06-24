@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { ASSETS, GAME_TITLE } from '../types/game'
 import type { StageConfig, StageProgressStatus, WorldConfig } from '../types/stage'
 import { canEnterStage } from '../utils/stageProgress'
-import { isUnlockAllMode } from '../utils/devUnlock'
 import { GameMenuModal } from './GameMenuModal'
 import { GameRulesModal } from './GameRulesModal'
 import { hasSeenRules, markRulesSeen } from '../utils/rulesStorage'
@@ -18,10 +17,6 @@ interface WorldMapProps {
   totalStars: number
   onEnterStage: (stageId: string) => void
   onReplayTutorial: () => void
-}
-
-function stageNumber(stageId: string): string {
-  return stageId.split('-').slice(-2).join('-')
 }
 
 function regionNodeAsset(world: WorldConfig, status: StageProgressStatus): string {
@@ -91,9 +86,6 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
           {regions.map(({ world, stage, status }) => {
             const enterable = stage ? canEnterStage(stage.id) : false
             const locked = !enterable
-            const nodeTitle = stage ? stage.title : world.title
-            const nodeTopic = stage ? stage.subtitle : world.subtitle
-            const centerLabel = stage ? stageNumber(stage.id) : '🔒'
 
             return (
               <button
@@ -111,7 +103,7 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
                   .join(' ')}
                 onClick={() => stage && enterable && onEnterStage(stage.id)}
                 disabled={!enterable}
-                aria-label={`${world.title} — ${nodeTitle}${locked ? ' (잠김)' : ''}`}
+                aria-label={`${world.title}${locked ? ' (잠김)' : ''}`}
               >
                 {!locked && (
                   <>
@@ -129,16 +121,14 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
                     alt=""
                     draggable={false}
                   />
-                  <span className="world-stage-node__id">{centerLabel}</span>
                   {status === 'complete' && (
                     <span className="world-stage-node__complete-badge" aria-hidden>✓</span>
                   )}
                 </span>
 
                 <span className="world-stage-node__meta">
-                  <span className="world-stage-node__world">{world.title}</span>
-                  <strong className="world-stage-node__title">{nodeTitle}</strong>
-                  <span className="world-stage-node__topic">{nodeTopic}</span>
+                  <strong className="world-stage-node__title">{world.title}</strong>
+                  <span className="world-stage-node__topic">{world.subtitle}</span>
                   {status === 'locked' && <span className="world-stage-node__lock-text">잠김</span>}
                 </span>
               </button>
@@ -146,12 +136,6 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
           })}
         </div>
       </main>
-
-      <footer className="world-map__footer">
-        {isUnlockAllMode()
-          ? '모든 스테이지가 열려 있습니다. (?stage=real-1-1 로 바로 진입)'
-          : '통합 월드맵에서 지역을 선택해 탐험을 시작하세요!'}
-      </footer>
 
       {menuOpen && (
         <GameMenuModal onClose={() => setMenuOpen(false)} onReplayTutorial={onReplayTutorial} />
