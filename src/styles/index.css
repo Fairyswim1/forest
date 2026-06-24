@@ -824,34 +824,40 @@ body {
   width: min(400px, 90vw);
 }
 
-/* ===== 게임 방법 (전체 규칙) 모달 ===== */
-.game-rules {
+/* ===== 게임 방법 모달 (판타지 프레임 + HTML 오버레이) ===== */
+.guide-overlay {
   position: fixed;
   inset: 0;
   z-index: 95;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: clamp(12px, 2vh, 24px);
 }
 
-.game-rules__backdrop {
+.guide-overlay__bg {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(8px) brightness(0.45);
-  transform: scale(1.08);
+  filter: blur(6px) brightness(0.72);
+  transform: scale(1.06);
+  pointer-events: none;
 }
 
-.game-rules::after {
-  content: '';
+.guide-overlay__dim {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(20, 60, 40, 0.3), rgba(0, 0, 0, 0.66));
+  background: radial-gradient(
+    ellipse 75% 70% at 50% 42%,
+    rgba(20, 55, 38, 0.28),
+    rgba(0, 0, 0, 0.52)
+  );
+  backdrop-filter: blur(2px);
+  pointer-events: none;
 }
 
-.game-rules__backdrop-close {
+.guide-overlay__backdrop-close {
   position: absolute;
   inset: 0;
   border: none;
@@ -860,94 +866,173 @@ body {
   z-index: 1;
 }
 
-.game-rules__panel {
+.guide-modal {
+  --guide-w: clamp(400px, 40vw, 540px);
   position: relative;
   z-index: 2;
-  width: min(520px, 94vw);
-  max-height: calc(100vh - 48px);
-  padding: 10px;
-  overflow: hidden;
-  animation: resultCardIn 0.34s ease-out both;
-  box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.25),
-    0 10px 28px rgba(0, 0, 0, 0.45),
-    0 0 34px rgba(90, 200, 120, 0.25);
+  width: var(--guide-w);
+  height: min(90vh, calc(var(--guide-w) * 1448 / 1086));
+  max-width: 94vw;
+  animation: guideModalIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+  filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.42));
 }
 
-.game-rules__sheet {
-  background: linear-gradient(180deg, #fff9ef 0%, #fdeccb 100%);
-  border: 2px solid var(--gold-dark);
-  border-radius: 12px;
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6), inset 0 0 22px rgba(201, 151, 26, 0.18);
-  padding: 22px 24px 20px;
-  max-height: calc(100vh - 72px);
-  overflow-y: auto;
-  color: #4a2f18;
+.guide-modal__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
 }
 
-.game-rules__header {
-  text-align: center;
-  border-bottom: 2px dashed rgba(201, 151, 26, 0.45);
-  padding-bottom: 12px;
-  margin-bottom: 16px;
-}
-
-.game-rules__eyebrow {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #2f7a45;
-}
-
-.game-rules__title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #6b3f12;
-  margin-top: 2px;
-}
-
-.game-rules__list {
+.guide-modal__content {
+  position: absolute;
+  inset: 9.5% 8.5% 10.5% 8.5%;
   display: flex;
   flex-direction: column;
-  gap: 13px;
-  list-style: none;
+  min-height: 0;
 }
 
-.game-rules__item {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.game-rules__icon {
-  font-size: 1.4rem;
-  line-height: 1.25;
+.guide-header {
   flex: 0 0 auto;
+  margin-bottom: clamp(6px, 1vh, 10px);
 }
 
-.game-rules__text {
+.guide-header__banner-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2172 / 724;
+}
+
+.guide-header__banner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.22));
+}
+
+.guide-header__copy {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 8%;
 }
 
-.game-rules__item-title {
+.guide-header__label {
+  margin: 0 0 2px;
   font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 800;
-  color: #2f7a45;
+  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+  font-weight: 700;
+  color: #3d8a58;
+  letter-spacing: 0.04em;
 }
 
-.game-rules__item-body {
-  font-size: 0.92rem;
-  line-height: 1.45;
+.guide-header__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.65vw, 1.35rem);
+  font-weight: 900;
+  line-height: 1.15;
+  color: #6a4410;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.guide-scroll-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px 4px 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196, 154, 60, 0.55) transparent;
+}
+
+.guide-section {
+  padding: clamp(10px, 1.4vh, 14px) 2px;
+  border-bottom: 1px solid rgba(196, 154, 60, 0.22);
+}
+
+.guide-section:last-child {
+  border-bottom: none;
+}
+
+.guide-section__heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.guide-section__icon {
+  width: clamp(30px, 3.2vw, 38px);
+  height: clamp(30px, 3.2vw, 38px);
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+.guide-section__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  font-weight: 800;
+  color: #5a7a32;
+}
+
+.guide-section__body {
+  margin: 0;
+  padding-left: calc(clamp(30px, 3.2vw, 38px) + 10px);
+  font-size: clamp(0.9rem, 1.05vw, 1.05rem);
+  line-height: 1.55;
   color: #5a3f20;
 }
 
-.game-rules__confirm {
-  margin-top: 20px;
+.guide-footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  padding-top: clamp(8px, 1.2vh, 12px);
+}
+
+.guide-footer__confirm {
+  min-width: min(100%, 220px);
+  padding: 11px 28px;
+}
+
+@keyframes guideModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-modal {
+    animation: none;
+  }
+}
+
+@media (max-height: 640px) {
+  .guide-modal {
+    height: 90vh;
+    width: calc(90vh * 1086 / 1448);
+  }
+
+  .guide-section__body {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
 }
 
 .world-map__rules-btn {

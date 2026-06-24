@@ -62,6 +62,17 @@ RUN_BADGE_SOURCES: list[tuple[str, list[str]]] = [
     ("run-badge-09-aurora.png", ["run-badge-09-aurora.png"]),
 ]
 
+GUIDE_ASSETS = [
+    "guide-modal-frame.png",
+    "guide-header-banner.png",
+    "guide-icon-goal.png",
+    "guide-icon-flow.png",
+    "guide-icon-score.png",
+    "guide-icon-undo-time.png",
+    "guide-icon-world.png",
+    "guide-icon-tip.png",
+]
+
 
 def find_tile_src(name: str) -> Path | None:
     for rel in (f"assets/{name}", f"assets/tiles/{name}"):
@@ -291,6 +302,10 @@ def main() -> None:
 
     for dest_name, candidates in RUN_BADGE_SOURCES:
         if process_public_src_candidates(dest_name, candidates, crop=False):
+            count += 1
+
+    for name in GUIDE_ASSETS:
+        if process_public_src(name, f"guide/{name}", crop=False):
             count += 1
 
     print(f"\nDone - {count} asset(s) processed/copied.")

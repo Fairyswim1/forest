@@ -1,0 +1,48 @@
+import { ASSETS } from '../types/game'
+
+export interface GuideRuleSection {
+  id: string
+  icon: string
+  title: string
+  body: string
+}
+
+/** 게임 방법 모달 섹션 — 아이콘 PNG와 본문 매핑 */
+export const GUIDE_RULE_SECTIONS: GuideRuleSection[] = [
+  {
+    id: 'goal',
+    icon: ASSETS.guideIconGoal,
+    title: '목표',
+    body: '숫자 카드를 오솔길에 놓아, 작은 수에서 큰 수로 이어지는 길을 최대한 길게 만드세요.',
+  },
+  {
+    id: 'flow',
+    icon: ASSETS.guideIconFlow,
+    title: '진행 방식',
+    body: '라운드마다 카드 한 장이 공개됩니다. 빈 칸을 눌러 카드를 놓고 “배치 완료”를 누르세요. 23칸을 모두 채우면 끝납니다.',
+  },
+  {
+    id: 'score',
+    icon: ASSETS.guideIconScore,
+    title: '점수',
+    body: '길을 따라 숫자가 작은 수에서 큰 수로 2칸 이상 이어지면 그 구간이 점수가 됩니다. 끊기지 않고 길게 이어질수록 점수가 높아집니다.',
+  },
+  {
+    id: 'undo-time',
+    icon: ASSETS.guideIconUndoTime,
+    title: '되돌리기 · 시간',
+    body: '카드를 놓은 뒤 마음에 들지 않으면 “다시 놓기”로 이번 턴을 취소할 수 있어요. 각 턴에는 제한 시간이 있습니다.',
+  },
+  {
+    id: 'world',
+    icon: ASSETS.guideIconWorld,
+    title: '월드',
+    body: '자연수의 숲 → 정수의 동굴 → 유리수의 초원 → 실수의 별빛 우주로, 점점 더 다양한 수의 크기를 비교하게 됩니다.',
+  },
+  {
+    id: 'tip',
+    icon: ASSETS.guideIconTip,
+    title: '팁',
+    body: '작은 수는 앞쪽, 큰 수는 뒤쪽에 둘 자리를 남겨 두면 더 긴 길을 만들 수 있어요.',
+  },
+]

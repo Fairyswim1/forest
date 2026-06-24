@@ -1,91 +1,88 @@
-import { GAME_TITLE, ASSETS } from '../types/game'
+import { useEffect } from 'react'
+import { GUIDE_RULE_SECTIONS } from '../config/guideRules'
+import { ASSETS, GAME_TITLE } from '../types/game'
 
 interface GameRulesModalProps {
   onClose: () => void
 }
 
-interface RuleItem {
-  icon: string
-  title: string
-  body: string
-}
-
-const RULES: RuleItem[] = [
-  {
-    icon: '🎯',
-    title: '목표',
-    body: '숫자 카드를 오솔길에 놓아, 작은 수에서 큰 수로 이어지는 길을 최대한 길게 만드세요.',
-  },
-  {
-    icon: '🃏',
-    title: '진행 방식',
-    body: '라운드마다 카드 한 장이 공개됩니다. 빈 칸을 눌러 카드를 놓고 “배치 완료”를 누르세요. 23칸을 모두 채우면 끝납니다.',
-  },
-  {
-    icon: '⭐',
-    title: '점수',
-    body: '길을 따라 수가 작은 수→큰 수 순서로 2칸 이상 이어지면 그 구간이 점수가 됩니다. 끊기지 않고 길게 이어질수록 점수가 높아집니다.',
-  },
-  {
-    icon: '↩️',
-    title: '되돌리기 · 시간',
-    body: '카드를 놓은 뒤 마음에 들지 않으면 “다시 놓기”로 이번 턴을 취소할 수 있어요. 각 턴에는 제한 시간이 있습니다.',
-  },
-  {
-    icon: '🌏',
-    title: '월드',
-    body: '자연수의 숲 → 정수의 동굴 → 유리수의 초원 → 실수의 별빛 우주로, 점점 더 다양한 수의 크기를 비교하게 됩니다.',
-  },
-  {
-    icon: '💡',
-    title: '팁',
-    body: '작은 수는 앞쪽, 큰 수는 뒤쪽에 둘 자리를 남겨 두면 더 긴 길을 만들 수 있어요.',
-  },
-]
-
 export function GameRulesModal({ onClose }: GameRulesModalProps) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' || event.key === 'Enter') {
+        event.preventDefault()
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [onClose])
+
   return (
-    <div className="game-rules" role="dialog" aria-modal="true" aria-label="게임 방법">
+    <div className="guide-overlay" role="dialog" aria-modal="true" aria-label="게임 방법">
       <div
-        className="game-rules__backdrop"
+        className="guide-overlay__bg"
         style={{ backgroundImage: `url(${ASSETS.worldmapBg})` }}
         aria-hidden
       />
+      <div className="guide-overlay__dim" aria-hidden />
       <button
         type="button"
-        className="game-rules__backdrop-close"
+        className="guide-overlay__backdrop-close"
         onClick={onClose}
         aria-label="닫기"
       />
 
-      <div className="game-rules__panel wood-panel">
-        <div className="game-rules__sheet">
-          <header className="game-rules__header">
-            <p className="game-rules__eyebrow">게임 방법</p>
-            <h2 className="game-rules__title">{GAME_TITLE}</h2>
+      <div className="guide-modal">
+        <img
+          className="guide-modal__frame"
+          src={ASSETS.guideModalFrame}
+          alt=""
+          draggable={false}
+        />
+
+        <div className="guide-modal__content">
+          <header className="guide-header">
+            <div className="guide-header__banner-wrap">
+              <img
+                className="guide-header__banner"
+                src={ASSETS.guideHeaderBanner}
+                alt=""
+                draggable={false}
+              />
+              <div className="guide-header__copy">
+                <p className="guide-header__label">게임 방법</p>
+                <h2 className="guide-header__title">{GAME_TITLE}</h2>
+              </div>
+            </div>
           </header>
 
-          <ul className="game-rules__list">
-            {RULES.map((rule) => (
-              <li key={rule.title} className="game-rules__item">
-                <span className="game-rules__icon" aria-hidden>
-                  {rule.icon}
-                </span>
-                <span className="game-rules__text">
-                  <strong className="game-rules__item-title">{rule.title}</strong>
-                  <span className="game-rules__item-body">{rule.body}</span>
-                </span>
-              </li>
+          <div className="guide-scroll-content">
+            {GUIDE_RULE_SECTIONS.map((section) => (
+              <section key={section.id} className="guide-section">
+                <div className="guide-section__heading">
+                  <img
+                    className="guide-section__icon"
+                    src={section.icon}
+                    alt=""
+                    draggable={false}
+                  />
+                  <h3 className="guide-section__title">{section.title}</h3>
+                </div>
+                <p className="guide-section__body">{section.body}</p>
+              </section>
             ))}
-          </ul>
+          </div>
 
-          <button
-            type="button"
-            className="game-button game-button--confirm game-rules__confirm"
-            onClick={onClose}
-          >
-            알겠어요!
-          </button>
+          <footer className="guide-footer">
+            <button
+              type="button"
+              className="game-button game-button--confirm guide-footer__confirm"
+              onClick={onClose}
+            >
+              알겠어요!
+            </button>
+          </footer>
         </div>
       </div>
     </div>

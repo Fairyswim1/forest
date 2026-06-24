@@ -53,6 +53,15 @@ export const ASSETS = {
   // 결과 화면 프레임 (체커보드 배경 제거된 투명 PNG — 콘텐츠는 HTML/CSS로 오버레이)
   resultBannerFrame: '/assets/processed/result/result-completion-banner-frame.png',
   resultScorePanelFrame: '/assets/processed/result/result-run-score-panel-frame.png',
+  // 게임 방법 모달 (프레임·헤더·섹션 아이콘)
+  guideModalFrame: '/assets/processed/guide/guide-modal-frame.png',
+  guideHeaderBanner: '/assets/processed/guide/guide-header-banner.png',
+  guideIconGoal: '/assets/processed/guide/guide-icon-goal.png',
+  guideIconFlow: '/assets/processed/guide/guide-icon-flow.png',
+  guideIconScore: '/assets/processed/guide/guide-icon-score.png',
+  guideIconUndoTime: '/assets/processed/guide/guide-icon-undo-time.png',
+  guideIconWorld: '/assets/processed/guide/guide-icon-world.png',
+  guideIconTip: '/assets/processed/guide/guide-icon-tip.png',
 } as const
 
 export type TileId = number
