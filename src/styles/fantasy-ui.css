@@ -1,0 +1,270 @@
+/* ===== FantasyButton (프레임 에셋 + HTML 라벨) ===== */
+.fantasy-btn {
+  position: relative;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-guide, var(--font-display));
+  color: #fff;
+  background: transparent;
+  flex-shrink: 0;
+  transition: transform 0.14s ease, filter 0.14s ease, opacity 0.14s ease;
+}
+
+.fantasy-btn__frame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fantasy-btn__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
+}
+
+.fantasy-btn__content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.fantasy-btn--has-asset {
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32));
+}
+
+.fantasy-btn--primary.fantasy-btn--has-asset {
+  min-width: 168px;
+  min-height: 56px;
+}
+
+.fantasy-btn--secondary.fantasy-btn--has-asset {
+  min-width: 154px;
+  min-height: 52px;
+}
+
+.fantasy-btn--has-asset .fantasy-btn__content {
+  padding: 13px 22px;
+  font-size: 1rem;
+}
+
+.fantasy-btn--sm.fantasy-btn--has-asset {
+  min-width: 108px;
+  min-height: 42px;
+}
+
+.fantasy-btn--sm.fantasy-btn--has-asset .fantasy-btn__content {
+  padding: 9px 16px;
+  font-size: 0.88rem;
+}
+
+.fantasy-btn--lg.fantasy-btn--has-asset {
+  min-width: 200px;
+  min-height: 60px;
+}
+
+.fantasy-btn--full {
+  width: 100%;
+}
+
+.fantasy-btn--full.fantasy-btn--has-asset {
+  min-width: 100%;
+}
+
+.fantasy-btn--primary:not(.fantasy-btn--has-asset) {
+  border-radius: 18px;
+  background: linear-gradient(180deg, #6eb5ff, var(--blue-dark));
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.28);
+}
+
+.fantasy-btn--secondary:not(.fantasy-btn--has-asset) {
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffd166, var(--orange-dark));
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.28);
+}
+
+.fantasy-btn--primary:not(.fantasy-btn--has-asset) .fantasy-btn__content,
+.fantasy-btn--secondary:not(.fantasy-btn--has-asset) .fantasy-btn__content {
+  padding: 14px 22px;
+}
+
+.fantasy-btn:hover:not(:disabled) {
+  filter: brightness(1.06) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.34));
+  transform: scale(1.02);
+}
+
+.fantasy-btn:active:not(:disabled) {
+  transform: scale(0.98) translateY(2px);
+  filter: brightness(0.96);
+}
+
+.fantasy-btn:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+  filter: grayscale(0.35) brightness(0.88);
+  transform: none;
+}
+
+/* ===== FantasyPanel (소형 팝업) ===== */
+.fantasy-panel {
+  background: linear-gradient(180deg, var(--fantasy-cream) 0%, var(--fantasy-ivory) 100%);
+  border: 3px solid var(--fantasy-gold-dark);
+  border-radius: 18px;
+  box-shadow: var(--fantasy-inset), var(--fantasy-shadow), var(--fantasy-glow-gold);
+  color: var(--fantasy-deep-brown);
+}
+
+.fantasy-panel__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--fantasy-warm-brown);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* ===== 월드맵·HUD 소형 메뉴 버튼 ===== */
+.fantasy-menu-btn {
+  border: 2px solid color-mix(in srgb, var(--fantasy-gold) 55%, #fff 45%);
+  background: linear-gradient(180deg, rgba(60, 40, 20, 0.72) 0%, rgba(30, 20, 10, 0.85) 100%);
+  color: var(--fantasy-cream);
+  border-radius: 14px;
+  padding: 9px 16px;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.fantasy-menu-btn:hover {
+  filter: brightness(1.08);
+  transform: scale(1.02);
+}
+
+.fantasy-menu-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===== 스테이지 안내 섹션 (판타지 톤) ===== */
+.fantasy-section {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(196, 154, 60, 0.25);
+}
+
+.fantasy-section:last-child {
+  border-bottom: none;
+}
+
+.fantasy-section__title {
+  font-family: var(--font-guide, var(--font-display));
+  font-size: 0.98rem;
+  font-weight: 400;
+  color: var(--fantasy-leaf-green);
+  margin-bottom: 6px;
+}
+
+.fantasy-section__text {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--fantasy-deep-brown);
+}
+
+.fantasy-section--range {
+  background: rgba(255, 249, 239, 0.55);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 4px;
+  border-bottom: none;
+}
+
+.fantasy-section__range-label {
+  font-weight: 700;
+  color: var(--fantasy-warm-brown);
+  margin-bottom: 4px;
+}
+
+.fantasy-section__range-desc {
+  font-size: 0.86rem;
+  color: color-mix(in srgb, var(--fantasy-deep-brown) 85%, var(--fantasy-stone) 15%);
+}
+
+.guide-section__body {
+  margin: 0;
+  padding-left: calc(clamp(28px, 2.8vw, 34px) + 8px);
+  font-family: var(--font-guide);
+  font-size: clamp(0.84rem, 0.98vw, 0.94rem);
+  line-height: 1.48;
+  color: var(--fantasy-deep-brown);
+  word-break: keep-all;
+}
+
+.guide-body--scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 4px 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196, 154, 60, 0.55) transparent;
+}
+
+.guide-header__banner-wrap--stage {
+  height: clamp(52px, 8vh, 68px);
+}
+
+.guide-header__stage-world {
+  margin: 0;
+  font-family: var(--font-guide);
+  font-size: clamp(0.72rem, 1vw, 0.86rem);
+  color: var(--fantasy-forest-green);
+}
+
+.guide-header__stage-title {
+  margin: 0;
+  font-family: var(--font-guide);
+  font-size: clamp(0.95rem, 1.4vw, 1.18rem);
+  color: var(--fantasy-warm-brown);
+  line-height: 1.15;
+}
+
+.guide-header__stage-sub {
+  margin: 2px 0 0;
+  font-family: var(--font-guide);
+  font-size: clamp(0.78rem, 1vw, 0.88rem);
+  color: color-mix(in srgb, var(--fantasy-leaf-green) 80%, var(--fantasy-deep-brown) 20%);
+}
+
+.game-menu-modal__item.fantasy-btn {
+  width: 100%;
+}
+
+.game-menu-modal__item.fantasy-btn--has-asset {
+  min-width: 100%;
+}
+
+.result-screen__actions .fantasy-btn {
+  flex: 1 1 200px;
+  max-width: 280px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fantasy-btn:hover:not(:disabled),
+  .fantasy-btn:active:not(:disabled),
+  .fantasy-menu-btn:hover,
+  .fantasy-menu-btn:active {
+    transform: none;
+  }
+}

@@ -569,9 +569,11 @@
   padding: 8px 28px 22px;
 }
 
-.result-screen__actions .game-button {
-  width: min(220px, 28vw);
-  margin-top: 0;
+.result-screen__actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .result-screen__debug {

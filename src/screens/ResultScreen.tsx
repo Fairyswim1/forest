@@ -13,6 +13,7 @@ import {
   formatRunDebugLines,
   type GameResult,
 } from '../utils/scoring'
+import { FantasyButton } from '../components/ui/FantasyButton'
 import { buildResultFeedback } from '../utils/resultFeedback'
 import { buildScoringRunViews } from '../utils/runDisplay'
 
@@ -115,12 +116,12 @@ export function ResultScreen({
       )}
 
       <footer className="result-screen__actions">
-        <button type="button" className="game-button game-button--undo" onClick={onRetry}>
+        <FantasyButton variant="secondary" size="lg" onClick={onRetry}>
           다시 도전
-        </button>
-        <button type="button" className="game-button game-button--confirm" onClick={onWorldMap}>
+        </FantasyButton>
+        <FantasyButton variant="primary" size="lg" onClick={onWorldMap}>
           월드맵으로
-        </button>
+        </FantasyButton>
       </footer>
     </div>
   )

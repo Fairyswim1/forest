@@ -524,12 +524,11 @@ body {
 }
 
 .play-tutorial__message {
-  font-family: var(--font-display);
-  font-size: clamp(0.98rem, 1.35vw, 1.12rem);
-  color: #fff8e7;
+  font-family: var(--font-guide, var(--font-display));
+  font-size: clamp(0.95rem, 1.25vw, 1.08rem);
+  color: var(--fantasy-deep-brown, #4a2f18);
   line-height: 1.45;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 .play-tutorial__actions {
@@ -542,35 +541,12 @@ body {
 
 .play-tutorial__progress {
   font-size: 0.78rem;
-  color: #ffe8c8;
-  opacity: 0.85;
+  color: var(--fantasy-warm-brown, #6a4410);
+  opacity: 0.75;
 }
 
 .play-tutorial__btn {
-  border: none;
-  border-radius: 12px;
-  padding: 9px 18px;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.22);
-  transition: transform 0.12s;
-}
-
-.play-tutorial__btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.22);
-}
-
-.play-tutorial__btn--next {
-  background: linear-gradient(180deg, #ffd166, var(--gold-dark));
-  color: #4a2f18;
-}
-
-.play-tutorial__btn--start {
-  background: linear-gradient(180deg, #6eb5ff, var(--blue-dark));
-  color: #fff;
+  flex-shrink: 0;
 }
 
 .current-card-panel--tutorial-highlight {
@@ -632,43 +608,19 @@ body {
 .game-menu-modal__panel {
   position: relative;
   z-index: 1;
-  width: min(300px, 88vw);
-  padding: 20px 18px 16px;
-  animation: resultCardIn 0.35s ease-out both;
+  width: min(320px, 88vw);
+  padding: 22px 20px 18px;
+  animation: guideModalIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.game-menu-modal__title {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  color: #fff8e7;
-  text-align: center;
-  margin-bottom: 14px;
+.game-menu-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .game-menu-modal__item {
-  width: 100%;
-  border: none;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-top: 8px;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  background: linear-gradient(180deg, #6eb5ff, var(--blue-dark));
-  color: #fff;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.22);
-}
-
-.game-menu-modal__item--muted {
-  background: rgba(0, 0, 0, 0.28);
-  color: #ffe8c8;
-  box-shadow: none;
-  font-weight: 600;
-}
-
-.game-menu-modal__item:active {
-  transform: translateY(2px);
+  margin: 0;
 }
 
 /* ===== 스테이지 안내 모달 ===== */
@@ -777,8 +729,6 @@ body {
   letter-spacing: 0.02em;
   margin-bottom: 6px;
 }
-
-.stage-guide__section-title::before { content: '🍃 '; }
 
 .stage-guide__section--range {
   background: rgba(90, 158, 75, 0.12);
@@ -952,52 +902,38 @@ body {
 .guide-body {
   flex: 1 1 auto;
   min-height: 0;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: clamp(10px, 1.6vw, 18px);
-  row-gap: clamp(4px, 0.8vh, 8px);
-  align-content: start;
-  padding: 2px 2px 0;
 }
 
 .guide-section {
-  padding: clamp(4px, 0.6vh, 7px) 4px;
+  padding: clamp(8px, 1vh, 11px) 2px;
+  border-bottom: 1px solid rgba(196, 154, 60, 0.22);
+}
+
+.guide-section:last-child {
   border-bottom: none;
 }
 
 .guide-section__heading {
   display: flex;
   align-items: center;
-  gap: 7px;
-  margin-bottom: 3px;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
 .guide-section__icon {
-  width: clamp(26px, 2.6vw, 32px);
-  height: clamp(26px, 2.6vw, 32px);
+  width: clamp(30px, 3vw, 36px);
+  height: clamp(30px, 3vw, 36px);
   object-fit: contain;
   flex-shrink: 0;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.18));
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
 }
 
 .guide-section__title {
   margin: 0;
   font-family: var(--font-guide);
-  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+  font-size: clamp(0.92rem, 1.1vw, 1rem);
   font-weight: 400;
-  color: #4a7028;
-  line-height: 1.2;
-}
-
-.guide-section__body {
-  margin: 0;
-  padding-left: calc(clamp(26px, 2.6vw, 32px) + 7px);
-  font-family: var(--font-guide);
-  font-size: clamp(0.78rem, 0.92vw, 0.88rem);
-  line-height: 1.38;
-  color: #5a3f20;
-  word-break: keep-all;
+  color: var(--fantasy-leaf-green, #5a7a32);
 }
 
 .guide-footer {
@@ -1039,14 +975,6 @@ body {
   .guide-section__body {
     font-size: 0.76rem;
     line-height: 1.32;
-  }
-}
-
-@media (max-width: 560px) {
-  .guide-body {
-    grid-template-columns: 1fr;
-    overflow-y: auto;
-    scrollbar-width: thin;
   }
 }
 
@@ -1952,186 +1880,16 @@ body {
   flex-shrink: 0;
 }
 
-/* ===== 액션 버튼 (프레임 에셋 + HTML 텍스트) ===== */
-.action-btn {
-  position: relative;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  color: #fff;
-  background: transparent;
-  flex-shrink: 0;
-  transition: transform 0.12s ease, filter 0.12s ease, opacity 0.12s ease;
-}
-
-.action-btn__asset-layer {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.action-btn__asset-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-.action-btn--has-asset .action-btn__asset-layer {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.action-btn--has-asset {
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32));
-}
-
-.action-btn--confirm.action-btn--has-asset {
-  min-width: 172px;
-  min-height: 58px;
-}
-
-.action-btn--undo.action-btn--has-asset {
-  min-width: 158px;
-  min-height: 54px;
-}
-
-.action-btn--has-asset .action-btn__content {
-  padding: 14px 22px;
-}
-
-.action-btn--has-asset .action-btn__label {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 0 8px rgba(0, 0, 0, 0.25);
-}
-
-.action-btn__content {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  white-space: nowrap;
-}
-
+/* ===== 플레이 액션 버튼 (FantasyButton 래퍼) ===== */
 .action-btn__icon {
   flex-shrink: 0;
+  display: inline-flex;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
 }
 
 .action-btn__label {
-  font-family: var(--font-display);
+  font-family: var(--font-guide, var(--font-display));
   font-weight: 700;
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-
-.action-btn:has(.action-btn__asset-img:not([hidden])) .action-btn__asset-layer {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* --- 배치 완료 (메인) --- */
-.action-btn--confirm .action-btn__asset-layer {
-  border-radius: 16px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, transparent 38%),
-    linear-gradient(180deg, #6ee7b8 0%, #38b898 38%, #2a8a72 72%, #1f6b58 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.15),
-    0 4px 0 #155a48,
-    0 8px 18px rgba(0, 0, 0, 0.32),
-    0 0 14px rgba(80, 200, 160, 0.28);
-}
-
-.action-btn--confirm .action-btn__content {
-  min-width: 148px;
-  min-height: 54px;
-  padding: 12px 20px;
-  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
-}
-
-.action-btn--confirm:hover:not(:disabled) {
-  filter: brightness(1.07);
-  transform: translateY(-2px);
-}
-
-.action-btn--confirm:active:not(:disabled) {
-  transform: translateY(3px);
-  filter: brightness(0.98);
-}
-
-.action-btn--confirm:active:not(:disabled) .action-btn__asset-layer {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 1px 0 #155a48,
-    0 3px 8px rgba(0, 0, 0, 0.25);
-}
-
-/* --- 실행 취소 (보조) --- */
-.action-btn--undo .action-btn__asset-layer {
-  border-radius: 14px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, transparent 40%),
-    linear-gradient(180deg, #f0b86e 0%, #d4893a 45%, #a85c18 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.38),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.12),
-    0 3px 0 #7a4210,
-    0 6px 14px rgba(0, 0, 0, 0.28);
-}
-
-.action-btn--undo .action-btn__content {
-  min-width: 132px;
-  min-height: 50px;
-  padding: 11px 18px;
-  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
-  color: #fff8ec;
-}
-
-.action-btn--undo:hover:not(:disabled) {
-  filter: brightness(1.06);
-  transform: translateY(-1px);
-}
-
-.action-btn--undo:active:not(:disabled) {
-  transform: translateY(2px);
-  filter: brightness(0.97);
-}
-
-.action-btn--undo:active:not(:disabled) .action-btn__asset-layer {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 1px 0 #7a4210,
-    0 3px 8px rgba(0, 0, 0, 0.22);
-}
-
-/* --- disabled --- */
-.action-btn:disabled {
-  cursor: not-allowed;
-  transform: none;
-  filter: grayscale(0.55) brightness(0.72);
-  opacity: 0.72;
-}
-
-.action-btn:disabled .action-btn__asset-layer {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 2px 0 rgba(0, 0, 0, 0.22),
-    0 3px 8px rgba(0, 0, 0, 0.18);
-}
-
-.action-btn:disabled .action-btn__label,
-.action-btn:disabled .action-btn__icon {
-  opacity: 0.75;
 }
 
 /* ===== 현재 카드 패널 (에셋 슬롯 + HTML 숫자) ===== */

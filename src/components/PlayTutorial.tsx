@@ -1,4 +1,6 @@
 import { useLayoutEffect, useMemo, useState, type RefObject } from 'react'
+import { FantasyButton } from './ui/FantasyButton'
+import { FantasyPanel } from './ui/FantasyPanel'
 
 export type PlayTutorialTarget = 'card' | 'board' | 'confirm' | 'reset'
 
@@ -142,23 +144,23 @@ export function PlayTutorial({
         />
       )}
 
-      <div key={step} className="play-tutorial__panel wood-panel" style={panelStyle}>
+      <FantasyPanel key={step} className="play-tutorial__panel" style={panelStyle}>
         <p className="play-tutorial__message">{stepDef.message}</p>
         <div className="play-tutorial__actions">
           <span className="play-tutorial__progress" aria-hidden>
             {step + 1} / {PLAY_TUTORIAL_STEPS.length}
           </span>
           {isLast ? (
-            <button type="button" className="play-tutorial__btn play-tutorial__btn--start" onClick={onStart}>
+            <FantasyButton variant="primary" size="sm" className="play-tutorial__btn" onClick={onStart}>
               시작하기
-            </button>
+            </FantasyButton>
           ) : (
-            <button type="button" className="play-tutorial__btn play-tutorial__btn--next" onClick={onNext}>
+            <FantasyButton variant="primary" size="sm" className="play-tutorial__btn" onClick={onNext}>
               다음
-            </button>
+            </FantasyButton>
           )}
         </div>
-      </div>
+      </FantasyPanel>
     </div>
   )
 }

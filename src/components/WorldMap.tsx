@@ -64,7 +64,7 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
         <div className="world-map__hud-right">
           <button
             type="button"
-            className="world-map__rules-btn menu-button"
+            className="world-map__rules-btn fantasy-menu-btn"
             onClick={() => setRulesOpen(true)}
           >
             게임 방법
@@ -72,7 +72,7 @@ export function WorldMap({ regions, totalStars, onEnterStage, onReplayTutorial }
           <span className="world-map__stars">★ {totalStars}</span>
           <button
             type="button"
-            className="world-map__menu-btn menu-button"
+            className="world-map__menu-btn fantasy-menu-btn"
             onClick={() => setMenuOpen(true)}
             aria-label="메뉴"
           >

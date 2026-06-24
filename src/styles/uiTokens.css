@@ -1,0 +1,17 @@
+/* 넘버 트레일 — 판타지 UI 공통 토큰 */
+:root {
+  --fantasy-cream: #fff9ef;
+  --fantasy-ivory: #fdeccb;
+  --fantasy-parchment: #f8edd8;
+  --fantasy-gold: #ffd166;
+  --fantasy-gold-dark: #c9971a;
+  --fantasy-gold-trim: #e8b84a;
+  --fantasy-warm-brown: #6a4410;
+  --fantasy-deep-brown: #4a2f18;
+  --fantasy-forest-green: #3d8a58;
+  --fantasy-leaf-green: #5a7a32;
+  --fantasy-stone: #8a7a68;
+  --fantasy-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
+  --fantasy-glow-gold: 0 0 18px rgba(255, 209, 102, 0.35);
+  --fantasy-inset: inset 0 2px 0 rgba(255, 255, 255, 0.72);
+}
