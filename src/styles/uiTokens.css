@@ -6,6 +6,10 @@
   --font-game-body: 'Gowun Dodum', sans-serif;
   --font-game-ui: 'Noto Sans KR', sans-serif;
 
+  /* 스테이지 안내 모달 — 가독성 우선 */
+  --font-guide-title: 'Pretendard', 'Noto Sans KR', sans-serif;
+  --font-guide-body: 'Pretendard', 'Noto Sans KR', sans-serif;
+
   /* 레거시 별칭 — 기존 CSS 호환 */
   --font-display: var(--font-game-display);
   --font-body: var(--font-game-body);

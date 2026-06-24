@@ -9,7 +9,7 @@ interface GuideSectionProps {
 export function GuideSection({ icon, title, children }: GuideSectionProps) {
   return (
     <section className="guide-section">
-      <img className="guide-section__icon" src={icon} alt="" draggable={false} />
+      <img className="guide-section__icon" src={icon} alt="" aria-hidden="true" draggable={false} />
       <div className="guide-section__copy">
         <h3 className="guide-section__title">{title}</h3>
         <p className="guide-section__body">{children}</p>

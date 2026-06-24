@@ -202,42 +202,6 @@
   color: color-mix(in srgb, var(--fantasy-deep-brown) 85%, var(--fantasy-stone) 15%);
 }
 
-/* 스테이지 안내 본문 (게임 방법 guide-section과 별도) */
-.guide-body-scroll-area .fantasy-section {
-  padding: clamp(10px, 1.4vh, 14px) 0;
-  border-bottom: 1px solid rgba(196, 154, 60, 0.22);
-}
-
-.guide-body-scroll-area .fantasy-section:last-child {
-  border-bottom: none;
-}
-
-.guide-header__banner-wrap--stage {
-  height: clamp(52px, 8vh, 68px);
-}
-
-.guide-header__stage-world {
-  margin: 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.72rem, 1vw, 0.86rem);
-  color: var(--fantasy-forest-green);
-}
-
-.guide-header__stage-title {
-  margin: 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.95rem, 1.4vw, 1.18rem);
-  color: var(--fantasy-warm-brown);
-  line-height: 1.15;
-}
-
-.guide-header__stage-sub {
-  margin: 2px 0 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.78rem, 1vw, 0.88rem);
-  color: color-mix(in srgb, var(--fantasy-leaf-green) 80%, var(--fantasy-deep-brown) 20%);
-}
-
 .game-menu-modal__item.fantasy-btn {
   width: 100%;
 }

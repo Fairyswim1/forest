@@ -123,28 +123,32 @@ body {
   font-family: var(--font-game-body);
 }
 
-/* ===== 스테이지 안내 ===== */
-.stage-guide__world {
-  font-family: var(--font-game-title);
-  font-weight: 400;
+/* ===== 스테이지 안내 모달 ===== */
+.stage-guide-modal .world-label {
+  font-family: var(--font-guide-body);
+  font-weight: 600;
 }
 
-.stage-guide__title {
-  font-family: var(--font-game-display);
-  font-weight: 400;
+.stage-guide-modal .stage-title {
+  font-family: var(--font-guide-title);
+  font-weight: 700;
 }
 
-.stage-guide__subtitle,
-.stage-guide__text,
-.stage-guide__range-desc {
-  font-family: var(--font-game-body);
+.stage-guide-modal .stage-subtitle,
+.stage-guide-modal .section-main,
+.stage-guide-modal .section-description {
+  font-family: var(--font-guide-body);
   line-height: 1.62;
 }
 
-.stage-guide__section-title,
-.stage-guide__range-label {
+.stage-guide-modal .section-label {
+  font-family: var(--font-guide-title);
+  font-weight: 700;
+}
+
+.stage-guide-footer .fantasy-btn__content {
   font-family: var(--font-game-display);
-  font-weight: 400;
+  font-weight: 500;
 }
 
 /* ===== 게임 방법 모달 ===== */
@@ -205,21 +209,6 @@ body {
 .fantasy-section__range-label {
   font-family: var(--font-game-display);
   font-weight: 400;
-}
-
-.guide-header__stage-world {
-  font-family: var(--font-game-ui);
-  font-weight: 500;
-}
-
-.guide-header__stage-title {
-  font-family: var(--font-game-title);
-  font-weight: 400;
-}
-
-.guide-header__stage-sub {
-  font-family: var(--font-game-body);
-  line-height: 1.55;
 }
 
 /* ===== 공통 버튼 ===== */
