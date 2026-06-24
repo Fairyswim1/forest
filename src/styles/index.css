@@ -841,33 +841,26 @@ body {
   pointer-events: none;
 }
 
-/* 프레임 안쪽 cream 읽기 영역 (상·하·좌·우 장식 제외) */
-.guide-content-safe-area {
+/* 헤더·본문·푸터를 프레임 cream / 하단 받침대에 각각 배치 */
+.guide-header-zone {
   position: absolute;
-  z-index: 1;
-  top: 22%;
-  right: 16%;
-  bottom: 18%;
-  left: 16%;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
+  z-index: 2;
+  top: 12.5%;
+  left: 17%;
+  right: 17%;
   min-width: 0;
-  overflow: hidden;
-  box-sizing: border-box;
-  padding: 0 clamp(2px, 0.5vw, 6px);
+  overflow: visible;
+  pointer-events: none;
 }
 
-.guide-header-safe-area {
-  flex: 0 0 auto;
-  min-width: 0;
-  padding-bottom: clamp(6px, 1vh, 10px);
+.guide-header-zone > * {
+  pointer-events: auto;
 }
 
 .guide-header__banner-wrap {
   position: relative;
   width: min(92%, 100%);
-  height: clamp(52px, 7.2vh, 68px);
+  height: clamp(72px, 10.5vw, 88px);
   margin: 0 auto;
 }
 
@@ -889,26 +882,26 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: clamp(8px, 1.2vh, 12px) clamp(14px, 12%, 22px) clamp(6px, 0.8vh, 10px);
-  gap: 2px;
+  padding: clamp(11px, 1.5vh, 15px) clamp(16px, 14%, 24px) clamp(9px, 1.1vh, 13px);
+  gap: 3px;
 }
 
 .guide-header__label {
   margin: 0;
   font-family: var(--font-guide);
-  font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+  font-size: clamp(0.68rem, 0.95vw, 0.8rem);
   font-weight: 400;
   color: #3a8a55;
-  letter-spacing: 0.04em;
-  line-height: 1.2;
+  letter-spacing: 0.03em;
+  line-height: 1.15;
 }
 
 .guide-header__title {
   margin: 0;
   font-family: var(--font-guide);
-  font-size: clamp(0.9rem, 1.35vw, 1.15rem);
+  font-size: clamp(0.82rem, 1.2vw, 1.02rem);
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.2;
   color: #6a4410;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   max-width: 100%;
@@ -917,25 +910,31 @@ body {
 }
 
 .guide-body-scroll-area {
-  flex: 1 1 auto;
-  min-height: 0;
+  position: absolute;
+  z-index: 1;
+  top: 27%;
+  left: 17%;
+  right: 17%;
+  bottom: 15.5%;
   min-width: 0;
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: clamp(2px, 0.4vh, 4px);
-  padding: 0 2px;
+  padding: clamp(6px, 0.8vh, 10px) clamp(6px, 1vw, 10px) clamp(4px, 0.6vh, 8px);
+  box-sizing: border-box;
+  overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: rgba(196, 154, 60, 0.55) transparent;
 }
 
 .guide-section {
   display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
+  grid-template-columns: 30px minmax(0, 1fr);
   column-gap: 12px;
   align-items: start;
-  padding: clamp(10px, 1.4vh, 16px) 0;
+  padding: clamp(10px, 1.4vh, 16px) clamp(2px, 0.4vw, 4px);
   border-bottom: 1px solid rgba(196, 154, 60, 0.22);
 }
 
@@ -977,20 +976,28 @@ body {
   word-break: keep-all;
 }
 
-.guide-footer-safe-area {
-  flex: 0 0 auto;
+.guide-footer-zone {
+  position: absolute;
+  z-index: 2;
+  left: 17%;
+  right: 17%;
+  bottom: 5.5%;
+  height: clamp(48px, 7.8%, 62px);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: clamp(40px, 6vh, 52px);
-  padding: clamp(2px, 0.4vh, 6px) 0 clamp(4px, 0.6vh, 8px);
+  pointer-events: none;
 }
 
-.guide-footer-safe-area .fantasy-btn--full {
+.guide-footer-zone > * {
+  pointer-events: auto;
+}
+
+.guide-footer-zone .fantasy-btn--full {
   display: flex;
-  width: min(62%, 240px);
+  width: min(58%, 220px);
   max-width: 100%;
-  min-height: 48px;
+  min-height: 46px;
   justify-content: center;
 }
 
@@ -1019,19 +1026,32 @@ body {
 }
 
 @media (max-height: 720px) {
-  .guide-content-safe-area {
-    top: 23%;
-    bottom: 19%;
-    left: 17%;
-    right: 17%;
+  .guide-header-zone {
+    top: 13%;
+    left: 18%;
+    right: 18%;
+  }
+
+  .guide-body-scroll-area {
+    top: 28%;
+    left: 18%;
+    right: 18%;
+    bottom: 17%;
+  }
+
+  .guide-footer-zone {
+    left: 18%;
+    right: 18%;
+    bottom: 6%;
+    height: clamp(44px, 7%, 56px);
   }
 
   .guide-header__banner-wrap {
-    height: clamp(44px, 6vh, 54px);
+    height: clamp(64px, 9.5vw, 76px);
   }
 
   .guide-section {
-    padding: clamp(8px, 1vh, 12px) 0;
+    padding: clamp(8px, 1vh, 12px) clamp(2px, 0.4vw, 4px);
   }
 
   .guide-section__body {

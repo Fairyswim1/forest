@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useEffect, useRef } from 'react'
 import { ASSETS } from '../../types/game'
 
 interface FantasyModalShellProps {
@@ -21,6 +22,17 @@ export function FantasyModalShell({
   children,
   className = '',
 }: FantasyModalShellProps) {
+  const bodyScrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = bodyScrollRef.current
+    if (!el) return
+    el.scrollTop = 0
+    requestAnimationFrame(() => {
+      el.scrollTop = 0
+    })
+  }, [])
+
   return (
     <div
       className={`guide-overlay ${className}`.trim()}
@@ -53,11 +65,11 @@ export function FantasyModalShell({
           />
         </div>
 
-        <div className="guide-content-safe-area">
-          <header className="guide-header-safe-area">{header}</header>
-          <div className="guide-body-scroll-area">{children}</div>
-          <footer className="guide-footer-safe-area">{footer}</footer>
+        <header className="guide-header-zone">{header}</header>
+        <div className="guide-body-scroll-area" ref={bodyScrollRef}>
+          {children}
         </div>
+        <footer className="guide-footer-zone">{footer}</footer>
       </div>
     </div>
   )

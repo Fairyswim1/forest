@@ -75,7 +75,12 @@ GUIDE_ASSETS = [
 
 
 def find_tile_src(name: str) -> Path | None:
-    for rel in (f"assets/{name}", f"assets/tiles/{name}"):
+    for rel in (
+        f"public/assets/{name}",
+        f"public/assets/tiles/{name}",
+        f"assets/{name}",
+        f"assets/tiles/{name}",
+    ):
         p = ROOT / rel
         if p.exists():
             return p
@@ -83,7 +88,12 @@ def find_tile_src(name: str) -> Path | None:
 
 
 def find_action_src(name: str) -> Path | None:
-    for rel in (f"assets/actions/{name}", f"assets/{name}"):
+    for rel in (
+        f"public/assets/actions/{name}",
+        f"public/assets/{name}",
+        f"assets/actions/{name}",
+        f"assets/{name}",
+    ):
         p = ROOT / rel
         if p.exists():
             return p
@@ -91,7 +101,12 @@ def find_action_src(name: str) -> Path | None:
 
 
 def find_hud_src(name: str) -> Path | None:
-    for rel in (f"assets/hud/{name}", f"assets/{name}"):
+    for rel in (
+        f"public/assets/hud/{name}",
+        f"public/assets/{name}",
+        f"assets/hud/{name}",
+        f"assets/{name}",
+    ):
         p = ROOT / rel
         if p.exists():
             return p
