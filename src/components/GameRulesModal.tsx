@@ -57,7 +57,7 @@ export function GameRulesModal({ onClose }: GameRulesModalProps) {
             </div>
           </header>
 
-          <div className="guide-scroll-content">
+          <div className="guide-body">
             {GUIDE_RULE_SECTIONS.map((section) => (
               <section key={section.id} className="guide-section">
                 <div className="guide-section__heading">
