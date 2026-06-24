@@ -1,16 +1,19 @@
-import type { TileId } from '../types/game'
+import { ASSETS, type TileId } from '../types/game'
 import type { GameBoard } from '../types/board'
 import { scoreRun, type Run } from './scoring'
 
 export const CIRCLED_RUN_LABELS = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'] as const
 
-/** 성공 구간(run) 색상 — 보드 테두리·점수판 배지가 동일 토큰을 공유한다 */
+/**
+ * 성공 구간(run) 색상 — 보드 테두리·시작 배지·점수판 행·점수판 배지가 모두 동일
+ * 토큰을 공유한다. badge는 구간 번호 배지 PNG 경로.
+ */
 export const SCORING_RUN_THEMES = [
-  { token: 'gold', color: '#e8b84a', glow: 'rgba(232, 184, 74, 0.55)' },
-  { token: 'mint', color: '#5ecfaa', glow: 'rgba(94, 207, 170, 0.5)' },
-  { token: 'sky', color: '#5eb8f0', glow: 'rgba(94, 184, 240, 0.5)' },
-  { token: 'pink', color: '#f08ac8', glow: 'rgba(240, 138, 200, 0.5)' },
-  { token: 'purple', color: '#a878e8', glow: 'rgba(168, 120, 232, 0.5)' },
+  { token: 'gold', color: '#e8b84a', glow: 'rgba(232, 184, 74, 0.55)', badge: ASSETS.runBadgeGold },
+  { token: 'mint', color: '#5ecfaa', glow: 'rgba(94, 207, 170, 0.5)', badge: ASSETS.runBadgeMint },
+  { token: 'sky', color: '#5eb8f0', glow: 'rgba(94, 184, 240, 0.5)', badge: ASSETS.runBadgeSky },
+  { token: 'pink', color: '#f08ac8', glow: 'rgba(240, 138, 200, 0.5)', badge: ASSETS.runBadgePink },
+  { token: 'purple', color: '#a878e8', glow: 'rgba(168, 120, 232, 0.5)', badge: ASSETS.runBadgePurple },
 ] as const
 
 export type RunColorToken = (typeof SCORING_RUN_THEMES)[number]['token']
@@ -72,6 +75,8 @@ export interface ScoringRunView {
   colorToken: RunColorToken
   color: string
   glow: string
+  /** 구간 번호 배지 PNG — 보드 시작 타일·점수판 행에서 동일 이미지 사용 */
+  badge: string
   label: string
   displayValues: string[]
   numericValues: number[]
@@ -96,6 +101,7 @@ export function buildScoringRunViews(runs: Run[], board: GameBoard): ScoringRunV
         colorToken: theme.token,
         color: theme.color,
         glow: theme.glow,
+        badge: theme.badge,
         label: getScoringRunLabel(meta.scoringRunIndex),
         displayValues,
         numericValues: meta.run.values,

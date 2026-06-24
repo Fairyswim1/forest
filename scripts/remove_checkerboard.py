@@ -43,6 +43,17 @@ PUBLIC_WORLD_ASSETS: list[tuple[str, str, bool]] = [
     ("real-starlight-space-node-complete.png", "real-starlight-space/node-complete.png", True),
 ]
 
+# 결과 화면 프레임·배지 — 체커보드 배경만 투명 처리, 치수 유지(crop=False)
+RESULT_ASSETS = [
+    "result-completion-banner-frame.png",
+    "result-run-score-panel-frame.png",
+    "run_badge_1_gold.png",
+    "run_badge_2_mint.png",
+    "run_badge_3_sky.png",
+    "run_badge_4_pink.png",
+    "run_badge_5_purple.png",
+]
+
 
 def find_tile_src(name: str) -> Path | None:
     for rel in (f"assets/{name}", f"assets/tiles/{name}"):
@@ -255,6 +266,10 @@ def main() -> None:
 
     for public_name, dest_rel, crop in PUBLIC_WORLD_ASSETS:
         if process_public_src(public_name, dest_rel, crop=crop):
+            count += 1
+
+    for name in RESULT_ASSETS:
+        if process_public_src(name, f"result/{name}", crop=False):
             count += 1
 
     print(f"\nDone - {count} asset(s) processed/copied.")

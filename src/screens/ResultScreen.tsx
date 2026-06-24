@@ -14,7 +14,7 @@ import {
   type GameResult,
 } from '../utils/scoring'
 import { buildResultFeedback } from '../utils/resultFeedback'
-import { buildRunDisplayMeta, buildScoringRunViews } from '../utils/runDisplay'
+import { buildScoringRunViews } from '../utils/runDisplay'
 
 export interface ResultPayload {
   result: GameResult
@@ -56,20 +56,6 @@ export function ResultScreen({
 
   const scoringRuns = useMemo(() => buildScoringRunViews(result.runs, board), [result.runs, board])
 
-  const isolatedRuns = useMemo(
-    () =>
-      buildRunDisplayMeta(result.runs)
-        .filter((meta) => !meta.isScoring && meta.run.length > 0)
-        .map((meta) => ({
-          runIndex: meta.runIndex,
-          length: meta.run.length,
-          displayValues: meta.run.tileIds
-            .map((id) => board[id]?.displayValue)
-            .filter((value): value is string => value !== undefined),
-        })),
-    [result.runs, board],
-  )
-
   return (
     <div
       className={`result-screen result-screen--${worldTheme} ${debug ? 'result-screen--debug' : ''}`}
@@ -107,7 +93,7 @@ export function ResultScreen({
           scoringRuns={scoringRuns}
         />
 
-        <ResultRunScorePanel scoringRuns={scoringRuns} totalScore={result.finalScore} isolatedRuns={isolatedRuns} />
+        <ResultRunScorePanel scoringRuns={scoringRuns} totalScore={result.finalScore} />
       </main>
 
       {debug && (

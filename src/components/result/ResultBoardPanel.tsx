@@ -10,7 +10,7 @@ import {
 } from '../../utils/runDisplay'
 import { BoardContainer } from '../BoardContainer'
 import { TrailTile } from '../TrailTile'
-import { RunColorBadge } from './RunColorBadge'
+import { RunBadge } from './RunBadge'
 
 interface ResultBoardPanelProps {
   layout: StagePathLayout
@@ -40,13 +40,15 @@ export function ResultBoardPanel({ layout, board, result, scoringRuns }: ResultB
             className="result-board-panel__legend-chip"
             style={{ '--run-color': view.color } as CSSProperties}
           >
-            <RunColorBadge label={view.label} color={view.color} size="sm" />
+            <RunBadge src={view.badge} label={`구간 ${view.id}`} size="row" />
             <span>{view.length}칸 · +{view.score}점</span>
           </span>
         ))}
-        <span className="result-board-panel__legend-chip result-board-panel__legend-chip--break">
-          ↓ 끊김
-        </span>
+        {scoringRuns.length === 0 && (
+          <span className="result-board-panel__legend-chip result-board-panel__legend-chip--break">
+            성공한 구간이 없어요
+          </span>
+        )}
       </div>
 
       <div className="result-board-panel__stage">
@@ -86,7 +88,8 @@ export function ResultBoardPanel({ layout, board, result, scoringRuns }: ResultB
                 isRunStart={isRunStart}
                 runColor={runView?.color}
                 runGlow={runView?.glow}
-                runBadgeLabel={isRunStart ? runView?.label : undefined}
+                runBadgeSrc={isRunStart ? runView?.badge : undefined}
+                runBadgeLabel={isRunStart ? String(runView?.id ?? '') : undefined}
               />
             )
           })}

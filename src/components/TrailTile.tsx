@@ -26,6 +26,7 @@ interface TrailTileProps {
   isScoringRun?: boolean
   runColor?: string
   runGlow?: string
+  runBadgeSrc?: string
   runBadgeLabel?: string
 }
 
@@ -55,6 +56,7 @@ export function TrailTile({
   isScoringRun = false,
   runColor,
   runGlow,
+  runBadgeSrc,
   runBadgeLabel,
 }: TrailTileProps) {
   const hasRunColor = resultMode && isScoringRun && runColor
@@ -97,10 +99,13 @@ export function TrailTile({
       aria-label={`타일 ${id}${cell !== null ? `: ${cell.displayValue}` : ''}`}
       data-tile-id={id}
     >
-      {runBadgeLabel && (
-        <span className="trail-tile__run-badge" aria-hidden>
-          {runBadgeLabel}
-        </span>
+      {runBadgeSrc && (
+        <img
+          className="trail-tile__run-badge-img"
+          src={runBadgeSrc}
+          alt={runBadgeLabel ? `구간 ${runBadgeLabel}` : ''}
+          draggable={false}
+        />
       )}
 
       <span className="trail-tile__sprite" aria-hidden>
