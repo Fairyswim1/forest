@@ -44,7 +44,7 @@ export function GameRulesModal({ onClose }: GameRulesModalProps) {
       onBackdropClose={onClose}
       header={<GuideHeaderBanner />}
       footer={
-        <FantasyImageButton variant="confirm" size="full" onClick={onClose}>
+        <FantasyImageButton variant="confirm" size="md" onClick={onClose}>
           알겠어요!
         </FantasyImageButton>
       }

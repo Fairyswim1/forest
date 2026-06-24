@@ -135,13 +135,13 @@ body {
 }
 
 .stage-guide-modal .stage-subtitle,
-.stage-guide-modal .section-main,
-.stage-guide-modal .section-description {
+.stage-guide-modal .guide-section__body,
+.stage-guide-modal .guide-section__description {
   font-family: var(--font-guide-body);
-  line-height: 1.62;
+  line-height: 1.55;
 }
 
-.stage-guide-modal .section-label {
+.stage-guide-modal .guide-section__title {
   font-family: var(--font-guide-title);
   font-weight: 700;
 }

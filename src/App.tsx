@@ -1,18 +1,21 @@
 import { useCallback, useMemo, useState } from 'react'
+import { AppBootstrapError, AppBootstrapLoading } from './components/AppBootstrapGate'
+import { PlayerProfileProvider } from './context/PlayerProfileContext'
 import { WorldMap } from './components/WorldMap'
+import { useAppBootstrap } from './hooks/useAppBootstrap'
 import { PlayScreen } from './screens/PlayScreen'
-import { ProfileScreen } from './screens/ProfileScreen'
+import { ProfileSetupScreen } from './screens/ProfileSetupScreen'
 import { ResultScreen, type ResultPayload } from './screens/ResultScreen'
 import { NATURAL_1_1 } from './config/stages'
 import { getActiveStage, getStageById, getStageByWorldId } from './config/stageRegistry'
 import { WORLDS } from './config/worlds'
+import { touchLastPlayedAt } from './services/playerProfileService'
 import { buildDemoResultPayload } from './utils/demoResultBoard'
 import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
 import { getStageBestScore, markStageComplete, updateStageBestScore } from './utils/gameRecords'
 import { getStageProgressStatus } from './utils/stageProgress'
-import { hasSeenProfile, markProfileSeen } from './utils/profileStorage'
 
-type Screen = 'profile' | 'map' | 'play' | 'result'
+type Screen = 'map' | 'play' | 'result'
 
 const FADE_MS = 420
 
@@ -23,15 +26,15 @@ function initialPreviewResult(): ResultPayload | null {
 }
 
 function initialScreen(): Screen {
-  if (typeof window === 'undefined') return 'profile'
+  if (typeof window === 'undefined') return 'map'
   const params = new URLSearchParams(window.location.search)
   if (isUnlockAllMode() && getStageIdFromUrl()) return 'play'
   if (import.meta.env.DEV && params.get('previewResult') === '1') return 'result'
-  if (!hasSeenProfile()) return 'profile'
   return 'map'
 }
 
-export function AppRoot() {
+function GameApp() {
+  const bootstrap = useAppBootstrap()
   const [selectedStageId, setSelectedStageId] = useState(
     () => getStageIdFromUrl() ?? getActiveStage().id,
   )
@@ -111,45 +114,74 @@ export function AppRoot() {
 
   const handleWorldMap = useCallback(() => {
     setResultPayload(null)
+    if (bootstrap.firebaseUser) {
+      void touchLastPlayedAt(bootstrap.firebaseUser.uid).catch(() => {})
+    }
     transitionTo('map')
-  }, [transitionTo])
+  }, [bootstrap.firebaseUser, transitionTo])
 
-  const handleProfileStart = useCallback(() => {
-    markProfileSeen()
-    transitionTo('map')
-  }, [transitionTo])
+  const handleProfileComplete = useCallback(
+    (profile: Parameters<typeof bootstrap.completeProfileSetup>[0]) => {
+      bootstrap.completeProfileSetup(profile)
+      transitionTo('map')
+    },
+    [bootstrap, transitionTo],
+  )
+
+  if (bootstrap.authLoading || bootstrap.profileLoading) {
+    return <AppBootstrapLoading />
+  }
+
+  if (bootstrap.bootstrapError && bootstrap.firebaseEnabled) {
+    return <AppBootstrapError message={bootstrap.bootstrapError} onRetry={bootstrap.retryBootstrap} />
+  }
+
+  if (bootstrap.profileSetupRequired && bootstrap.firebaseUser) {
+    return (
+      <ProfileSetupScreen uid={bootstrap.firebaseUser.uid} onComplete={handleProfileComplete} />
+    )
+  }
 
   return (
-    <div className={`app-root ${visible ? 'app-root--visible' : 'app-root--hidden'}`}>
-      {screen === 'profile' && <ProfileScreen onStart={handleProfileStart} />}
-      {screen === 'map' && (
-        <WorldMap
-          regions={regions}
-          totalStars={totalStars}
-          onEnterStage={handleEnterStage}
-          onReplayTutorial={handleReplayTutorial}
-        />
-      )}
+    <PlayerProfileProvider
+      firebaseUser={bootstrap.firebaseUser}
+      playerProfile={bootstrap.playerProfile}
+      setPlayerProfile={bootstrap.setPlayerProfile}
+    >
+      <div className={`app-root ${visible ? 'app-root--visible' : 'app-root--hidden'}`}>
+        {screen === 'map' && (
+          <WorldMap
+            regions={regions}
+            totalStars={totalStars}
+            onEnterStage={handleEnterStage}
+            onReplayTutorial={handleReplayTutorial}
+          />
+        )}
 
-      {screen === 'play' && (
-        <PlayScreen
-          key={`${selectedStage.id}-${playKey}`}
-          stage={selectedStage}
-          forceTutorial={forceTutorial && selectedStage.id === NATURAL_1_1.id}
-          onTutorialFinished={() => setForceTutorial(false)}
-          onBack={() => transitionTo('map')}
-          onComplete={handleComplete}
-        />
-      )}
+        {screen === 'play' && (
+          <PlayScreen
+            key={`${selectedStage.id}-${playKey}`}
+            stage={selectedStage}
+            forceTutorial={forceTutorial && selectedStage.id === NATURAL_1_1.id}
+            onTutorialFinished={() => setForceTutorial(false)}
+            onBack={() => transitionTo('map')}
+            onComplete={handleComplete}
+          />
+        )}
 
-      {screen === 'result' && resultPayload && (
-        <ResultScreen
-          stage={selectedStage}
-          payload={resultPayload}
-          onRetry={handleRetry}
-          onWorldMap={handleWorldMap}
-        />
-      )}
-    </div>
+        {screen === 'result' && resultPayload && (
+          <ResultScreen
+            stage={selectedStage}
+            payload={resultPayload}
+            onRetry={handleRetry}
+            onWorldMap={handleWorldMap}
+          />
+        )}
+      </div>
+    </PlayerProfileProvider>
   )
+}
+
+export function AppRoot() {
+  return <GameApp />
 }

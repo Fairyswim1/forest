@@ -4,6 +4,7 @@ import { ASSETS } from '../types/game'
 import { GUIDE_ICONS } from '../assets/uiAssets'
 import { MathRichText } from './MathRichText'
 import { FantasyImageButton } from './ui/FantasyImageButton'
+import { GuideSection } from './ui/GuideSection'
 
 interface StageGuideModalProps {
   stage: StageConfig
@@ -67,56 +68,27 @@ export function StageGuideModal({ stage, variant, backgroundUrl, onConfirm }: St
           </header>
 
           <div className="stage-guide-body" ref={bodyScrollRef}>
-            <section className="stage-guide-section">
-              <img
-                src={GUIDE_ICONS.flow}
-                alt=""
-                className="stage-guide-section-icon"
-                aria-hidden="true"
-                draggable={false}
-              />
-              <h3 className="section-label">이번 스테이지에서 나오는 수</h3>
-              <p className="section-main">
-                <MathRichText text={guide.numberRangeLabel} />
-              </p>
-              <p className="section-description">
-                <MathRichText text={guide.numberRangeDescription} />
-              </p>
-            </section>
+            <GuideSection
+              icon={GUIDE_ICONS.flow}
+              title="이번 스테이지에서 나오는 수"
+              description={<MathRichText text={guide.numberRangeDescription} />}
+            >
+              <MathRichText text={guide.numberRangeLabel} />
+            </GuideSection>
 
-            <section className="stage-guide-section">
-              <img
-                src={GUIDE_ICONS.goal}
-                alt=""
-                className="stage-guide-section-icon"
-                aria-hidden="true"
-                draggable={false}
-              />
-              <h3 className="section-label">목표</h3>
-              <p className="section-main">
-                <MathRichText text={guide.objectiveText} />
-              </p>
-            </section>
+            <GuideSection icon={GUIDE_ICONS.goal} title="목표">
+              <MathRichText text={guide.objectiveText} />
+            </GuideSection>
 
             {guide.strategyHint && (
-              <section className="stage-guide-section">
-                <img
-                  src={GUIDE_ICONS.tip}
-                  alt=""
-                  className="stage-guide-section-icon"
-                  aria-hidden="true"
-                  draggable={false}
-                />
-                <h3 className="section-label">전략 힌트</h3>
-                <p className="section-main">
-                  <MathRichText text={guide.strategyHint} />
-                </p>
-              </section>
+              <GuideSection icon={GUIDE_ICONS.tip} title="전략 힌트">
+                <MathRichText text={guide.strategyHint} />
+              </GuideSection>
             )}
           </div>
 
           <footer className="stage-guide-footer">
-            <FantasyImageButton variant="confirm" size="full" onClick={onConfirm}>
+            <FantasyImageButton variant="confirm" size="md" onClick={onConfirm}>
               {confirmLabel}
             </FantasyImageButton>
           </footer>
