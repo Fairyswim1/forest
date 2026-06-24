@@ -1,0 +1,331 @@
+/**
+ * 넘버 트레일 — 게임 폰트 역할 체계
+ * Jua(타이틀) · Do Hyeon(디스플레이/버튼) · Gowun Dodum(본문) · Noto Sans KR(보조)
+ */
+
+/* ===== 시맨틱 유틸리티 ===== */
+.game-title,
+.world-title,
+.result-title,
+.guide-main-title,
+.profile-title {
+  font-family: var(--font-game-title);
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
+.score-value,
+.run-score,
+.primary-button,
+.secondary-button,
+.section-title,
+.hud-label,
+.hud-value,
+.result-panel-title {
+  font-family: var(--font-game-display);
+  line-height: 1.25;
+}
+
+.guide-description,
+.stage-description,
+.feedback-text,
+.world-description,
+.profile-description {
+  font-family: var(--font-game-body);
+  line-height: 1.62;
+}
+
+.run-values,
+.small-label,
+.subtitle,
+.helper-text,
+.compact-info {
+  font-family: var(--font-game-ui);
+  line-height: 1.45;
+}
+
+/* ===== 기본 ===== */
+body {
+  font-family: var(--font-game-body);
+}
+
+/* ===== 월드맵 ===== */
+.world-map__game-title {
+  font-family: var(--font-game-title);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.world-map__chapter,
+.world-map__stars {
+  font-family: var(--font-game-ui);
+  font-weight: 600;
+}
+
+.world-map__rules-btn,
+.world-map__menu-btn {
+  font-family: var(--font-game-display);
+}
+
+.world-stage-node__title {
+  font-family: var(--font-game-title);
+  font-weight: 400;
+}
+
+.world-stage-node__topic {
+  font-family: var(--font-game-body);
+  line-height: 1.5;
+}
+
+.world-stage-node__lock-text {
+  font-family: var(--font-game-body);
+  font-weight: 400;
+}
+
+/* ===== 플레이 HUD ===== */
+.play-hud__stage-title {
+  font-family: var(--font-game-title);
+  font-weight: 400;
+}
+
+.play-hud__stage-topic {
+  font-family: var(--font-game-ui);
+  font-weight: 500;
+}
+
+.play-hud__round-label,
+.play-hud__round-value,
+.play-hud__score-value,
+.play-hud__help-glyph {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.play-hud__score-label {
+  font-family: var(--font-game-ui);
+  font-weight: 500;
+}
+
+/* ===== 현재 카드 ===== */
+.current-card-panel__ribbon-text {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.current-card-panel__value,
+.card-panel-flight__value {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.current-card-panel__placeholder {
+  font-family: var(--font-game-body);
+}
+
+/* ===== 스테이지 안내 ===== */
+.stage-guide__world {
+  font-family: var(--font-game-title);
+  font-weight: 400;
+}
+
+.stage-guide__title {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.stage-guide__subtitle,
+.stage-guide__text,
+.stage-guide__range-desc {
+  font-family: var(--font-game-body);
+  line-height: 1.62;
+}
+
+.stage-guide__section-title,
+.stage-guide__range-label {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+/* ===== 게임 방법 모달 ===== */
+/* ===== 게임 방법 모달 ===== */
+.guide-content-safe-area {
+  font-family: var(--font-game-body);
+}
+
+.guide-header__label,
+.guide-section__title {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.guide-header__title {
+  font-family: var(--font-game-title);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.guide-section__body {
+  font-family: var(--font-game-body);
+  line-height: 1.6;
+}
+
+.guide-footer-safe-area .fantasy-btn__content {
+  font-family: var(--font-game-display);
+}
+
+/* ===== 판타지 UI ===== */
+.fantasy-btn__content {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+  padding: 12px 22px;
+}
+
+.fantasy-panel__title {
+  font-family: var(--font-game-title);
+  font-weight: 400;
+}
+
+.fantasy-menu-btn {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.fantasy-section__title {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.fantasy-section__text,
+.fantasy-section__range-desc {
+  font-family: var(--font-game-body);
+  line-height: 1.62;
+}
+
+.fantasy-section__range-label {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.guide-header__stage-world {
+  font-family: var(--font-game-ui);
+  font-weight: 500;
+}
+
+.guide-header__stage-title {
+  font-family: var(--font-game-title);
+  font-weight: 400;
+}
+
+.guide-header__stage-sub {
+  font-family: var(--font-game-body);
+  line-height: 1.55;
+}
+
+/* ===== 공통 버튼 ===== */
+.menu-button,
+.game-button {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+/* ===== 결과 화면 ===== */
+.result-banner__title {
+  font-family: var(--font-game-title);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7), 0 2px 6px rgba(106, 68, 16, 0.12);
+}
+
+.result-banner__subtitle {
+  font-family: var(--font-game-body);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.result-banner__record {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.result-fantasy-panel__tab-label,
+.result-score-panel__title {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.result-summary-panel__stat dt {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}
+
+.result-summary-panel__stat dd,
+.result-summary-panel__stat dd strong,
+.result-summary-panel__score {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.result-summary-panel__unit {
+  font-family: var(--font-game-ui);
+  font-weight: 600;
+}
+
+.result-summary-panel__feedback li {
+  font-family: var(--font-game-body);
+  line-height: 1.62;
+}
+
+.result-summary-panel__footer {
+  font-family: var(--font-game-ui);
+}
+
+.result-score-panel__values {
+  font-family: var(--font-game-ui);
+  font-weight: 500;
+  font-size: clamp(0.62rem, 0.78vw, 0.72rem);
+  letter-spacing: -0.01em;
+}
+
+.result-score-panel__length {
+  font-family: var(--font-game-ui);
+  font-weight: 500;
+}
+
+.result-score-panel__points {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.result-board-panel__legend-chip {
+  font-family: var(--font-game-ui);
+  font-weight: 600;
+}
+
+.result-score-panel__empty {
+  font-family: var(--font-game-body);
+  line-height: 1.6;
+}
+
+/* ===== 튜토리얼 · 메뉴 ===== */
+.play-tutorial__message {
+  font-family: var(--font-game-body);
+  line-height: 1.62;
+}
+
+.play-tutorial__progress {
+  font-family: var(--font-game-ui);
+  font-weight: 500;
+}
+
+.game-menu-modal .fantasy-panel__title {
+  font-family: var(--font-game-title);
+}
+
+/* ===== 타일 숫자 (KaTeX 제외) ===== */
+.trail-tile__value-text:not(.current-card-panel__value--latex) {
+  font-family: var(--font-game-display);
+  font-weight: 400;
+}

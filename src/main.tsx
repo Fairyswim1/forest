@@ -6,6 +6,7 @@ import './styles/uiTokens.css'
 import './styles/index.css'
 import './styles/fantasy-ui.css'
 import './styles/result-screen.css'
+import './styles/fonts.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

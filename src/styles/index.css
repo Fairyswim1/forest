@@ -16,9 +16,6 @@
   --parchment: #fff9ef;
   --text: #f5fbef;
   --text-soft: #c8dcc8;
-  --font-display: 'Baloo 2', 'Noto Sans KR', sans-serif;
-  --font-body: 'Noto Sans KR', sans-serif;
-  --font-guide: 'Jua', 'Baloo 2', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -818,43 +815,59 @@ body {
 }
 
 .guide-modal {
-  --guide-ratio: 1448 / 1086;
   position: relative;
   z-index: 2;
-  /* 뷰포트 안에서 최대한 크게 — 높이·너비 중 작은 쪽에 맞춤 */
-  width: min(820px, 96vw, calc(96vh / var(--guide-ratio)));
-  height: min(96vh, calc(min(820px, 96vw) * var(--guide-ratio)));
+  flex-shrink: 0;
+  width: min(720px, 94vw, calc(94vh * 1086 / 1448));
+  aspect-ratio: 1086 / 1448;
+  max-height: 96vh;
   animation: guideModalIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
   filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.42));
 }
 
-.guide-modal__frame {
+/* 장식 프레임 전용 — 콘텐츠와 분리 */
+.guide-frame-layer {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
+  z-index: 0;
   pointer-events: none;
 }
 
-.guide-modal__content {
+.guide-modal__frame {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+  pointer-events: none;
+}
+
+/* 프레임 안쪽 cream 읽기 영역 (상·하·좌·우 장식 제외) */
+.guide-content-safe-area {
   position: absolute;
-  inset: 7.5% 6.8% 8.2% 6.8%;
+  z-index: 1;
+  top: 22%;
+  right: 16%;
+  bottom: 18%;
+  left: 16%;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  font-family: var(--font-guide);
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 clamp(2px, 0.5vw, 6px);
 }
 
-.guide-header {
+.guide-header-safe-area {
   flex: 0 0 auto;
-  margin-bottom: 4px;
+  min-width: 0;
+  padding-bottom: clamp(6px, 1vh, 10px);
 }
 
 .guide-header__banner-wrap {
   position: relative;
-  width: 94%;
-  height: clamp(46px, 7vh, 62px);
+  width: min(92%, 100%);
+  height: clamp(52px, 7.2vh, 68px);
   margin: 0 auto;
 }
 
@@ -876,7 +889,8 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 10%;
+  padding: clamp(8px, 1.2vh, 12px) clamp(14px, 12%, 22px) clamp(6px, 0.8vh, 10px);
+  gap: 2px;
 }
 
 .guide-header__label {
@@ -885,27 +899,43 @@ body {
   font-size: clamp(0.72rem, 1.05vw, 0.86rem);
   font-weight: 400;
   color: #3a8a55;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
 }
 
 .guide-header__title {
   margin: 0;
   font-family: var(--font-guide);
-  font-size: clamp(0.95rem, 1.45vw, 1.22rem);
+  font-size: clamp(0.9rem, 1.35vw, 1.15rem);
   font-weight: 400;
-  line-height: 1.1;
+  line-height: 1.15;
   color: #6a4410;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
-.guide-body {
+.guide-body-scroll-area {
   flex: 1 1 auto;
   min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 0.4vh, 4px);
+  padding: 0 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196, 154, 60, 0.55) transparent;
 }
 
 .guide-section {
-  padding: clamp(8px, 1vh, 11px) 2px;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: start;
+  padding: clamp(10px, 1.4vh, 16px) 0;
   border-bottom: 1px solid rgba(196, 154, 60, 0.22);
 }
 
@@ -913,34 +943,55 @@ body {
   border-bottom: none;
 }
 
-.guide-section__heading {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
 .guide-section__icon {
-  width: clamp(30px, 3vw, 36px);
-  height: clamp(30px, 3vw, 36px);
+  grid-column: 1;
+  grid-row: 1;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
   flex-shrink: 0;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
 }
 
-.guide-section__title {
-  margin: 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.92rem, 1.1vw, 1rem);
-  font-weight: 400;
-  color: var(--fantasy-leaf-green, #5a7a32);
+.guide-section__copy {
+  grid-column: 2;
+  min-width: 0;
 }
 
-.guide-footer {
+.guide-section__title {
+  margin: 0 0 clamp(4px, 0.5vh, 6px);
+  font-family: var(--font-guide);
+  font-size: clamp(1rem, 1.15vw, 1.25rem);
+  font-weight: 400;
+  color: var(--fantasy-leaf-green, #5a7a32);
+  line-height: 1.25;
+}
+
+.guide-section__body {
+  margin: 0;
+  font-family: var(--font-guide);
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  line-height: 1.62;
+  color: var(--fantasy-deep-brown);
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+.guide-footer-safe-area {
   flex: 0 0 auto;
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding-top: clamp(4px, 0.8vh, 8px);
+  min-height: clamp(40px, 6vh, 52px);
+  padding: clamp(2px, 0.4vh, 6px) 0 clamp(4px, 0.6vh, 8px);
+}
+
+.guide-footer-safe-area .fantasy-btn--full {
+  display: flex;
+  width: min(62%, 240px);
+  max-width: 100%;
+  min-height: 48px;
+  justify-content: center;
 }
 
 .guide-footer__confirm {
@@ -968,13 +1019,28 @@ body {
 }
 
 @media (max-height: 720px) {
+  .guide-content-safe-area {
+    top: 23%;
+    bottom: 19%;
+    left: 17%;
+    right: 17%;
+  }
+
   .guide-header__banner-wrap {
-    height: clamp(40px, 6vh, 52px);
+    height: clamp(44px, 6vh, 54px);
+  }
+
+  .guide-section {
+    padding: clamp(8px, 1vh, 12px) 0;
   }
 
   .guide-section__body {
-    font-size: 0.76rem;
-    line-height: 1.32;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  .guide-section__title {
+    font-size: 0.95rem;
   }
 }
 

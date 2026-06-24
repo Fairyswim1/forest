@@ -30,7 +30,7 @@ STATIC_BG = "forest_playfield_bg.png"
 TRAIL_OVERLAY = "board_trail_overlay.png"
 
 PUBLIC_WORLD_ASSETS: list[tuple[str, str, bool]] = [
-    ("integer-cave-trail-overlay.png", "integer-cave-trail-overlay.png", False),
+    # trail overlay는 COMMON_TILE_ANCHORS와 픽셀 정렬이 맞아야 함 — 재처리 시 경로가 밀리므로 제외
     ("integer-cave-node-open.png", "integer-cave/node-open.png", True),
     ("integer-cave-node-locked.png", "integer-cave/node-locked.png", True),
     ("rational-meadow-trail-overlay.png", "rational-meadow-trail-overlay.png", False),

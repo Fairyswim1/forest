@@ -44,16 +44,19 @@ export function FantasyModalShell({
       )}
 
       <div className="guide-modal">
-        <img
-          className="guide-modal__frame"
-          src={ASSETS.guideModalFrame}
-          alt=""
-          draggable={false}
-        />
-        <div className="guide-modal__content">
-          <header className="guide-header">{header}</header>
-          <div className="guide-body guide-body--scroll">{children}</div>
-          <footer className="guide-footer">{footer}</footer>
+        <div className="guide-frame-layer" aria-hidden>
+          <img
+            className="guide-modal__frame"
+            src={ASSETS.guideModalFrame}
+            alt=""
+            draggable={false}
+          />
+        </div>
+
+        <div className="guide-content-safe-area">
+          <header className="guide-header-safe-area">{header}</header>
+          <div className="guide-body-scroll-area">{children}</div>
+          <footer className="guide-footer-safe-area">{footer}</footer>
         </div>
       </div>
     </div>

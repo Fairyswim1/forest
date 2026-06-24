@@ -1,5 +1,16 @@
 /* 넘버 트레일 — 판타지 UI 공통 토큰 */
 :root {
+  /* 폰트 역할 (Google Fonts — index.html) */
+  --font-game-title: 'Jua', sans-serif;
+  --font-game-display: 'Do Hyeon', sans-serif;
+  --font-game-body: 'Gowun Dodum', sans-serif;
+  --font-game-ui: 'Noto Sans KR', sans-serif;
+
+  /* 레거시 별칭 — 기존 CSS 호환 */
+  --font-display: var(--font-game-display);
+  --font-body: var(--font-game-body);
+  --font-guide: var(--font-game-title);
+
   --fantasy-cream: #fff9ef;
   --fantasy-ivory: #fdeccb;
   --fantasy-parchment: #f8edd8;
