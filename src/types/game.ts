@@ -1,4 +1,5 @@
 import type { GameCard } from './card'
+import { BUTTON_ASSETS, GUIDE_ICONS } from '../assets/uiAssets'
 
 export const GAME_TITLE = '넘버 트레일 : 수의 모험'
 
@@ -19,8 +20,8 @@ export const ASSETS = {
   placedTile: '/assets/processed/tiles/placed_tile.png',
   successTile: '/assets/processed/tiles/success_tile.png',
   cardFrame: '/assets/processed/cards/current_card.png',
-  actionConfirmFrame: '/assets/processed/actions/confirm_button.png',
-  actionUndoFrame: '/assets/processed/actions/undo_button.png',
+  actionConfirmFrame: BUTTON_ASSETS.confirm,
+  actionUndoFrame: BUTTON_ASSETS.undo,
   playfieldBg: '/assets/forest_playfield_bg.png',
   trailOverlay: '/assets/processed/board_trail_overlay.png',
   hudStageFrame: '/assets/processed/hud/stage_frame.png',
@@ -56,12 +57,12 @@ export const ASSETS = {
   // 게임 방법 모달 (프레임·헤더·섹션 아이콘)
   guideModalFrame: '/assets/processed/guide/guide-modal-frame.png',
   guideHeaderBanner: '/assets/processed/guide/guide-header-banner.png',
-  guideIconGoal: '/assets/processed/guide/guide-icon-goal.png',
-  guideIconFlow: '/assets/processed/guide/guide-icon-flow.png',
-  guideIconScore: '/assets/processed/guide/guide-icon-score.png',
-  guideIconUndoTime: '/assets/processed/guide/guide-icon-undo-time.png',
-  guideIconWorld: '/assets/processed/guide/guide-icon-world.png',
-  guideIconTip: '/assets/processed/guide/guide-icon-tip.png',
+  guideIconGoal: GUIDE_ICONS.goal,
+  guideIconFlow: GUIDE_ICONS.flow,
+  guideIconScore: GUIDE_ICONS.score,
+  guideIconUndoTime: GUIDE_ICONS.undoTime,
+  guideIconWorld: GUIDE_ICONS.world,
+  guideIconTip: GUIDE_ICONS.tip,
 } as const
 
 export type TileId = number

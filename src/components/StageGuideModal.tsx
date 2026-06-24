@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import type { StageConfig } from '../types/stage'
 import { ASSETS } from '../types/game'
-import { guideIconFlow, guideIconGoal, guideIconTip } from '../assets/guideIcons'
+import { GUIDE_ICONS } from '../assets/uiAssets'
 import { MathRichText } from './MathRichText'
-import { FantasyButton } from './ui/FantasyButton'
+import { FantasyImageButton } from './ui/FantasyImageButton'
 
 interface StageGuideModalProps {
   stage: StageConfig
@@ -69,7 +69,7 @@ export function StageGuideModal({ stage, variant, backgroundUrl, onConfirm }: St
           <div className="stage-guide-body" ref={bodyScrollRef}>
             <section className="stage-guide-section">
               <img
-                src={guideIconFlow}
+                src={GUIDE_ICONS.flow}
                 alt=""
                 className="stage-guide-section-icon"
                 aria-hidden="true"
@@ -86,7 +86,7 @@ export function StageGuideModal({ stage, variant, backgroundUrl, onConfirm }: St
 
             <section className="stage-guide-section">
               <img
-                src={guideIconGoal}
+                src={GUIDE_ICONS.goal}
                 alt=""
                 className="stage-guide-section-icon"
                 aria-hidden="true"
@@ -101,7 +101,7 @@ export function StageGuideModal({ stage, variant, backgroundUrl, onConfirm }: St
             {guide.strategyHint && (
               <section className="stage-guide-section">
                 <img
-                  src={guideIconTip}
+                  src={GUIDE_ICONS.tip}
                   alt=""
                   className="stage-guide-section-icon"
                   aria-hidden="true"
@@ -116,9 +116,9 @@ export function StageGuideModal({ stage, variant, backgroundUrl, onConfirm }: St
           </div>
 
           <footer className="stage-guide-footer">
-            <FantasyButton variant="primary" size="full" onClick={onConfirm}>
+            <FantasyImageButton variant="confirm" size="full" onClick={onConfirm}>
               {confirmLabel}
-            </FantasyButton>
+            </FantasyImageButton>
           </footer>
         </div>
       </div>

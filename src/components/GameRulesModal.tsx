@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { GUIDE_RULE_SECTIONS } from '../config/guideRules'
 import { ASSETS, GAME_TITLE } from '../types/game'
-import { FantasyButton } from './ui/FantasyButton'
+import { FantasyImageButton } from './ui/FantasyImageButton'
 import { FantasyModalShell } from './ui/FantasyModalShell'
 import { GuideSection } from './ui/GuideSection'
 
@@ -44,9 +44,9 @@ export function GameRulesModal({ onClose }: GameRulesModalProps) {
       onBackdropClose={onClose}
       header={<GuideHeaderBanner />}
       footer={
-        <FantasyButton variant="primary" size="full" onClick={onClose}>
+        <FantasyImageButton variant="confirm" size="full" onClick={onClose}>
           알겠어요!
-        </FantasyButton>
+        </FantasyImageButton>
       }
     >
       {GUIDE_RULE_SECTIONS.map((section) => (

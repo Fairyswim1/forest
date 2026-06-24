@@ -1,7 +1,5 @@
 import type { RefObject } from 'react'
-import { ASSETS } from '../../types/game'
 import { ActionButton } from './ActionButton'
-import { CheckIcon, UndoIcon } from './ActionIcons'
 
 interface ControlActionsProps {
   canConfirm: boolean
@@ -28,21 +26,17 @@ export function ControlActions({
         <ActionButton
           variant="confirm"
           label="배치 완료"
-          frameSrc={ASSETS.actionConfirmFrame}
           disabled={!canConfirm}
           highlighted={highlightConfirm}
           onClick={onConfirm}
-          icon={<CheckIcon />}
         />
       </div>
       <div ref={resetButtonRef}>
         <ActionButton
           variant="undo"
           label="다시 놓기"
-          frameSrc={ASSETS.actionUndoFrame}
           disabled={!canReset}
           onClick={onReset}
-          icon={<UndoIcon />}
         />
       </div>
     </div>

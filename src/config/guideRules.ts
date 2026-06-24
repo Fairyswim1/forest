@@ -1,4 +1,4 @@
-import { GUIDE_ICONS } from '../assets/guideIcons'
+import { GUIDE_ICONS } from '../assets/uiAssets'
 
 export interface GuideRuleSection {
   id: string

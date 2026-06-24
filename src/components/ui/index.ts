@@ -1,5 +1,7 @@
 export { FantasyButton } from './FantasyButton'
 export type { FantasyButtonVariant, FantasyButtonSize } from './FantasyButton'
+export { FantasyImageButton } from './FantasyImageButton'
+export type { FantasyImageButtonVariant, FantasyImageButtonSize } from './FantasyImageButton'
 export { FantasyModalShell } from './FantasyModalShell'
 export { FantasyPanel } from './FantasyPanel'
 export { GuideSection } from './GuideSection'

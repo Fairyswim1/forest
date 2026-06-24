@@ -146,7 +146,7 @@ body {
   font-weight: 700;
 }
 
-.stage-guide-footer .fantasy-btn__content {
+.stage-guide-footer .fantasy-image-button__label {
   font-family: var(--font-game-display);
   font-weight: 500;
 }
@@ -174,12 +174,11 @@ body {
   line-height: 1.6;
 }
 
-.guide-footer-zone .fantasy-btn__content {
+.guide-footer-zone .fantasy-image-button__label {
   font-family: var(--font-game-display);
 }
 
-/* ===== 판타지 UI ===== */
-.fantasy-btn__content {
+.fantasy-image-button__label {
   font-family: var(--font-game-display);
   font-weight: 400;
   padding: 12px 22px;

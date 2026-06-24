@@ -1,33 +1,27 @@
-import { forwardRef, type ReactNode } from 'react'
-import { FantasyButton, type FantasyButtonVariant } from '../ui/FantasyButton'
+import { forwardRef } from 'react'
+import { FantasyImageButton } from '../ui/FantasyImageButton'
 
 export type ActionButtonVariant = 'confirm' | 'undo'
 
 interface ActionButtonProps {
   variant: ActionButtonVariant
   label: string
-  frameSrc?: string
   disabled?: boolean
   highlighted?: boolean
   onClick: () => void
-  icon: ReactNode
-}
-
-const VARIANT_MAP: Record<ActionButtonVariant, FantasyButtonVariant> = {
-  confirm: 'primary',
-  undo: 'secondary',
 }
 
 export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(function ActionButton(
-  { variant, label, frameSrc, disabled = false, highlighted = false, onClick, icon },
+  { variant, label, disabled = false, highlighted = false, onClick },
   ref,
 ) {
+  const imageVariant = variant === 'confirm' ? 'confirm' : 'undo'
+
   return (
-    <FantasyButton
+    <FantasyImageButton
       ref={ref}
-      variant={VARIANT_MAP[variant]}
+      variant={imageVariant}
       size="md"
-      frameSrc={frameSrc}
       disabled={disabled}
       className={[
         'action-btn',
@@ -39,8 +33,7 @@ export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(fun
       aria-label={label}
       onClick={onClick}
     >
-      <span className="action-btn__icon">{icon}</span>
-      <span className="action-btn__label">{label}</span>
-    </FantasyButton>
+      {label}
+    </FantasyImageButton>
   )
 })

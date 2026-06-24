@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { WorldMap } from './components/WorldMap'
 import { PlayScreen } from './screens/PlayScreen'
+import { ProfileScreen } from './screens/ProfileScreen'
 import { ResultScreen, type ResultPayload } from './screens/ResultScreen'
 import { NATURAL_1_1 } from './config/stages'
 import { getActiveStage, getStageById, getStageByWorldId } from './config/stageRegistry'
@@ -9,8 +10,9 @@ import { buildDemoResultPayload } from './utils/demoResultBoard'
 import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
 import { getStageBestScore, markStageComplete, updateStageBestScore } from './utils/gameRecords'
 import { getStageProgressStatus } from './utils/stageProgress'
+import { hasSeenProfile, markProfileSeen } from './utils/profileStorage'
 
-type Screen = 'map' | 'play' | 'result'
+type Screen = 'profile' | 'map' | 'play' | 'result'
 
 const FADE_MS = 420
 
@@ -21,10 +23,11 @@ function initialPreviewResult(): ResultPayload | null {
 }
 
 function initialScreen(): Screen {
-  if (typeof window === 'undefined') return 'map'
+  if (typeof window === 'undefined') return 'profile'
   const params = new URLSearchParams(window.location.search)
   if (isUnlockAllMode() && getStageIdFromUrl()) return 'play'
   if (import.meta.env.DEV && params.get('previewResult') === '1') return 'result'
+  if (!hasSeenProfile()) return 'profile'
   return 'map'
 }
 
@@ -111,8 +114,14 @@ export function AppRoot() {
     transitionTo('map')
   }, [transitionTo])
 
+  const handleProfileStart = useCallback(() => {
+    markProfileSeen()
+    transitionTo('map')
+  }, [transitionTo])
+
   return (
     <div className={`app-root ${visible ? 'app-root--visible' : 'app-root--hidden'}`}>
+      {screen === 'profile' && <ProfileScreen onStart={handleProfileStart} />}
       {screen === 'map' && (
         <WorldMap
           regions={regions}

@@ -1,120 +1,143 @@
-/* ===== FantasyButton (프레임 에셋 + HTML 라벨) ===== */
-.fantasy-btn {
+/* ===== FantasyImageButton (public/assets PNG 프레임 + HTML 라벨) ===== */
+.fantasy-image-button {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   padding: 0;
+  margin: 0;
   cursor: pointer;
-  font-family: var(--font-guide, var(--font-display));
+  font-family: var(--font-game-display);
   color: #fff;
   background: transparent;
   flex-shrink: 0;
+  overflow: visible;
   transition: transform 0.14s ease, filter 0.14s ease, opacity 0.14s ease;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32));
 }
 
-.fantasy-btn__frame {
+.fantasy-image-button__frame {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.fantasy-btn__frame img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center;
   pointer-events: none;
+  user-select: none;
 }
 
-.fantasy-btn__content {
+.fantasy-image-button__label {
   position: relative;
   z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   white-space: nowrap;
   font-weight: 700;
+  line-height: 1.2;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 0 8px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
 }
 
-.fantasy-btn--has-asset {
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32));
-}
-
-.fantasy-btn--primary.fantasy-btn--has-asset {
+.fantasy-image-button--confirm,
+.fantasy-image-button--retry {
   min-width: 168px;
   min-height: 56px;
+  aspect-ratio: 2091 / 637;
 }
 
-.fantasy-btn--secondary.fantasy-btn--has-asset {
+.fantasy-image-button--undo,
+.fantasy-image-button--worldMap,
+.fantasy-image-button--secondary {
   min-width: 154px;
   min-height: 52px;
+  aspect-ratio: 2083 / 600;
 }
 
-.fantasy-btn--has-asset .fantasy-btn__content {
-  padding: 13px 22px;
+.fantasy-image-button--confirm .fantasy-image-button__label,
+.fantasy-image-button--retry .fantasy-image-button__label,
+.fantasy-image-button--undo .fantasy-image-button__label,
+.fantasy-image-button--worldMap .fantasy-image-button__label,
+.fantasy-image-button--secondary .fantasy-image-button__label {
+  padding: 12px 28px 14px;
   font-size: 1rem;
 }
 
-.fantasy-btn--sm.fantasy-btn--has-asset {
+.fantasy-image-button--sm {
   min-width: 108px;
   min-height: 42px;
 }
 
-.fantasy-btn--sm.fantasy-btn--has-asset .fantasy-btn__content {
-  padding: 9px 16px;
+.fantasy-image-button--sm .fantasy-image-button__label {
+  padding: 8px 18px 10px;
   font-size: 0.88rem;
 }
 
-.fantasy-btn--lg.fantasy-btn--has-asset {
+.fantasy-image-button--lg {
   min-width: 200px;
   min-height: 60px;
 }
 
-.fantasy-btn--full {
+.fantasy-image-button--lg .fantasy-image-button__label {
+  padding: 14px 32px 16px;
+  font-size: 1.05rem;
+}
+
+.fantasy-image-button--full {
   display: inline-flex;
   width: 100%;
   justify-content: center;
   align-items: center;
 }
 
-.fantasy-btn--full.fantasy-btn--has-asset {
+.fantasy-image-button--full.fantasy-image-button--confirm,
+.fantasy-image-button--full.fantasy-image-button--retry {
   min-width: 100%;
 }
 
-.fantasy-btn--primary:not(.fantasy-btn--has-asset) {
-  border-radius: 18px;
-  background: linear-gradient(180deg, #6eb5ff, var(--blue-dark));
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.28);
+.fantasy-image-button--confirm:hover:not(:disabled) {
+  filter: brightness(1.07) drop-shadow(0 8px 18px rgba(255, 209, 102, 0.45));
+  transform: scale(1.03);
 }
 
-.fantasy-btn--secondary:not(.fantasy-btn--has-asset) {
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffd166, var(--orange-dark));
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.28);
-}
-
-.fantasy-btn--primary:not(.fantasy-btn--has-asset) .fantasy-btn__content,
-.fantasy-btn--secondary:not(.fantasy-btn--has-asset) .fantasy-btn__content {
-  padding: 14px 22px;
-}
-
-.fantasy-btn:hover:not(:disabled) {
-  filter: brightness(1.06) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.34));
+.fantasy-image-button--undo:hover:not(:disabled),
+.fantasy-image-button--secondary:hover:not(:disabled) {
+  filter: brightness(1.06) drop-shadow(0 8px 16px rgba(120, 180, 220, 0.38));
   transform: scale(1.02);
 }
 
-.fantasy-btn:active:not(:disabled) {
-  transform: scale(0.98) translateY(2px);
-  filter: brightness(0.96);
+.fantasy-image-button--retry:hover:not(:disabled) {
+  filter: brightness(1.08) drop-shadow(0 8px 18px rgba(255, 160, 90, 0.42));
+  transform: scale(1.04);
 }
 
-.fantasy-btn:disabled {
+.fantasy-image-button--worldMap:hover:not(:disabled) {
+  filter: brightness(1.06) drop-shadow(0 8px 16px rgba(90, 200, 140, 0.38));
+  transform: scale(1.02);
+}
+
+.fantasy-image-button:active:not(:disabled) {
+  transform: scale(0.98) translateY(2px);
+  filter: brightness(0.96) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
+}
+
+.fantasy-image-button:disabled {
   opacity: 0.48;
   cursor: not-allowed;
   filter: grayscale(0.35) brightness(0.88);
   transform: none;
+}
+
+.fantasy-image-button:focus-visible {
+  outline: 2px solid var(--fantasy-gold);
+  outline-offset: 3px;
+}
+
+/* FantasyButton 호환 별칭 */
+.fantasy-btn {
+  /* fantasy-image-button과 동일 노드 — 추가 스타일 없음 */
 }
 
 /* ===== FantasyPanel (소형 팝업) ===== */
@@ -202,22 +225,19 @@
   color: color-mix(in srgb, var(--fantasy-deep-brown) 85%, var(--fantasy-stone) 15%);
 }
 
-.game-menu-modal__item.fantasy-btn {
+.game-menu-modal__item.fantasy-image-button {
   width: 100%;
-}
-
-.game-menu-modal__item.fantasy-btn--has-asset {
   min-width: 100%;
 }
 
-.result-screen__actions .fantasy-btn {
+.result-screen__actions .fantasy-image-button {
   flex: 1 1 200px;
   max-width: 280px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fantasy-btn:hover:not(:disabled),
-  .fantasy-btn:active:not(:disabled),
+  .fantasy-image-button:hover:not(:disabled),
+  .fantasy-image-button:active:not(:disabled),
   .fantasy-menu-btn:hover,
   .fantasy-menu-btn:active {
     transform: none;
