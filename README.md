@@ -30,8 +30,8 @@ npm run dev
 ## 월드 (통합 월드맵)
 
 1. 자연수의 숲 (`natural-1-1`)
-2. 정수 동굴 (`integer-1-1`)
-3. 유리수 초원 (`rational-1-1`)
+2. 정수의 동굴 (`integer-1-1`)
+3. 유리수의 초원 (`rational-1-1`)
 4. 실수의 별빛 우주 (`real-1-1`)
 
 해금 순서: natural → integer → rational → real

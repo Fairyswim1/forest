@@ -11,13 +11,13 @@ export const WORLDS: WorldConfig[] = [
   },
   {
     id: 'integer-cave',
-    title: '정수 동굴',
+    title: '정수의 동굴',
     subtitle: '정수의 대소관계',
     theme: 'cave',
   },
   {
     id: 'rational-meadow',
-    title: '유리수 초원',
+    title: '유리수의 초원',
     subtitle: '유리수의 대소관계',
     theme: 'meadow',
     mapBackgroundAsset: ASSETS.rationalMeadowWorldmapBg,

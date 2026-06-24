@@ -35,9 +35,9 @@ export const NATURAL_1_1: StageConfig = {
 export const INTEGER_1_1: StageConfig = {
   id: 'integer-1-1',
   worldId: 'integer-cave',
-  title: '정수 동굴 1-1',
+  title: '정수의 동굴 1-1',
   subtitle: '정수의 대소관계',
-  worldTitle: '정수 동굴',
+  worldTitle: '정수의 동굴',
   cardType: 'integer',
   deckSize: 23,
   boardSize: 23,
@@ -57,9 +57,9 @@ export const INTEGER_1_1: StageConfig = {
 export const RATIONAL_1_1: StageConfig = {
   id: 'rational-1-1',
   worldId: 'rational-meadow',
-  title: '유리수 초원 1-1',
+  title: '유리수의 초원 1-1',
   subtitle: '유리수의 대소관계',
-  worldTitle: '유리수 초원',
+  worldTitle: '유리수의 초원',
   cardType: 'rational',
   deckSize: 23,
   boardSize: 23,
