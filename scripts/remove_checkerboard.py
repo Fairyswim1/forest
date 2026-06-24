@@ -44,14 +44,22 @@ PUBLIC_WORLD_ASSETS: list[tuple[str, str, bool]] = [
 ]
 
 # 결과 화면 프레임·배지 — 체커보드 배경만 투명 처리, 치수 유지(crop=False)
-RESULT_ASSETS = [
+RESULT_FRAME_ASSETS = [
     "result-completion-banner-frame.png",
     "result-run-score-panel-frame.png",
-    "run_badge_1_gold.png",
-    "run_badge_2_mint.png",
-    "run_badge_3_sky.png",
-    "run_badge_4_pink.png",
-    "run_badge_5_purple.png",
+]
+
+# (processed 출력명, public 원본 후보 목록)
+RUN_BADGE_SOURCES: list[tuple[str, list[str]]] = [
+    ("run-badge-01-gold.png", ["run-badge-01-gold.png", "run_badge_1_gold.png"]),
+    ("run-badge-02-mint.png", ["run-badge-02-mint.png", "run_badge_2_mint.png"]),
+    ("run-badge-03-sky.png", ["run-badge-03-sky.png", "run_badge_3_sky.png"]),
+    ("run-badge-04-pink.png", ["run-badge-04-pink.png", "run_badge_4_pink.png"]),
+    ("run-badge-05-purple.png", ["run-badge-05-purple.png", "run_badge_5_purple.png"]),
+    ("run-badge-06-coral.png", ["run-badge-06-coral.png"]),
+    ("run-badge-07-emerald.png", ["run-badge-07-emerald.png"]),
+    ("run-badge-08-sapphire.png", ["run-badge-08-sapphire.png"]),
+    ("run-badge-09-aurora.png", ["run-badge-09-aurora.png"]),
 ]
 
 
@@ -217,6 +225,15 @@ def process_public_src(public_name: str, dest_rel: str, *, crop: bool = True) ->
     return True
 
 
+def process_public_src_candidates(dest_name: str, candidates: list[str], *, crop: bool = True) -> bool:
+    dest_rel = f"result/{dest_name}"
+    for public_name in candidates:
+        if process_public_src(public_name, dest_rel, crop=crop):
+            return True
+    print(f"SKIP run badge: {dest_name} (tried {', '.join(candidates)})")
+    return False
+
+
 def main() -> None:
     count = 0
 
@@ -268,8 +285,12 @@ def main() -> None:
         if process_public_src(public_name, dest_rel, crop=crop):
             count += 1
 
-    for name in RESULT_ASSETS:
+    for name in RESULT_FRAME_ASSETS:
         if process_public_src(name, f"result/{name}", crop=False):
+            count += 1
+
+    for dest_name, candidates in RUN_BADGE_SOURCES:
+        if process_public_src_candidates(dest_name, candidates, crop=False):
             count += 1
 
     print(f"\nDone - {count} asset(s) processed/copied.")

@@ -1656,11 +1656,29 @@ body {
   top: -14px;
   left: -12px;
   z-index: 7;
-  width: clamp(28px, 3vw, 36px);
-  height: clamp(28px, 3vw, 36px);
+  width: clamp(28px, 3vw, 38px);
+  height: clamp(28px, 3vw, 38px);
   object-fit: contain;
   pointer-events: none;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.32));
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.trail-tile--run-colored .trail-tile__run-badge-img {
+  pointer-events: auto;
+}
+
+.trail-tile--run-highlighted.trail-tile--run-colored .trail-tile__img {
+  box-shadow:
+    0 0 0 3px var(--run-color),
+    0 0 14px var(--run-glow),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.trail-tile--run-highlighted .trail-tile__run-badge-img,
+.trail-tile__run-badge-img--highlighted {
+  transform: scale(1.03);
+  filter: drop-shadow(0 0 8px var(--run-glow)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.32));
 }
 
 /* In result mode: subtle green glow only — numbers stay readable */

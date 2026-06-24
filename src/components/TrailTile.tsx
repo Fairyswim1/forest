@@ -26,8 +26,11 @@ interface TrailTileProps {
   isScoringRun?: boolean
   runColor?: string
   runGlow?: string
+  runId?: number
+  runHighlighted?: boolean
   runBadgeSrc?: string
   runBadgeLabel?: string
+  onRunHover?: (runId: number | null) => void
 }
 
 function tileImage(state: TileState): string {
@@ -56,8 +59,11 @@ export function TrailTile({
   isScoringRun = false,
   runColor,
   runGlow,
+  runId,
+  runHighlighted = false,
   runBadgeSrc,
   runBadgeLabel,
+  onRunHover,
 }: TrailTileProps) {
   const hasRunColor = resultMode && isScoringRun && runColor
 
@@ -82,6 +88,7 @@ export function TrailTile({
         dimmed ? 'trail-tile--dimmed' : '',
         staggerStars && state === 'success' && isScoringRun ? 'trail-tile--stagger-fx' : '',
         hasRunColor ? 'trail-tile--run-colored' : '',
+        runHighlighted ? 'trail-tile--run-highlighted' : '',
         resultMode && state === 'success' && isScoringRun && !hasRunColor
           ? 'trail-tile--result-success'
           : '',
@@ -98,13 +105,35 @@ export function TrailTile({
       disabled={disabled || cell !== null}
       aria-label={`타일 ${id}${cell !== null ? `: ${cell.displayValue}` : ''}`}
       data-tile-id={id}
+      data-run-id={runId}
+      onMouseEnter={
+        resultMode && runId !== undefined && isScoringRun ? () => onRunHover?.(runId) : undefined
+      }
+      onMouseLeave={resultMode && runId !== undefined ? () => onRunHover?.(null) : undefined}
     >
       {runBadgeSrc && (
         <img
-          className="trail-tile__run-badge-img"
+          className={[
+            'trail-tile__run-badge-img',
+            runHighlighted ? 'trail-tile__run-badge-img--highlighted' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
           src={runBadgeSrc}
           alt={runBadgeLabel ? `구간 ${runBadgeLabel}` : ''}
           draggable={false}
+          onMouseEnter={
+            runId !== undefined ? (event) => {
+              event.stopPropagation()
+              onRunHover?.(runId)
+            } : undefined
+          }
+          onMouseLeave={
+            runId !== undefined ? (event) => {
+              event.stopPropagation()
+              onRunHover?.(null)
+            } : undefined
+          }
         />
       )}
 

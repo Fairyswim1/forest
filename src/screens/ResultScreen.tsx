@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import type { GameBoard } from '../types/board'
 import type { StageConfig } from '../types/stage'
 import { getWorldById } from '../config/worlds'
@@ -55,6 +55,7 @@ export function ResultScreen({
   const breakDebugLines = useMemo(() => formatBreakDebugLines(result), [result])
 
   const scoringRuns = useMemo(() => buildScoringRunViews(result.runs, board), [result.runs, board])
+  const [highlightedRunId, setHighlightedRunId] = useState<number | null>(null)
 
   return (
     <div
@@ -91,9 +92,16 @@ export function ResultScreen({
           board={board}
           result={result}
           scoringRuns={scoringRuns}
+          highlightedRunId={highlightedRunId}
+          onHighlightRun={setHighlightedRunId}
         />
 
-        <ResultRunScorePanel scoringRuns={scoringRuns} totalScore={result.finalScore} />
+        <ResultRunScorePanel
+          scoringRuns={scoringRuns}
+          totalScore={result.finalScore}
+          highlightedRunId={highlightedRunId}
+          onHighlightRun={setHighlightedRunId}
+        />
       </main>
 
       {debug && (

@@ -6,14 +6,20 @@ import { RunBadge } from './RunBadge'
 interface ResultRunScorePanelProps {
   scoringRuns: ScoringRunView[]
   totalScore: number
+  highlightedRunId: number | null
+  onHighlightRun: (runId: number | null) => void
 }
 
 /**
- * 오른쪽 구간별 점수판 — result-run-score-panel-frame.png(장식 프레임) 위에
- * 제목/구간 행/총점을 HTML/CSS로 오버레이한다. scoringRuns가 보드와 공유하는
- * source of truth라 보드 배지와 1:1로 대응된다.
+ * 오른쪽 구간별 점수판 — scoringRuns가 보드와 공유하는 source of truth라
+ * 보드 시작 배지와 1:1로 대응된다.
  */
-export function ResultRunScorePanel({ scoringRuns, totalScore }: ResultRunScorePanelProps) {
+export function ResultRunScorePanel({
+  scoringRuns,
+  totalScore,
+  highlightedRunId,
+  onHighlightRun,
+}: ResultRunScorePanelProps) {
   return (
     <aside className="result-score-panel" aria-label="구간별 점수">
       <img
@@ -33,15 +39,29 @@ export function ResultRunScorePanel({ scoringRuns, totalScore }: ResultRunScoreP
             {scoringRuns.map((view) => (
               <li
                 key={view.id}
-                className="result-score-panel__row"
+                data-run-id={view.id}
+                className={[
+                  'result-score-panel__row',
+                  highlightedRunId === view.id ? 'result-score-panel__row--highlighted' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
                 style={
                   {
                     '--run-color': view.color,
                     '--run-glow': view.glow,
                   } as CSSProperties
                 }
+                onMouseEnter={() => onHighlightRun(view.id)}
+                onMouseLeave={() => onHighlightRun(null)}
               >
-                <RunBadge src={view.badge} label={`구간 ${view.id}`} size="row" />
+                <RunBadge
+                  src={view.badge}
+                  label={`구간 ${view.id}`}
+                  runId={view.id}
+                  size="row"
+                  highlighted={highlightedRunId === view.id}
+                />
                 <span className="result-score-panel__values">
                   {formatRunDisplayValuesArrow(view.displayValues)}
                 </span>

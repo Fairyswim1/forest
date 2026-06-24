@@ -53,12 +53,6 @@ export const ASSETS = {
   // 결과 화면 프레임 (체커보드 배경 제거된 투명 PNG — 콘텐츠는 HTML/CSS로 오버레이)
   resultBannerFrame: '/assets/processed/result/result-completion-banner-frame.png',
   resultScorePanelFrame: '/assets/processed/result/result-run-score-panel-frame.png',
-  // 성공 구간 번호 배지 (run 1~5 → gold·mint·sky·pink·purple)
-  runBadgeGold: '/assets/processed/result/run_badge_1_gold.png',
-  runBadgeMint: '/assets/processed/result/run_badge_2_mint.png',
-  runBadgeSky: '/assets/processed/result/run_badge_3_sky.png',
-  runBadgePink: '/assets/processed/result/run_badge_4_pink.png',
-  runBadgePurple: '/assets/processed/result/run_badge_5_purple.png',
 } as const
 
 export type TileId = number

@@ -17,9 +17,18 @@ interface ResultBoardPanelProps {
   board: GameBoard
   result: GameResult
   scoringRuns: ScoringRunView[]
+  highlightedRunId: number | null
+  onHighlightRun: (runId: number | null) => void
 }
 
-export function ResultBoardPanel({ layout, board, result, scoringRuns }: ResultBoardPanelProps) {
+export function ResultBoardPanel({
+  layout,
+  board,
+  result,
+  scoringRuns,
+  highlightedRunId,
+  onHighlightRun,
+}: ResultBoardPanelProps) {
   const positions = useMemo(() => getTilePositions(layout), [layout])
   const tileRunMap = useMemo(() => buildTileScoringRunMap(scoringRuns), [scoringRuns])
   const breakBeforeTileIds = useMemo(
@@ -37,10 +46,23 @@ export function ResultBoardPanel({ layout, board, result, scoringRuns }: ResultB
         {scoringRuns.map((view) => (
           <span
             key={view.id}
-            className="result-board-panel__legend-chip"
-            style={{ '--run-color': view.color } as CSSProperties}
+            className={[
+              'result-board-panel__legend-chip',
+              highlightedRunId === view.id ? 'result-board-panel__legend-chip--highlighted' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+            style={{ '--run-color': view.color, '--run-glow': view.glow } as CSSProperties}
+            onMouseEnter={() => onHighlightRun(view.id)}
+            onMouseLeave={() => onHighlightRun(null)}
           >
-            <RunBadge src={view.badge} label={`구간 ${view.id}`} size="row" />
+            <RunBadge
+              src={view.badge}
+              label={`구간 ${view.id}`}
+              runId={view.id}
+              size="row"
+              highlighted={highlightedRunId === view.id}
+            />
             <span>{view.length}칸 · +{view.score}점</span>
           </span>
         ))}
@@ -63,6 +85,7 @@ export function ResultBoardPanel({ layout, board, result, scoringRuns }: ResultB
             const isIsolated = cell !== null && !isSuccess
             const runTileIndex = runView ? runView.tileIds.indexOf(pos.id) : -1
             const isRunStart = runTileIndex === 0
+            const isHighlighted = runView !== undefined && highlightedRunId === runView.id
 
             let state: 'empty' | 'selected' | 'placed' | 'success' = 'empty'
             if (isSuccess) state = 'success'
@@ -88,8 +111,11 @@ export function ResultBoardPanel({ layout, board, result, scoringRuns }: ResultB
                 isRunStart={isRunStart}
                 runColor={runView?.color}
                 runGlow={runView?.glow}
+                runId={runView?.id}
+                runHighlighted={isHighlighted}
                 runBadgeSrc={isRunStart ? runView?.badge : undefined}
                 runBadgeLabel={isRunStart ? String(runView?.id ?? '') : undefined}
+                onRunHover={onHighlightRun}
               />
             )
           })}

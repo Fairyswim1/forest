@@ -1,26 +1,16 @@
-import { ASSETS, type TileId } from '../types/game'
+import {
+  getScoringRunTheme,
+  type RunColorToken,
+  type ScoringRunTheme,
+} from '../config/runBadges'
+import type { TileId } from '../types/game'
 import type { GameBoard } from '../types/board'
 import { scoreRun, type Run } from './scoring'
 
+export { getScoringRunTheme, type RunColorToken, type ScoringRunTheme }
+export { RUN_BADGE_ASSETS, getRunBadgeAsset } from '../config/runBadges'
+
 export const CIRCLED_RUN_LABELS = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'] as const
-
-/**
- * 성공 구간(run) 색상 — 보드 테두리·시작 배지·점수판 행·점수판 배지가 모두 동일
- * 토큰을 공유한다. badge는 구간 번호 배지 PNG 경로.
- */
-export const SCORING_RUN_THEMES = [
-  { token: 'gold', color: '#e8b84a', glow: 'rgba(232, 184, 74, 0.55)', badge: ASSETS.runBadgeGold },
-  { token: 'mint', color: '#5ecfaa', glow: 'rgba(94, 207, 170, 0.5)', badge: ASSETS.runBadgeMint },
-  { token: 'sky', color: '#5eb8f0', glow: 'rgba(94, 184, 240, 0.5)', badge: ASSETS.runBadgeSky },
-  { token: 'pink', color: '#f08ac8', glow: 'rgba(240, 138, 200, 0.5)', badge: ASSETS.runBadgePink },
-  { token: 'purple', color: '#a878e8', glow: 'rgba(168, 120, 232, 0.5)', badge: ASSETS.runBadgePurple },
-] as const
-
-export type RunColorToken = (typeof SCORING_RUN_THEMES)[number]['token']
-
-export function getScoringRunTheme(scoringRunIndex: number) {
-  return SCORING_RUN_THEMES[scoringRunIndex % SCORING_RUN_THEMES.length]!
-}
 
 export function getScoringRunLabel(scoringRunIndex: number): string {
   return CIRCLED_RUN_LABELS[scoringRunIndex] ?? `${scoringRunIndex + 1}`
