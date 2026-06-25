@@ -662,7 +662,7 @@ body {
 .stage-guide-header {
   position: absolute;
   z-index: 2;
-  top: 8.5%;
+  top: 9%;
   left: 17%;
   right: 17%;
   display: flex;
@@ -670,28 +670,29 @@ body {
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  gap: 4px;
+  gap: 3px;
   min-width: 0;
   overflow: visible;
+  padding-top: clamp(6px, 0.9vh, 10px);
 }
 
 .stage-guide-header .world-label {
   margin: 0;
-  font-family: var(--font-guide-body);
-  font-size: clamp(13px, 1.05vw, 15px);
-  font-weight: 600;
+  font-family: var(--font-game-display);
+  font-size: clamp(0.82rem, 1.05vw, 0.96rem);
+  font-weight: 400;
   color: var(--fantasy-forest-green);
   letter-spacing: 0.01em;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .stage-guide-header .stage-title {
   margin: 0;
-  font-family: var(--font-guide-title);
-  font-size: clamp(24px, 2.4vw, 28px);
-  font-weight: 700;
+  font-family: var(--font-game-title);
+  font-size: clamp(1.15rem, 2.1vw, 1.45rem);
+  font-weight: 400;
   color: var(--fantasy-warm-brown);
-  line-height: 1.25;
+  line-height: 1.22;
   max-width: 100%;
   overflow-wrap: break-word;
   word-break: keep-all;
@@ -699,11 +700,11 @@ body {
 
 .stage-guide-header .stage-subtitle {
   margin: 0;
-  font-family: var(--font-guide-body);
-  font-size: clamp(14px, 1.15vw, 16px);
-  font-weight: 500;
-  color: color-mix(in srgb, var(--fantasy-deep-brown) 72%, var(--fantasy-stone) 28%);
+  font-family: var(--font-game-body);
+  font-size: clamp(0.86rem, 1.05vw, 0.98rem);
+  font-weight: 400;
   line-height: 1.45;
+  color: color-mix(in srgb, var(--fantasy-deep-brown) 72%, var(--fantasy-stone) 28%);
   max-width: 100%;
   overflow-wrap: break-word;
   word-break: keep-all;
@@ -712,7 +713,7 @@ body {
 .stage-guide-body {
   position: absolute;
   z-index: 1;
-  top: 22%;
+  top: 23.5%;
   left: 17%;
   right: 17%;
   bottom: 16%;
@@ -731,35 +732,13 @@ body {
   scrollbar-color: rgba(196, 154, 60, 0.45) transparent;
 }
 
-/* 스테이지 안내 — GuideSection 공통 레이아웃 + 타이포 */
+/* 스테이지 안내 — GuideSection 공통 레이아웃 상속 */
 .stage-guide-modal .guide-section {
-  padding: clamp(11px, 1.45vh, 15px) 0;
+  padding: clamp(8px, 1.1vh, 12px) 0;
 }
 
 .stage-guide-modal .guide-section__title {
-  margin-bottom: 5px;
-  font-family: var(--font-guide-title);
-  font-size: clamp(16px, 1.25vw, 18px);
-  font-weight: 700;
-  color: var(--fantasy-warm-brown);
-  line-height: 1.32;
-}
-
-.stage-guide-modal .guide-section__body {
-  font-family: var(--font-guide-body);
-  font-size: clamp(15px, 1.15vw, 17px);
-  font-weight: 500;
-  color: var(--fantasy-deep-brown);
-  line-height: 1.55;
-}
-
-.stage-guide-modal .guide-section__description {
-  margin-top: 6px;
-  font-family: var(--font-guide-body);
-  font-size: clamp(14px, 1.02vw, 15px);
-  font-weight: 400;
-  color: color-mix(in srgb, var(--fantasy-deep-brown) 78%, var(--fantasy-stone) 22%);
-  line-height: 1.58;
+  color: var(--fantasy-leaf-green, #5a7a32);
 }
 
 .stage-guide-modal .guide-section__body .math-rich-text,
@@ -796,9 +775,10 @@ body {
 
 @media (max-height: 720px) {
   .stage-guide-header {
-    top: 9%;
+    top: 9.5%;
     left: 18%;
     right: 18%;
+    padding-top: clamp(8px, 1vh, 12px);
   }
 
   .stage-guide-body {
@@ -902,7 +882,7 @@ body {
 .guide-header-zone {
   position: absolute;
   z-index: 2;
-  top: 12.5%;
+  top: 9.5%;
   left: 17%;
   right: 17%;
   min-width: 0;
@@ -917,7 +897,7 @@ body {
 .guide-header__banner-wrap {
   position: relative;
   width: min(92%, 100%);
-  height: clamp(72px, 10.5vw, 88px);
+  height: clamp(78px, 11vw, 94px);
   margin: 0 auto;
 }
 
@@ -937,16 +917,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
-  padding: clamp(11px, 1.5vh, 15px) clamp(16px, 14%, 24px) clamp(9px, 1.1vh, 13px);
-  gap: 3px;
+  padding: clamp(8px, 1.1vh, 12px) clamp(16px, 14%, 24px) clamp(6px, 0.8vh, 10px);
+  gap: 4px;
 }
 
 .guide-header__label {
   margin: 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.68rem, 0.95vw, 0.8rem);
+  font-family: var(--font-game-display);
+  font-size: clamp(0.82rem, 1.15vw, 0.98rem);
   font-weight: 400;
   color: #3a8a55;
   letter-spacing: 0.03em;
@@ -955,8 +935,8 @@ body {
 
 .guide-header__title {
   margin: 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.82rem, 1.2vw, 1.02rem);
+  font-family: var(--font-game-title);
+  font-size: clamp(0.95rem, 1.45vw, 1.2rem);
   font-weight: 400;
   line-height: 1.2;
   color: #6a4410;
@@ -969,7 +949,7 @@ body {
 .guide-body-scroll-area {
   position: absolute;
   z-index: 1;
-  top: 27%;
+  top: 26%;
   left: 17%;
   right: 17%;
   bottom: 15.5%;
@@ -978,8 +958,9 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: clamp(2px, 0.4vh, 4px);
-  padding: clamp(6px, 0.8vh, 10px) clamp(6px, 1vw, 10px) clamp(4px, 0.6vh, 8px);
+  justify-content: flex-start;
+  gap: 0;
+  padding: clamp(4px, 0.5vh, 8px) clamp(4px, 0.8vw, 8px) clamp(4px, 0.6vh, 8px);
   box-sizing: border-box;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -988,39 +969,40 @@ body {
 
 .guide-section {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  column-gap: 12px;
+  grid-template-columns: 50px minmax(0, 1fr);
+  column-gap: 10px;
   row-gap: 0;
-  align-items: start;
-  padding: clamp(10px, 1.35vh, 15px) clamp(2px, 0.4vw, 4px);
-  border-bottom: 1px solid rgba(196, 154, 60, 0.22);
+  align-items: center;
+  padding: clamp(7px, 1vh, 11px) clamp(2px, 0.4vw, 4px);
+  border-bottom: none;
   text-align: left;
   max-width: 100%;
+  flex-shrink: 0;
 }
 
 .guide-section:first-child {
-  padding-top: 0;
+  padding-top: clamp(2px, 0.3vh, 4px);
 }
 
 .guide-section:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+  padding-bottom: clamp(2px, 0.3vh, 4px);
 }
 
 .guide-icon-image {
   display: block;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   object-fit: contain;
   flex-shrink: 0;
-  mix-blend-mode: multiply;
-  filter: drop-shadow(0 1px 2px rgba(88, 62, 32, 0.1));
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 2px 4px rgba(88, 62, 32, 0.14));
 }
 
 .guide-section__icon {
   grid-column: 1;
-  grid-row: 1 / -1;
-  align-self: start;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
   margin-top: 0;
 }
 
@@ -1030,39 +1012,39 @@ body {
 }
 
 .guide-section__title {
-  margin: 0 0 5px;
-  font-family: var(--font-guide);
-  font-size: clamp(1rem, 1.12vw, 1.2rem);
+  margin: 0 0 4px;
+  font-family: var(--font-game-display);
+  font-size: clamp(0.94rem, 1.08vw, 1.08rem);
   font-weight: 400;
   color: var(--fantasy-leaf-green, #5a7a32);
-  line-height: 1.3;
+  line-height: 1.28;
 }
 
 .guide-section__body {
   margin: 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.9rem, 1vw, 1rem);
-  line-height: 1.55;
+  font-family: var(--font-game-body);
+  font-size: clamp(0.86rem, 0.98vw, 0.96rem);
+  line-height: 1.5;
   color: var(--fantasy-deep-brown);
   overflow-wrap: break-word;
   word-break: keep-all;
 }
 
 .guide-section__note {
-  margin: 6px 0 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.82rem, 0.92vw, 0.9rem);
-  line-height: 1.5;
+  margin: 5px 0 0;
+  font-family: var(--font-game-body);
+  font-size: clamp(0.8rem, 0.9vw, 0.88rem);
+  line-height: 1.48;
   color: color-mix(in srgb, var(--fantasy-forest-green, #3d8a58) 78%, var(--fantasy-deep-brown) 22%);
   overflow-wrap: break-word;
   word-break: keep-all;
 }
 
 .guide-section__description {
-  margin: 6px 0 0;
-  font-family: var(--font-guide);
-  font-size: clamp(0.84rem, 0.95vw, 0.94rem);
-  line-height: 1.55;
+  margin: 5px 0 0;
+  font-family: var(--font-game-body);
+  font-size: clamp(0.82rem, 0.92vw, 0.9rem);
+  line-height: 1.5;
   color: color-mix(in srgb, var(--fantasy-deep-brown) 80%, var(--fantasy-stone) 20%);
   overflow-wrap: break-word;
   word-break: keep-all;
@@ -1126,7 +1108,7 @@ body {
 
 @media (max-height: 720px) {
   .guide-header-zone {
-    top: 13%;
+    top: 10%;
     left: 18%;
     right: 18%;
   }

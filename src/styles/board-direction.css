@@ -10,7 +10,7 @@
 }
 
 .board-direction-layer--result {
-  opacity: 0.72;
+  opacity: 0.82;
 }
 
 .board-direction-marker {
@@ -21,82 +21,108 @@
 }
 
 .board-direction-marker--play {
-  opacity: 0.88;
+  opacity: 1;
 }
 
 .board-direction-marker--result {
-  opacity: 0.68;
-  filter: saturate(0.92);
+  opacity: 0.78;
 }
 
 .board-direction-marker__badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 8px 4px;
+  gap: 5px;
+  padding: 4px 10px 5px;
   border-radius: 999px;
-  border: 1.5px solid rgba(201, 151, 26, 0.72);
+  border: 2px solid rgba(232, 184, 74, 0.95);
   background: linear-gradient(
     180deg,
-    rgba(255, 249, 239, 0.94) 0%,
-    rgba(248, 230, 196, 0.88) 100%
+    rgba(255, 252, 245, 0.98) 0%,
+    rgba(255, 235, 190, 0.94) 100%
   );
   box-shadow:
-    0 2px 8px rgba(106, 68, 16, 0.22),
-    0 0 10px rgba(255, 209, 102, 0.28);
+    0 0 0 1px rgba(106, 68, 16, 0.18),
+    0 3px 10px rgba(0, 0, 0, 0.32),
+    0 0 14px rgba(255, 209, 102, 0.45);
 }
 
 .board-direction-marker--start .board-direction-marker__badge {
-  border-color: rgba(94, 184, 120, 0.75);
+  border-color: rgba(72, 190, 118, 0.95);
+  background: linear-gradient(
+    180deg,
+    rgba(236, 255, 244, 0.98) 0%,
+    rgba(190, 240, 210, 0.92) 100%
+  );
   box-shadow:
-    0 2px 8px rgba(40, 100, 60, 0.2),
-    0 0 10px rgba(120, 220, 160, 0.25);
+    0 0 0 1px rgba(30, 90, 55, 0.2),
+    0 3px 10px rgba(0, 0, 0, 0.28),
+    0 0 14px rgba(120, 230, 160, 0.5);
 }
 
 .board-direction-marker--goal .board-direction-marker__badge {
-  border-color: rgba(255, 209, 102, 0.85);
+  border-color: rgba(255, 209, 102, 1);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 248, 220, 0.98) 0%,
+    rgba(255, 220, 140, 0.94) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(120, 80, 10, 0.22),
+    0 3px 10px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(255, 209, 102, 0.55);
 }
 
 .board-direction-marker__gem {
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
   border-radius: 2px;
   transform: rotate(45deg);
-  background: linear-gradient(135deg, #ffe9a8 0%, #e8b84a 55%, #c9971a 100%);
-  box-shadow: 0 0 6px rgba(255, 209, 102, 0.65);
+  background: linear-gradient(135deg, #fff2c0 0%, #ffd166 45%, #e8b84a 100%);
+  box-shadow: 0 0 8px rgba(255, 209, 102, 0.85);
   flex-shrink: 0;
 }
 
 .board-direction-marker__label {
   font-family: var(--font-game-display, var(--font-display));
-  font-size: clamp(0.58rem, 0.72vw, 0.68rem);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #5a3a12;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+  font-size: clamp(0.64rem, 0.82vw, 0.76rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #3d2810;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 6px rgba(255, 255, 255, 0.55);
   white-space: nowrap;
 }
 
+.board-direction-marker--start .board-direction-marker__label {
+  color: #1f5c38;
+}
+
 .board-direction-marker__arrow-svg {
-  width: clamp(34px, 4.2vw, 44px);
+  width: clamp(40px, 5vw, 52px);
   height: auto;
   overflow: visible;
-  filter: drop-shadow(0 2px 6px rgba(106, 68, 16, 0.28));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
 }
 
 .board-direction-marker__arrow-svg path {
   fill: none;
-  stroke: #c9971a;
-  stroke-width: 3;
+  stroke: #e8b84a;
+  stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
   paint-order: stroke fill;
-  filter: drop-shadow(0 0 4px rgba(255, 209, 102, 0.45));
+  filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.65));
+}
+
+.board-direction-marker--play .board-direction-marker__arrow-svg path {
+  stroke: #f0c040;
+  stroke-width: 4.5;
 }
 
 .board-direction-marker--result .board-direction-marker__arrow-svg path {
-  stroke-width: 2.5;
-  opacity: 0.85;
+  stroke-width: 3.5;
+  opacity: 0.9;
 }
 
 /* ===== 첫 턴 방향 안내 ===== */
@@ -124,7 +150,7 @@
   margin: 0;
   font-family: var(--font-game-display, var(--font-display));
   font-size: clamp(0.82rem, 1vw, 0.92rem);
-  font-weight: 700;
+  font-weight: 400;
   color: #5a3a12;
   text-align: center;
   line-height: 1.45;

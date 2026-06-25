@@ -1,4 +1,5 @@
 import { GUIDE_ICONS } from '../assets/uiAssets'
+import { TURN_SECONDS } from '../types/game'
 
 export interface GuideRuleSection {
   id: string
@@ -31,7 +32,7 @@ export const GUIDE_RULE_SECTIONS: GuideRuleSection[] = [
     id: 'undo-time',
     icon: GUIDE_ICONS.undoTime,
     title: '되돌리기 · 시간',
-    body: '카드를 놓은 뒤 마음에 들지 않으면 “다시 놓기”로 이번 턴을 취소할 수 있어요. 각 턴에는 제한 시간이 있습니다.',
+    body: `카드를 놓은 뒤 마음에 들지 않으면 “다시 놓기”로 이번 턴을 취소할 수 있어요. 각 턴에는 ${TURN_SECONDS}초의 제한 시간이 있습니다. 시간이 끝나면 도착 쪽 빈 칸부터 거꾸로 찾아, 카드가 자동으로 놓여요.`,
   },
   {
     id: 'world',

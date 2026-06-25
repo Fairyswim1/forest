@@ -124,36 +124,26 @@ body {
 }
 
 /* ===== 스테이지 안내 모달 ===== */
-.stage-guide-modal .world-label {
-  font-family: var(--font-guide-body);
-  font-weight: 600;
-}
-
-.stage-guide-modal .stage-title {
-  font-family: var(--font-guide-title);
-  font-weight: 700;
-}
-
+.stage-guide-modal .world-label,
+.stage-guide-modal .stage-title,
 .stage-guide-modal .stage-subtitle,
+.stage-guide-modal .guide-section__title,
 .stage-guide-modal .guide-section__body,
-.stage-guide-modal .guide-section__description {
-  font-family: var(--font-guide-body);
-  line-height: 1.55;
-}
-
-.stage-guide-modal .guide-section__title {
-  font-family: var(--font-guide-title);
-  font-weight: 700;
+.stage-guide-modal .guide-section__description,
+.stage-guide-modal .guide-section__note {
+  font-family: inherit;
 }
 
 .stage-guide-footer .fantasy-image-button__label {
   font-family: var(--font-game-display);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* ===== 게임 방법 모달 ===== */
-/* ===== 게임 방법 모달 ===== */
-.guide-body-scroll-area {
+.guide-body-scroll-area,
+.guide-section__body,
+.guide-section__description,
+.guide-section__note {
   font-family: var(--font-game-body);
 }
 
@@ -163,15 +153,10 @@ body {
   font-weight: 400;
 }
 
-.guide-header__title {
+.guide-header__title,
+.stage-guide-modal .stage-title {
   font-family: var(--font-game-title);
   font-weight: 400;
-  letter-spacing: 0;
-}
-
-.guide-section__body {
-  font-family: var(--font-game-body);
-  line-height: 1.6;
 }
 
 .guide-footer-zone .fantasy-image-button__label {
