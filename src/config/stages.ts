@@ -8,6 +8,7 @@ import {
 } from '../game/cards/generators'
 import { integerFeedback, naturalFeedback } from '../utils/resultFeedback'
 import { rationalFeedback, sqrtFeedback } from './stageFeedback'
+import { STAGE_GUIDE_STRATEGY_DEFAULT } from './stageGuideCopy'
 import type { StageConfig } from '../types/stage'
 
 export const NATURAL_1_1: StageConfig = {
@@ -25,8 +26,8 @@ export const NATURAL_1_1: StageConfig = {
   guide: {
     numberRangeLabel: '1부터 30까지의 자연수',
     numberRangeDescription: '0, 음수, 분수는 나오지 않습니다.',
-    objectiveText: '작은 수에서 큰 수로 이어지는 길을 길게 만드세요.',
-    strategyHint: '작은 수는 앞쪽, 큰 수는 뒤쪽에 둘 자리를 남겨 두세요.',
+    objectiveText: STAGE_GUIDE_STRATEGY_DEFAULT,
+    strategyHint: STAGE_GUIDE_STRATEGY_DEFAULT,
   },
   feedback: naturalFeedback,
   cardGenerator: generateNaturalDeck,
@@ -47,8 +48,8 @@ export const INTEGER_1_1: StageConfig = {
   guide: {
     numberRangeLabel: '-20부터 20까지의 정수',
     numberRangeDescription: '음수, 0, 양수가 모두 나올 수 있습니다.',
-    objectiveText: '작은 수에서 큰 수로 이어지는 길을 길게 만드세요.',
-    strategyHint: '음수는 절댓값이 클수록 더 작은 수입니다.',
+    objectiveText: STAGE_GUIDE_STRATEGY_DEFAULT,
+    strategyHint: `${STAGE_GUIDE_STRATEGY_DEFAULT}\n음수는 절댓값이 클수록 더 작은 수입니다.`,
   },
   feedback: integerFeedback,
   cardGenerator: generateIntegerDeck,
@@ -69,8 +70,8 @@ export const RATIONAL_1_1: StageConfig = {
   guide: {
     numberRangeLabel: '-3부터 3 사이의 유리수',
     numberRangeDescription: '정수, 분수, 소수가 함께 나올 수 있습니다.',
-    objectiveText: '작은 수부터 큰 수까지 이어지는 길을 길게 만드세요.',
-    strategyHint: '분수와 소수는 서로 다른 모습이어도 같은 값일 수 있습니다.',
+    objectiveText: STAGE_GUIDE_STRATEGY_DEFAULT,
+    strategyHint: `${STAGE_GUIDE_STRATEGY_DEFAULT}\n분수와 소수는 서로 다른 모습이어도 같은 값일 수 있습니다.`,
   },
   feedback: rationalFeedback,
   cardGenerator: generateRationalDeck,
@@ -91,9 +92,8 @@ export const REAL_1_1: StageConfig = {
   guide: {
     numberRangeLabel: '$0$부터 $\\sqrt{10}$까지의 수',
     numberRangeDescription: '정수와 제곱근이 함께 나옵니다.',
-    objectiveText: '작은 수부터 큰 수까지 이어지는 길을 길게 만드세요.',
-    strategyHint:
-      '$\\sqrt{n}$의 크기는 $n$이 어떤 두 완전제곱수 사이에 있는지\n생각하면 알 수 있습니다.',
+    objectiveText: STAGE_GUIDE_STRATEGY_DEFAULT,
+    strategyHint: `${STAGE_GUIDE_STRATEGY_DEFAULT}\n$\\sqrt{n}$의 크기는 $n$이 어떤 두 완전제곱수 사이에 있는지\n생각하면 알 수 있습니다.`,
   },
   feedback: sqrtFeedback,
   cardGenerator: generateBasicSqrtDeck,
@@ -114,8 +114,8 @@ export const REAL_1_2: StageConfig = {
   guide: {
     numberRangeLabel: '$-\\sqrt{7}$부터 $\\sqrt{5}$까지의 수',
     numberRangeDescription: '음의 제곱근까지 포함한 실수가 나옵니다.',
-    objectiveText: '작은 수부터 큰 수까지 이어지는 길을 길게 만드세요.',
-    strategyHint: '음의 제곱근은 절댓값이 클수록 더 작은 수입니다.',
+    objectiveText: STAGE_GUIDE_STRATEGY_DEFAULT,
+    strategyHint: `${STAGE_GUIDE_STRATEGY_DEFAULT}\n음의 제곱근은 절댓값이 클수록 더 작은 수입니다.`,
   },
   feedback: integerFeedback,
   cardGenerator: generateRealDeck,
@@ -136,9 +136,8 @@ export const REAL_1_3: StageConfig = {
   guide: {
     numberRangeLabel: '$\\sqrt{2}$, $\\sqrt{3}$, $\\pi$ 등의 무리수',
     numberRangeDescription: '제곱근과 원주율을 유리수 기준점과 함께 비교합니다.',
-    objectiveText: '작은 수부터 큰 수까지 이어지는 길을 길게 만드세요.',
-    strategyHint:
-      '$\\pi \\approx 3.14$, $\\sqrt{2} \\approx 1.41$처럼 어림값을 기준점과 비교해 보세요.',
+    objectiveText: STAGE_GUIDE_STRATEGY_DEFAULT,
+    strategyHint: `${STAGE_GUIDE_STRATEGY_DEFAULT}\n$\\pi \\approx 3.14$, $\\sqrt{2} \\approx 1.41$처럼 어림값을 기준점과 비교해 보세요.`,
   },
   feedback: integerFeedback,
   cardGenerator: generateRealDeck,

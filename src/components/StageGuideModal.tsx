@@ -2,6 +2,12 @@ import { useEffect, useRef } from 'react'
 import type { StageConfig } from '../types/stage'
 import { ASSETS } from '../types/game'
 import { GUIDE_ICONS } from '../assets/uiAssets'
+import {
+  STAGE_GUIDE_OBJECTIVE_MAIN,
+  STAGE_GUIDE_OBJECTIVE_SUB,
+  STAGE_GUIDE_OBJECTIVE_TITLE,
+  STAGE_GUIDE_STRATEGY_DEFAULT,
+} from '../config/stageGuideCopy'
 import { MathRichText } from './MathRichText'
 import { FantasyImageButton } from './ui/FantasyImageButton'
 import { GuideSection } from './ui/GuideSection'
@@ -76,15 +82,14 @@ export function StageGuideModal({ stage, variant, backgroundUrl, onConfirm }: St
               <MathRichText text={guide.numberRangeLabel} />
             </GuideSection>
 
-            <GuideSection icon={GUIDE_ICONS.goal} title="목표">
-              <MathRichText text={guide.objectiveText} />
+            <GuideSection icon={GUIDE_ICONS.goal} title={STAGE_GUIDE_OBJECTIVE_TITLE}>
+              <p>{STAGE_GUIDE_OBJECTIVE_MAIN}</p>
+              <p className="guide-section__note">{STAGE_GUIDE_OBJECTIVE_SUB}</p>
             </GuideSection>
 
-            {guide.strategyHint && (
-              <GuideSection icon={GUIDE_ICONS.tip} title="전략 힌트">
-                <MathRichText text={guide.strategyHint} />
-              </GuideSection>
-            )}
+            <GuideSection icon={GUIDE_ICONS.tip} title="전략 힌트">
+              <MathRichText text={guide.strategyHint ?? STAGE_GUIDE_STRATEGY_DEFAULT} />
+            </GuideSection>
           </div>
 
           <footer className="stage-guide-footer">

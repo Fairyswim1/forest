@@ -26,14 +26,14 @@ export function ResultSummaryPanel({
       <div className="result-summary-panel__body">
         <dl className="result-summary-panel__stats">
           <div className="result-summary-panel__stat">
-            <dt>가장 긴 수의 길</dt>
+            <dt>가장 긴 오름차순 길</dt>
             <dd>
               <strong>{longestRun}</strong>
               <span className="result-summary-panel__unit">칸</span>
             </dd>
           </div>
           <div className="result-summary-panel__stat">
-            <dt>비내림차순 구간</dt>
+            <dt>오름차순 구간</dt>
             <dd>
               <strong>{runCount}</strong>
               <span className="result-summary-panel__unit">개</span>

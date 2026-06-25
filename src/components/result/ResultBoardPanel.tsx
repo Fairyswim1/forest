@@ -74,7 +74,7 @@ export function ResultBoardPanel({
       </div>
 
       <div className="result-board-panel__stage">
-        <BoardContainer layout={layout} className="board-container--result">
+        <BoardContainer layout={layout} className="board-container--result" directionMarkerVariant="result">
           {positions.map((pos) => {
             const cell = board[pos.id]
             const runView = tileRunMap.get(pos.id)

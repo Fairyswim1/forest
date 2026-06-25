@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { BoardDirectionOverlay } from './board/BoardDirectionOverlay'
 import { DEBUG_BOARD_PATH } from '../types/game'
 import { getTilePositions } from '../utils/pathLayout'
 import type { StagePathLayout } from '../game/pathLayouts/types'
@@ -10,6 +11,9 @@ interface BoardContainerProps {
   children?: ReactNode
   /** tiles-layer와 동일 좌표계 (예: 결과 화면 끊김 표시 SVG) */
   overlayLayer?: ReactNode
+  /** 시작·도착·방향 화살표 오버레이 */
+  showDirectionMarkers?: boolean
+  directionMarkerVariant?: 'play' | 'result'
 }
 
 /** dev 모드에서 `?debug=anchors` 일 때 타일 중심 좌표를 점으로 표시한다. */
@@ -20,7 +24,14 @@ function isAnchorDebug(): boolean {
   return new URLSearchParams(window.location.search).get('debug') === 'anchors'
 }
 
-export function BoardContainer({ layout, className, children, overlayLayer }: BoardContainerProps) {
+export function BoardContainer({
+  layout,
+  className,
+  children,
+  overlayLayer,
+  showDirectionMarkers = true,
+  directionMarkerVariant = 'play',
+}: BoardContainerProps) {
   const showAnchors = isAnchorDebug()
 
   return (
@@ -32,6 +43,10 @@ export function BoardContainer({ layout, className, children, overlayLayer }: Bo
         draggable={false}
         aria-hidden
       />
+
+      {showDirectionMarkers && (
+        <BoardDirectionOverlay variant={directionMarkerVariant} />
+      )}
 
       {overlayLayer}
 

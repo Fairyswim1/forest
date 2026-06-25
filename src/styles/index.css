@@ -651,10 +651,6 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  padding: 16% 13% 13.5%;
   min-width: 0;
   pointer-events: none;
 }
@@ -664,15 +660,19 @@ body {
 }
 
 .stage-guide-header {
-  flex-shrink: 0;
+  position: absolute;
+  z-index: 2;
+  top: 8.5%;
+  left: 17%;
+  right: 17%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
   gap: 4px;
-  min-height: 0;
-  padding-bottom: clamp(6px, 1vh, 10px);
+  min-width: 0;
+  overflow: visible;
 }
 
 .stage-guide-header .world-label {
@@ -710,8 +710,15 @@ body {
 }
 
 .stage-guide-body {
-  flex: 1 1 auto;
+  position: absolute;
+  z-index: 1;
+  top: 22%;
+  left: 17%;
+  right: 17%;
+  bottom: 16%;
+  box-sizing: border-box;
   min-height: 0;
+  min-width: 0;
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
@@ -761,11 +768,15 @@ body {
 }
 
 .stage-guide-footer {
-  flex-shrink: 0;
+  position: absolute;
+  z-index: 2;
+  left: 17%;
+  right: 17%;
+  bottom: 5.5%;
+  height: clamp(48px, 7.8%, 62px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: clamp(14px, 1.8vh, 20px);
   min-height: 0;
 }
 
@@ -784,8 +795,23 @@ body {
 }
 
 @media (max-height: 720px) {
-  .stage-guide-content {
-    padding: 17% 14% 14.5%;
+  .stage-guide-header {
+    top: 9%;
+    left: 18%;
+    right: 18%;
+  }
+
+  .stage-guide-body {
+    top: 23%;
+    left: 18%;
+    right: 18%;
+    bottom: 17%;
+  }
+
+  .stage-guide-footer {
+    left: 18%;
+    right: 18%;
+    bottom: 6%;
   }
 
   .stage-guide-header .stage-title {
@@ -1018,6 +1044,16 @@ body {
   font-size: clamp(0.9rem, 1vw, 1rem);
   line-height: 1.55;
   color: var(--fantasy-deep-brown);
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+.guide-section__note {
+  margin: 6px 0 0;
+  font-family: var(--font-guide);
+  font-size: clamp(0.82rem, 0.92vw, 0.9rem);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--fantasy-forest-green, #3d8a58) 78%, var(--fantasy-deep-brown) 22%);
   overflow-wrap: break-word;
   word-break: keep-all;
 }

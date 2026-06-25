@@ -418,10 +418,23 @@
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
+.result-score-panel__subtitle {
+  position: absolute;
+  top: 11.2%;
+  left: 12%;
+  width: 76%;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: clamp(0.62rem, 0.78vw, 0.72rem);
+  line-height: 1.35;
+  color: color-mix(in srgb, #6a4410 72%, #8a7a68 28%);
+}
+
 /* 중앙 구간 행 영역 */
 .result-score-panel__body {
   position: absolute;
-  top: 16.5%;
+  top: 17.5%;
   left: 14.5%;
   width: 71%;
   height: 65%;

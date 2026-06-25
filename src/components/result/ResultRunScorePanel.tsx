@@ -30,6 +30,7 @@ export function ResultRunScorePanel({
       />
 
       <div className="result-score-panel__title">구간별 점수</div>
+      <p className="result-score-panel__subtitle">시작 → 도착 방향으로 이어진 오름차순 구간</p>
 
       <div className="result-score-panel__body">
         {scoringRuns.length === 0 ? (

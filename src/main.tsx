@@ -7,6 +7,7 @@ import './styles/index.css'
 import './styles/fantasy-ui.css'
 import './styles/result-screen.css'
 import './styles/profile-setup.css'
+import './styles/board-direction.css'
 import './styles/fonts.css'
 
 createRoot(document.getElementById('root')!).render(

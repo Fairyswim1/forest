@@ -7,9 +7,11 @@ import { CardRevealFlight } from '../components/CardRevealFlight'
 import { CardPanelPlacementFlight } from '../components/CardPanelPlacementFlight'
 import { TrailBoard } from '../components/TrailBoard'
 import { PlayTutorial } from '../components/PlayTutorial'
+import { PlayDirectionHint } from '../components/board/PlayDirectionHint'
 import { StageGuideModal } from '../components/StageGuideModal'
 import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import type { ResultPayload } from '../screens/ResultScreen'
+import { hasSeenDirectionHint, markDirectionHintSeen } from '../utils/directionHintStorage'
 import { isTutorialCompleted, markTutorialCompleted } from '../utils/tutorialStorage'
 
 const TUTORIAL_DEMO_CARD = 5
@@ -48,6 +50,19 @@ export function PlayScreen({
     () => forceTutorial || !isTutorialCompleted(),
   )
   const [tutorialStep, setTutorialStep] = useState(0)
+  const [directionHintVisible, setDirectionHintVisible] = useState(false)
+
+  useEffect(() => {
+    if (guideOpen || tutorialActive || hasSeenDirectionHint()) return
+
+    setDirectionHintVisible(true)
+    const hideTimer = window.setTimeout(() => {
+      setDirectionHintVisible(false)
+      markDirectionHintSeen()
+    }, 2800)
+
+    return () => window.clearTimeout(hideTimer)
+  }, [guideOpen, tutorialActive])
 
   useEffect(() => {
     completedRef.current = false
@@ -167,6 +182,7 @@ export function PlayScreen({
       </main>
 
       <footer className="play-screen__control-bar">
+        <PlayDirectionHint visible={directionHintVisible && !guideOpen && !helpOpen} />
         <ControlBar
           timeLeft={game.timeLeft}
           canConfirm={canConfirm}
