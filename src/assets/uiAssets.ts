@@ -1,12 +1,12 @@
 /** public/assets — Vite에서 URL 문자열로 참조 (import 금지) */
 
 export const GUIDE_ICONS = {
-  goal: '/assets/guide-icon-goal.png',
-  flow: '/assets/guide-icon-flow.png',
-  score: '/assets/guide-icon-score.png',
-  undoTime: '/assets/guide-icon-undo-time.png',
-  world: '/assets/guide-icon-world.png',
-  tip: '/assets/guide-icon-tip.png',
+  goal: '/assets/processed/guide/guide-icon-goal.png',
+  flow: '/assets/processed/guide/guide-icon-flow.png',
+  score: '/assets/processed/guide/guide-icon-score.png',
+  undoTime: '/assets/processed/guide/guide-icon-undo-time.png',
+  world: '/assets/processed/guide/guide-icon-world.png',
+  tip: '/assets/processed/guide/guide-icon-tip.png',
 } as const
 
 const CONFIRM_FRAME = '/assets/processed/actions/confirm_button.png'

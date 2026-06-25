@@ -85,13 +85,13 @@ export function ProfileSetupScreen({ uid, onComplete }: ProfileSetupScreenProps)
           <img className="profile-frame" src={ASSETS.guideModalFrame} alt="" draggable={false} />
         </div>
 
-        <div className="profile-setup__content profile-safe-area">
-          <header className="profile-setup__header profile-header">
-            <p className="profile-setup__eyebrow">모험 준비</p>
-            <h1 className="profile-setup__title">나만의 모험가 만들기</h1>
-            <p className="profile-setup__lead">닉네임과 캐릭터를 골라 모험을 시작하세요!</p>
-          </header>
+        <header className="profile-setup__header profile-header-zone">
+          <p className="profile-setup__eyebrow">모험 준비</p>
+          <h1 className="profile-setup__title">나만의 모험가 만들기</h1>
+          <p className="profile-setup__lead">닉네임과 캐릭터를 골라 모험을 시작하세요!</p>
+        </header>
 
+        <div className="profile-setup__body profile-body-zone">
           <div className="profile-setup__field nickname-field">
             <label className="profile-setup__label" htmlFor="profile-nickname">
               닉네임
@@ -102,7 +102,6 @@ export function ProfileSetupScreen({ uid, onComplete }: ProfileSetupScreenProps)
               type="text"
               value={nicknameInput}
               maxLength={10}
-              placeholder="예) 수학탐험가"
               autoComplete="nickname"
               onChange={(event) => {
                 setNicknameInput(event.target.value)
@@ -160,8 +159,9 @@ export function ProfileSetupScreen({ uid, onComplete }: ProfileSetupScreenProps)
               })}
             </div>
           </section>
+        </div>
 
-          <footer className="profile-setup__footer profile-footer">
+        <footer className="profile-setup__footer profile-footer-zone">
             {profileSaveError && (
               <p className="profile-setup__error profile-setup__error--save" role="alert">
                 {profileSaveError}
@@ -176,7 +176,6 @@ export function ProfileSetupScreen({ uid, onComplete }: ProfileSetupScreenProps)
               {profileSaveLoading ? '저장 중…' : '모험 시작'}
             </FantasyImageButton>
           </footer>
-        </div>
       </div>
     </div>
   )
