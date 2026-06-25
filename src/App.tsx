@@ -138,7 +138,11 @@ function GameApp() {
 
   if (bootstrap.profileSetupRequired && bootstrap.firebaseUser) {
     return (
-      <ProfileSetupScreen uid={bootstrap.firebaseUser.uid} onComplete={handleProfileComplete} />
+      <ProfileSetupScreen
+        uid={bootstrap.firebaseUser.uid}
+        initialProfile={bootstrap.profileSetupInitial}
+        onComplete={handleProfileComplete}
+      />
     )
   }
 

@@ -662,7 +662,7 @@ body {
 .stage-guide-header {
   position: absolute;
   z-index: 2;
-  top: 9%;
+  top: 10.5%;
   left: 17%;
   right: 17%;
   display: flex;
@@ -670,10 +670,10 @@ body {
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
   overflow: visible;
-  padding-top: clamp(6px, 0.9vh, 10px);
+  padding-top: clamp(8px, 1.1vh, 14px);
 }
 
 .stage-guide-header .world-label {
@@ -681,7 +681,7 @@ body {
   font-family: var(--font-game-display);
   font-size: clamp(0.82rem, 1.05vw, 0.96rem);
   font-weight: 400;
-  color: var(--fantasy-forest-green);
+  color: #2d6b42;
   letter-spacing: 0.01em;
   line-height: 1.35;
 }
@@ -691,20 +691,8 @@ body {
   font-family: var(--font-game-title);
   font-size: clamp(1.15rem, 2.1vw, 1.45rem);
   font-weight: 400;
-  color: var(--fantasy-warm-brown);
+  color: #4a2f0c;
   line-height: 1.22;
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-break: keep-all;
-}
-
-.stage-guide-header .stage-subtitle {
-  margin: 0;
-  font-family: var(--font-game-body);
-  font-size: clamp(0.86rem, 1.05vw, 0.98rem);
-  font-weight: 400;
-  line-height: 1.45;
-  color: color-mix(in srgb, var(--fantasy-deep-brown) 72%, var(--fantasy-stone) 28%);
   max-width: 100%;
   overflow-wrap: break-word;
   word-break: keep-all;
@@ -713,32 +701,40 @@ body {
 .stage-guide-body {
   position: absolute;
   z-index: 1;
-  top: 23.5%;
+  top: 21.5%;
   left: 17%;
   right: 17%;
   bottom: 16%;
   box-sizing: border-box;
   min-height: 0;
   min-width: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  align-content: stretch;
   gap: 0;
-  margin-top: clamp(6px, 0.8vh, 10px);
-  padding-right: 2px;
+  margin-top: 0;
+  padding: clamp(2px, 0.4vh, 6px) 2px 0;
   overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(196, 154, 60, 0.45) transparent;
 }
 
 /* 스테이지 안내 — GuideSection 공통 레이아웃 상속 */
 .stage-guide-modal .guide-section {
-  padding: clamp(8px, 1.1vh, 12px) 0;
+  height: 100%;
+  align-self: stretch;
+  align-items: center;
+  padding: 0 clamp(2px, 0.4vw, 4px);
+  min-height: 0;
 }
 
 .stage-guide-modal .guide-section__title {
-  color: var(--fantasy-leaf-green, #5a7a32);
+  color: #356528;
+}
+
+.stage-guide-modal .guide-section__body,
+.stage-guide-modal .guide-section__description,
+.stage-guide-modal .guide-section__note {
+  color: #2a1a0c;
 }
 
 .stage-guide-modal .guide-section__body .math-rich-text,
@@ -775,14 +771,14 @@ body {
 
 @media (max-height: 720px) {
   .stage-guide-header {
-    top: 9.5%;
+    top: 10.5%;
     left: 18%;
     right: 18%;
-    padding-top: clamp(8px, 1vh, 12px);
+    padding-top: clamp(10px, 1.2vh, 14px);
   }
 
   .stage-guide-body {
-    top: 23%;
+    top: 22%;
     left: 18%;
     right: 18%;
     bottom: 17%;
@@ -796,10 +792,6 @@ body {
 
   .stage-guide-header .stage-title {
     font-size: clamp(22px, 2.2vw, 26px);
-  }
-
-  .stage-guide-modal .guide-section {
-    padding: clamp(9px, 1.1vh, 13px) 0;
   }
 }
 
@@ -928,7 +920,7 @@ body {
   font-family: var(--font-game-display);
   font-size: clamp(0.82rem, 1.15vw, 0.98rem);
   font-weight: 400;
-  color: #3a8a55;
+  color: #2d6b42;
   letter-spacing: 0.03em;
   line-height: 1.15;
 }
@@ -939,7 +931,7 @@ body {
   font-size: clamp(0.95rem, 1.45vw, 1.2rem);
   font-weight: 400;
   line-height: 1.2;
-  color: #6a4410;
+  color: #4a2f0c;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   max-width: 100%;
   overflow-wrap: break-word;
@@ -956,15 +948,20 @@ body {
   min-width: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  align-content: stretch;
   gap: 0;
-  padding: clamp(4px, 0.5vh, 8px) clamp(4px, 0.8vw, 8px) clamp(4px, 0.6vh, 8px);
+  padding: clamp(2px, 0.4vh, 6px) clamp(4px, 0.8vw, 8px) clamp(4px, 0.6vh, 8px);
   box-sizing: border-box;
   overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: rgba(196, 154, 60, 0.55) transparent;
+}
+
+.guide-modal .guide-section {
+  align-self: center;
+  padding: clamp(4px, 0.55vh, 7px) clamp(2px, 0.4vw, 4px);
 }
 
 .guide-section {
@@ -1016,7 +1013,7 @@ body {
   font-family: var(--font-game-display);
   font-size: clamp(0.94rem, 1.08vw, 1.08rem);
   font-weight: 400;
-  color: var(--fantasy-leaf-green, #5a7a32);
+  color: #356528;
   line-height: 1.28;
 }
 
@@ -1024,8 +1021,8 @@ body {
   margin: 0;
   font-family: var(--font-game-body);
   font-size: clamp(0.86rem, 0.98vw, 0.96rem);
-  line-height: 1.5;
-  color: var(--fantasy-deep-brown);
+  line-height: 1.48;
+  color: #2a1a0c;
   overflow-wrap: break-word;
   word-break: keep-all;
 }
@@ -1034,8 +1031,8 @@ body {
   margin: 5px 0 0;
   font-family: var(--font-game-body);
   font-size: clamp(0.8rem, 0.9vw, 0.88rem);
-  line-height: 1.48;
-  color: color-mix(in srgb, var(--fantasy-forest-green, #3d8a58) 78%, var(--fantasy-deep-brown) 22%);
+  line-height: 1.46;
+  color: #2d5c38;
   overflow-wrap: break-word;
   word-break: keep-all;
 }
@@ -1044,8 +1041,8 @@ body {
   margin: 5px 0 0;
   font-family: var(--font-game-body);
   font-size: clamp(0.82rem, 0.92vw, 0.9rem);
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--fantasy-deep-brown) 80%, var(--fantasy-stone) 20%);
+  line-height: 1.48;
+  color: #3a2818;
   overflow-wrap: break-word;
   word-break: keep-all;
 }

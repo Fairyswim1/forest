@@ -10,12 +10,15 @@ const PROFILE_SETUP_LOCK_CLASS = 'profile-setup-active'
 
 interface ProfileSetupScreenProps {
   uid: string
+  initialProfile?: PlayerProfile | null
   onComplete: (profile: PlayerProfile) => void
 }
 
-export function ProfileSetupScreen({ uid, onComplete }: ProfileSetupScreenProps) {
-  const [nicknameInput, setNicknameInput] = useState('')
-  const [selectedCharacterId, setSelectedCharacterId] = useState<CharacterId | null>(null)
+export function ProfileSetupScreen({ uid, initialProfile, onComplete }: ProfileSetupScreenProps) {
+  const [nicknameInput, setNicknameInput] = useState(initialProfile?.nickname ?? '')
+  const [selectedCharacterId, setSelectedCharacterId] = useState<CharacterId | null>(
+    initialProfile?.characterId ?? null,
+  )
   const [nicknameError, setNicknameError] = useState<string | null>(null)
   const [profileSaveLoading, setProfileSaveLoading] = useState(false)
   const [profileSaveError, setProfileSaveError] = useState<string | null>(null)

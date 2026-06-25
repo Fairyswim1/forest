@@ -70,7 +70,6 @@ export function StageGuideModal({ stage, variant, backgroundUrl, onConfirm }: St
           <header className="stage-guide-header">
             <p className="world-label">{stage.worldTitle}</p>
             <h2 className="stage-title">{stage.title}</h2>
-            <p className="stage-subtitle">{stage.subtitle}</p>
           </header>
 
           <div className="stage-guide-body" ref={bodyScrollRef}>
