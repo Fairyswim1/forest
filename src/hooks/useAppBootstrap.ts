@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 import type { User } from 'firebase/auth'
 import { isFirebaseConfigured } from '../lib/firebase'
 import { ensureAnonymousUser } from '../services/authService'
-import { getPlayerProfile } from '../services/playerProfileService'
+import {
+  getLocalPlayerProfile,
+  getPlayerProfile,
+} from '../services/playerProfileService'
 import type { PlayerProfile } from '../types/player'
 
 export interface AppBootstrapState {
@@ -20,8 +23,9 @@ export interface AppBootstrapState {
 }
 
 export function useAppBootstrap(): AppBootstrapState {
-  const [authLoading, setAuthLoading] = useState(isFirebaseConfigured())
-  const [profileLoading, setProfileLoading] = useState(isFirebaseConfigured())
+  const firebaseEnabled = isFirebaseConfigured()
+  const [authLoading, setAuthLoading] = useState(firebaseEnabled)
+  const [profileLoading, setProfileLoading] = useState(true)
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null)
   const [playerProfile, setPlayerProfile] = useState<PlayerProfile | null>(null)
   const [profileSetupRequired, setProfileSetupRequired] = useState(false)
@@ -42,7 +46,7 @@ export function useAppBootstrap(): AppBootstrapState {
 
   useEffect(() => {
     function handlePageShow(event: PageTransitionEvent) {
-      if (event.persisted && isFirebaseConfigured()) {
+      if (event.persisted) {
         setBootstrapTick((tick) => tick + 1)
       }
     }
@@ -52,40 +56,42 @@ export function useAppBootstrap(): AppBootstrapState {
   }, [])
 
   useEffect(() => {
-    if (!isFirebaseConfigured()) {
-      setAuthLoading(false)
-      setProfileLoading(false)
-      setProfileSetupRequired(false)
-      return
-    }
-
     let cancelled = false
 
     async function bootstrap() {
       try {
-        setAuthLoading(true)
         setProfileLoading(true)
         setBootstrapError(null)
 
-        const user = await ensureAnonymousUser()
-        if (cancelled) return
+        if (firebaseEnabled) {
+          setAuthLoading(true)
+          const user = await ensureAnonymousUser()
+          if (cancelled) return
 
-        setFirebaseUser(user)
-        setAuthLoading(false)
+          setFirebaseUser(user)
+          setAuthLoading(false)
 
-        const profile = await getPlayerProfile(user.uid)
-        if (cancelled) return
+          const profile = await getPlayerProfile(user.uid)
+          if (cancelled) return
+          setProfileSetupInitial(profile)
+        } else {
+          setAuthLoading(false)
+          setProfileSetupInitial(getLocalPlayerProfile())
+        }
 
         // 접속할 때마다 캐릭터·닉네임 선택 화면 표시 (기존 프로필은 폼에만 채움)
-        setProfileSetupInitial(profile)
         setPlayerProfile(null)
         setProfileSetupRequired(true)
       } catch (error) {
         if (cancelled) return
-        const message =
-          error instanceof Error ? error.message : '연결에 실패했어요. 잠시 후 다시 시도해 주세요.'
-        setBootstrapError(message)
-        setProfileSetupRequired(false)
+        // Firebase 오류 시에도 로컬 프로필로 모험 준비 화면 표시
+        setAuthLoading(false)
+        setFirebaseUser(null)
+        setProfileSetupInitial(getLocalPlayerProfile())
+        setPlayerProfile(null)
+        setProfileSetupRequired(true)
+        setBootstrapError(null)
+        console.warn('Firebase bootstrap failed; using local profile.', error)
       } finally {
         if (!cancelled) {
           setAuthLoading(false)
@@ -99,7 +105,7 @@ export function useAppBootstrap(): AppBootstrapState {
     return () => {
       cancelled = true
     }
-  }, [bootstrapTick])
+  }, [bootstrapTick, firebaseEnabled])
 
   return {
     authLoading,
@@ -109,7 +115,7 @@ export function useAppBootstrap(): AppBootstrapState {
     profileSetupRequired,
     profileSetupInitial,
     bootstrapError,
-    firebaseEnabled: isFirebaseConfigured(),
+    firebaseEnabled,
     setPlayerProfile,
     completeProfileSetup,
     retryBootstrap,

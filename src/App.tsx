@@ -9,7 +9,7 @@ import { ResultScreen, type ResultPayload } from './screens/ResultScreen'
 import { NATURAL_1_1 } from './config/stages'
 import { getActiveStage, getStageById, getStageByWorldId } from './config/stageRegistry'
 import { WORLDS } from './config/worlds'
-import { touchLastPlayedAt } from './services/playerProfileService'
+import { touchLastPlayedAt, getLocalGuestUid } from './services/playerProfileService'
 import { buildDemoResultPayload } from './utils/demoResultBoard'
 import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
 import { getStageBestScore, markStageComplete, updateStageBestScore } from './utils/gameRecords'
@@ -136,10 +136,10 @@ function GameApp() {
     return <AppBootstrapError message={bootstrap.bootstrapError} onRetry={bootstrap.retryBootstrap} />
   }
 
-  if (bootstrap.profileSetupRequired && bootstrap.firebaseUser) {
+  if (bootstrap.profileSetupRequired) {
     return (
       <ProfileSetupScreen
-        uid={bootstrap.firebaseUser.uid}
+        uid={bootstrap.firebaseUser?.uid ?? getLocalGuestUid()}
         initialProfile={bootstrap.profileSetupInitial}
         onComplete={handleProfileComplete}
       />
