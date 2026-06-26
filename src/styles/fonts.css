@@ -83,14 +83,14 @@ body {
 }
 
 /* ===== 플레이 HUD ===== */
-.play-hud__stage-title {
+.hud-stage-info__title {
   font-family: var(--font-game-title);
   font-weight: 400;
 }
 
-.play-hud__stage-topic {
-  font-family: var(--font-game-ui);
-  font-weight: 500;
+.hud-stage-info__subtitle {
+  font-family: var(--font-game-body);
+  font-weight: 600;
 }
 
 .play-hud__round-label,
@@ -131,6 +131,12 @@ body {
 .stage-guide-modal .guide-section__description,
 .stage-guide-modal .guide-section__note {
   font-family: inherit;
+}
+
+.stage-guide-modal .guide-section__body,
+.stage-guide-modal .guide-section__description,
+.stage-guide-modal .guide-section__note {
+  font-family: var(--font-game-body);
 }
 
 .stage-guide-footer .fantasy-image-button__label {

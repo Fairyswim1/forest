@@ -1,6 +1,5 @@
 import { TOTAL_ROUNDS } from '../../types/game'
-import { ASSETS } from '../../types/game'
-import { HudFramePanel } from './HudFramePanel'
+import { HudStageInfoPanel } from './HudStageInfoPanel'
 import { HudIconButton } from './HudIconButton'
 import { HudRoundPanel } from './HudRoundPanel'
 import { HudScorePanel } from './HudScorePanel'
@@ -29,15 +28,7 @@ export function PlayHud({
 
   return (
     <header className="play-hud">
-      <HudFramePanel
-        variant="stage"
-        frameSrc={ASSETS.hudStageFrame}
-        className="play-hud__stage"
-        ariaLabel={`스테이지 ${stageLabel}, ${topic}`}
-      >
-        <strong className="play-hud__stage-title">{stageLabel}</strong>
-        <span className="play-hud__stage-topic">{topic}</span>
-      </HudFramePanel>
+      <HudStageInfoPanel title={stageLabel} subtitle={topic} />
 
       <div className="play-hud__center">
         <HudRoundPanel round={displayRound} totalRounds={totalRounds} />
@@ -49,7 +40,7 @@ export function PlayHud({
           {onGuide && (
             <HudIconButton variant="help" ariaLabel="스테이지 안내 다시보기" onClick={onGuide} />
           )}
-          <HudIconButton variant="settings" ariaLabel="설정" onClick={onMenu} />
+          <HudIconButton variant="worldmap" ariaLabel="월드맵으로" onClick={onMenu} />
         </div>
       </div>
     </header>

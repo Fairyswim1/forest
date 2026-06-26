@@ -17,15 +17,21 @@ from remove_checkerboard import remove_checkerboard
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = ROOT / "public" / "assets" / "hud"
+ASSETS_DIR = ROOT / "public" / "assets"
 OUT_DIR = ROOT / "public" / "assets" / "processed" / "hud"
 
 HUD_FILES = [
     "hud-help-button.png",
-    "hud-settings-button.png",
     "hud-score-panel.png",
     "hud-round-pill.png",
     "hud-timer-panel.png",
     "current-card-panel-frame-v2.png",
+]
+
+# (원본 경로, 출력 파일명) — hud/ 밖 에셋
+EXTRA_HUD_ASSETS: list[tuple[Path, str]] = [
+    (ASSETS_DIR / "worldmap-return-button.png.png", "worldmap-return-button.png"),
+    (ASSETS_DIR / "hud-stage-info-panel.png", "hud-stage-info-panel.png"),
 ]
 
 SENTINEL = (255, 0, 255)
@@ -48,10 +54,9 @@ def remove_white_flood(im: Image.Image) -> Image.Image:
     return rgba
 
 
-def process_hud(name: str) -> None:
-    src = SRC_DIR / name
+def process_hud_file(src: Path, dest_name: str) -> None:
     if not src.exists():
-        print(f"SKIP: {name} (원본 없음)")
+        print(f"SKIP: {src.name} (원본 없음)")
         return
 
     im = Image.open(src)
@@ -63,20 +68,26 @@ def process_hud(name: str) -> None:
         method = "checker"
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    dest = OUT_DIR / name
+    dest = OUT_DIR / dest_name
     transparent = sum(1 for p in result.getdata() if p[3] < 10)
     total = result.size[0] * result.size[1]
     result.save(dest, format="PNG", optimize=True)
     print(
-        f"  {name}: {im.mode} -> RGBA ({method})  "
-        f"투명 {transparent / total * 100:.1f}%  -> {dest.relative_to(ROOT)}"
+        f"  {dest_name}: {im.mode} -> RGBA ({method})  "
+        f"투명 {transparent / total * 100:.1f}%  <- {src.relative_to(ROOT)}"
     )
+
+
+def process_hud(name: str) -> None:
+    process_hud_file(SRC_DIR / name, name)
 
 
 def main() -> None:
     print("HUD 에셋 배경 제거:")
     for name in HUD_FILES:
         process_hud(name)
+    for src, dest_name in EXTRA_HUD_ASSETS:
+        process_hud_file(src, dest_name)
     print("완료.")
 
 

@@ -15,10 +15,8 @@ export function HudTimerPanel({ timeLeft, totalSeconds }: HudTimerPanelProps) {
   return (
     <div className="hud-timer" aria-label={`남은 시간 ${formattedTime}`}>
       <img className="hud-timer__frame" src={HUD_ASSETS.timerPanel} alt="" aria-hidden="true" draggable={false} />
-      <div className="hud-timer__content">
-        <span className="hud-timer__label">남은 시간</span>
-        <strong className={`hud-timer__value${urgent ? ' hud-timer__value--urgent' : ''}`}>{formattedTime}</strong>
-      </div>
+      <span className="hud-timer__label">남은 시간</span>
+      <strong className={`hud-timer__value${urgent ? ' hud-timer__value--urgent' : ''}`}>{formattedTime}</strong>
       <div className="hud-timer__progress-track" aria-hidden>
         <div className="hud-timer__progress-fill" style={{ width: `${timeProgressPercent}%` }} />
       </div>

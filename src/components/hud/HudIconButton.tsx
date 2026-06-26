@@ -1,10 +1,10 @@
 import { HUD_ASSETS } from '../../assets/hudAssets'
 
-type HudIconButtonVariant = 'help' | 'settings'
+type HudIconButtonVariant = 'help' | 'worldmap'
 
 const ASSET_BY_VARIANT: Record<HudIconButtonVariant, string> = {
   help: HUD_ASSETS.helpButton,
-  settings: HUD_ASSETS.settingsButton,
+  worldmap: HUD_ASSETS.worldmapReturnButton,
 }
 
 interface HudIconButtonProps {
