@@ -9,6 +9,8 @@ import { TrailBoard } from '../components/TrailBoard'
 import { PlayTutorial } from '../components/PlayTutorial'
 import { PlayDirectionHint } from '../components/board/PlayDirectionHint'
 import { StageGuideModal } from '../components/StageGuideModal'
+import { useOptionalPlayerProfile } from '../context/PlayerProfileContext'
+import { getCharacterById } from '../data/characters'
 import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import type { ResultPayload } from '../screens/ResultScreen'
 import { hasSeenDirectionHint, markDirectionHintSeen } from '../utils/directionHintStorage'
@@ -39,6 +41,10 @@ export function PlayScreen({
 
   const game = useGameLoop(stage, helpOpen || guideOpen)
   const pathLayout = getPathLayoutForTrailAsset(stage.trailAsset)
+  const playerProfile = useOptionalPlayerProfile()?.playerProfile ?? null
+  const playerCharacter = playerProfile?.characterId
+    ? getCharacterById(playerProfile.characterId)
+    : null
   const completedRef = useRef(false)
   const cardRef = useRef<HTMLDivElement>(null)
   const boardAreaRef = useRef<HTMLElement>(null)
@@ -177,6 +183,8 @@ export function PlayScreen({
             tutorialEmptyPulse={tutorialActive && tutorialStep === 1}
             placingTileId={placementFlightTileId}
             placingCell={placingCell}
+            characterAssetUrl={playerCharacter?.assetUrl ?? null}
+            characterNickname={playerProfile?.nickname ?? null}
           />
         </div>
       </main>

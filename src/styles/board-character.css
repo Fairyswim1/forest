@@ -1,0 +1,56 @@
+/* ===== 플레이 보드 위 플레이어 캐릭터 ===== */
+.board-character-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.board-character {
+  position: absolute;
+  transform: translate(-50%, calc(-100% + 18%));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: left 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.38));
+}
+
+.board-character__sprite {
+  display: block;
+  width: clamp(52px, 7.2vw, 88px);
+  height: clamp(72px, 10vw, 118px);
+  object-fit: contain;
+  object-position: center bottom;
+  background: transparent;
+  pointer-events: none;
+  user-select: none;
+}
+
+.board-character__nickname {
+  max-width: clamp(64px, 8vw, 96px);
+  padding: 2px 7px 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 209, 102, 0.65);
+  background: rgba(255, 252, 245, 0.92);
+  font-family: var(--font-game-display, var(--font-display));
+  font-size: clamp(0.58rem, 0.72vw, 0.68rem);
+  font-weight: 400;
+  color: #4a3010;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board-character {
+    transition: none;
+  }
+}

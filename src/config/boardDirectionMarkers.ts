@@ -3,7 +3,6 @@ import {
   COMMON_PATH_OVERLAY_WIDTH,
   COMMON_TILE_ANCHORS,
 } from '../game/pathLayouts/commonPathLayout'
-import type { TileId } from '../types/game'
 
 export type BoardDirectionMarkerType = 'start' | 'goal' | 'arrow'
 export type BoardArrowDirection = 'left' | 'right'
@@ -25,19 +24,12 @@ function toPercent(x: number, y: number): { x: number; y: number } {
   }
 }
 
-function anchor(tileId: TileId) {
-  return COMMON_TILE_ANCHORS[tileId]
-}
-
-function midpoint(tileA: TileId, tileB: TileId) {
-  const a = anchor(tileA)
-  const b = anchor(tileB)
-  return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
-}
-
 /**
  * 공통 path layout 좌표계 기준 방향 표지.
- * 타일 anchor 좌표는 변경하지 않고, 오프셋·중점만 사용한다.
+ * 타일 anchor는 변경하지 않는다.
+ *
+ * 시작·도착·행 화살표는 오솔길 타일 위가 아니라
+ * 맵 여백(위·아래 통로, 좌우 가장자리)에 배치해 타일에 가리지 않게 한다.
  *
  * 경로: 1→6 (→), 7→9 (U턴), 10→14 (←), 15→16 (U턴), 17→23 (→)
  */
@@ -46,30 +38,35 @@ export const BOARD_DIRECTION_MARKERS: BoardDirectionMarkerConfig[] = [
     id: 'start',
     type: 'start',
     label: '시작',
-    ...toPercent(anchor(1).x - 58, anchor(1).y - 52),
+    /* 1번 타일 왼쪽 위 — 상단 맵 여백 */
+    ...toPercent(COMMON_TILE_ANCHORS[1].x - 35, 88),
   },
   {
     id: 'row-1-arrow',
     type: 'arrow',
     direction: 'right',
-    ...toPercent(midpoint(3, 4).x, midpoint(3, 4).y - 28),
+    /* 1행 위쪽 빈 맵 — 타일 3~4 사이 x, 상단 여백 y */
+    ...toPercent(640, 102),
   },
   {
     id: 'row-2-arrow',
     type: 'arrow',
     direction: 'left',
-    ...toPercent(midpoint(12, 13).x, midpoint(12, 13).y - 24),
+    /* 2행과 3행 사이 통로 — 중단 행 중앙 x, 타일 아래 여백 y */
+    ...toPercent(815, 568),
   },
   {
     id: 'row-3-arrow',
     type: 'arrow',
     direction: 'right',
-    ...toPercent(midpoint(20, 21).x, midpoint(20, 21).y - 22),
+    /* 3행 아래 맵 여백 — 하단 행 중앙 x */
+    ...toPercent(960, 872),
   },
   {
     id: 'goal',
     type: 'goal',
     label: '도착',
-    ...toPercent(anchor(23).x + 52, anchor(23).y + 38),
+    /* 23번 타일 오른쪽 아래 — 하단·우측 맵 여백 */
+    ...toPercent(COMMON_TILE_ANCHORS[23].x + 118, 868),
   },
 ]

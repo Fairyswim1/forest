@@ -11,6 +11,8 @@ interface BoardContainerProps {
   children?: ReactNode
   /** tiles-layer와 동일 좌표계 (예: 결과 화면 끊김 표시 SVG) */
   overlayLayer?: ReactNode
+  /** tiles-layer 위 맵 오버레이 (플레이어 캐릭터 등) */
+  mapOverlay?: ReactNode
   /** 시작·도착·방향 화살표 오버레이 */
   showDirectionMarkers?: boolean
   directionMarkerVariant?: 'play' | 'result'
@@ -29,6 +31,7 @@ export function BoardContainer({
   className,
   children,
   overlayLayer,
+  mapOverlay,
   showDirectionMarkers = true,
   directionMarkerVariant = 'play',
 }: BoardContainerProps) {
@@ -44,13 +47,15 @@ export function BoardContainer({
         aria-hidden
       />
 
-      {showDirectionMarkers && (
-        <BoardDirectionOverlay variant={directionMarkerVariant} />
-      )}
-
       {overlayLayer}
 
       <div className="tiles-layer">{children}</div>
+
+      {mapOverlay && <div className="board-character-layer">{mapOverlay}</div>}
+
+      {showDirectionMarkers && (
+        <BoardDirectionOverlay variant={directionMarkerVariant} />
+      )}
 
       {showAnchors && (
         <div className="debug-layer" aria-hidden>
