@@ -89,7 +89,6 @@ export function ProfileSetupScreen({ uid, initialProfile, onComplete }: ProfileS
         </div>
 
         <header className="profile-setup__header profile-header-zone">
-          <p className="profile-setup__eyebrow">모험 준비</p>
           <h1 className="profile-setup__title">나만의 모험가 만들기</h1>
           <p className="profile-setup__lead">닉네임과 캐릭터를 골라 모험을 시작하세요!</p>
         </header>

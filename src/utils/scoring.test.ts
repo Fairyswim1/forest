@@ -94,7 +94,8 @@ describe('scoreRun', () => {
   it('matches the score table', () => {
     expect(scoreRun(1)).toBe(0)
     expect(scoreRun(2)).toBe(1)
-    expect(scoreRun(8)).toBe(24)
+    expect(scoreRun(8)).toBe(28)
+    expect(scoreRun(23)).toBe(420)
   })
 })
 
@@ -133,6 +134,6 @@ describe('calculateGameResult', () => {
     expect(result.longestSegmentLength).toBe(23)
     expect(result.nonDecreasingSegmentCount).toBe(1)
     expect(result.breakCount).toBe(0)
-    expect(result.finalScore).toBe(23 * 3)
+    expect(result.finalScore).toBe(420)
   })
 })

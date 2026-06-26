@@ -32,7 +32,8 @@ describe('scoreForSegmentLength', () => {
   it('uses the configured score table', () => {
     expect(scoreForSegmentLength(1)).toBe(0)
     expect(scoreForSegmentLength(2)).toBe(1)
-    expect(scoreForSegmentLength(8)).toBe(24)
+    expect(scoreForSegmentLength(8)).toBe(28)
+    expect(scoreForSegmentLength(23)).toBe(420)
   })
 })
 
@@ -123,6 +124,6 @@ describe('calculateGameResult', () => {
 
     const result = calculateGameResult(board)
     expect(result.longestSegmentLength).toBe(23)
-    expect(result.finalScore).toBe(23 * 3)
+    expect(result.finalScore).toBe(420)
   })
 })

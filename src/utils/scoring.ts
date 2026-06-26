@@ -19,15 +19,18 @@ export type BreakInfo = {
   rightValue: number
 }
 
+/** 구간 길이별 점수 — index = 길이 (0·1칸 = 0점) */
+const RUN_LENGTH_SCORES: readonly number[] = [
+  0, 0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 80, 96, 115, 135, 160, 190, 225, 265,
+  310, 360, 420,
+]
+
 export function scoreRun(length: number): number {
   if (length <= 1) return 0
-  if (length === 2) return 1
-  if (length === 3) return 3
-  if (length === 4) return 6
-  if (length === 5) return 10
-  if (length === 6) return 15
-  if (length === 7) return 21
-  return length * 3
+  if (length >= RUN_LENGTH_SCORES.length) {
+    return RUN_LENGTH_SCORES[RUN_LENGTH_SCORES.length - 1]!
+  }
+  return RUN_LENGTH_SCORES[length] ?? 0
 }
 
 export const RUN_COLORS = [

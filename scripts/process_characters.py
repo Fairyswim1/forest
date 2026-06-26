@@ -24,7 +24,8 @@ SENTINEL = (255, 0, 255)
 FLOOD_THRESH = 95
 
 # 흰 머리/후드 내부가 flood-fill로 뚫리는 캐릭터 — 실루엣 envelope 방식
-ENVELOPE_CHARACTERS = frozenset({"character-mage-01.png"})
+# (현재 목록 비움 — mage는 flood-fill thresh=95로 처리)
+ENVELOPE_CHARACTERS = frozenset()
 
 
 def remove_white_flood(im: Image.Image, *, thresh: int = FLOOD_THRESH) -> Image.Image:
@@ -64,8 +65,8 @@ def remove_character_envelope(im: Image.Image) -> Image.Image:
 
 def process_character(path: Path) -> None:
     im = Image.open(path)
-    if im.mode == "RGB" and path.name in ENVELOPE_CHARACTERS:
-        result = remove_character_envelope(im)
+    if path.name in ENVELOPE_CHARACTERS:
+        result = remove_character_envelope(im.convert("RGB"))
         method = "envelope"
     elif im.mode == "RGB":
         result = remove_white_flood(im)

@@ -29,7 +29,11 @@ export function CurrentCard({ value, displayLabel, phase, panelClassName, showHi
         />
       </div>
       {showHint && (
-        <p className="control-bar__card-hint">빈 칸을 클릭해 배치한 뒤, 배치 완료를 누르세요.</p>
+        <p className="control-bar__card-hint">
+          빈 칸을 클릭해 배치한 뒤,
+          <br />
+          배치 완료를 누르세요.
+        </p>
       )}
       {turnWarning && (
         <p className="control-bar__turn-warning" role="status">

@@ -757,11 +757,11 @@ body {
 }
 
 .stage-guide-modal .guide-section:nth-child(2) {
-  transform: translateY(calc(-6 * 1.38em));
+  transform: translateY(calc(-5.5 * 1.38em));
 }
 
 .stage-guide-modal .guide-section:nth-child(3) {
-  transform: translateY(calc(-9 * 1.38em));
+  transform: translateY(calc(-8 * 1.38em));
 }
 
 .stage-guide-modal .guide-section__title {

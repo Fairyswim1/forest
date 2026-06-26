@@ -417,6 +417,27 @@
   opacity: 0.75;
 }
 
+/* control-bar dock — 숫자 살짝 축소 */
+.current-card-panel--v2.current-card-panel--dock .current-card-panel__value--size-xl {
+  font-size: clamp(2.85rem, 4.9vw, 4.1rem);
+}
+
+.current-card-panel--v2.current-card-panel--dock .current-card-panel__value--size-lg {
+  font-size: clamp(2.5rem, 4.3vw, 3.6rem);
+}
+
+.current-card-panel--v2.current-card-panel--dock .current-card-panel__value--size-md {
+  font-size: clamp(2.15rem, 3.75vw, 3.05rem);
+}
+
+.current-card-panel--v2.current-card-panel--dock .current-card-panel__value--size-sm {
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+}
+
+.current-card-panel--v2.current-card-panel--dock .current-card-panel__value--fraction {
+  font-size: clamp(2.15rem, 3.75vw, 3.05rem);
+}
+
 /* --- 반응형 (1366×768 기준) --- */
 @media (max-width: 1440px) {
   .hud-score {
