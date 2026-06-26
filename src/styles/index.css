@@ -338,9 +338,9 @@ body {
 
 /* ===== 플레이 화면 ===== */
 .play-screen {
-  --play-hud-height: clamp(76px, 11vh, 100px);
-  --play-card-panel-height: clamp(132px, 14.5vh, 164px);
-  --play-control-height: calc(var(--play-card-panel-height) + 44px);
+  --play-hud-height: clamp(92px, 12.5vh, 112px);
+  --play-card-panel-height: clamp(108px, 12vh, 132px);
+  --play-control-height: calc(var(--play-card-panel-height) + 48px);
   --play-board-padding: 10px;
   width: 100vw;
   height: 100vh;
@@ -387,8 +387,11 @@ body {
   grid-area: hud;
   position: relative;
   z-index: 12;
-  padding: 8px 20px 4px;
+  padding: 6px 16px 4px;
   min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 .play-screen__board-area {
@@ -1153,40 +1156,9 @@ body {
   font-weight: 700;
 }
 
-.play-hud {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
-  max-width: 1280px;
-  margin: 0 auto;
-}
+/* 플레이 HUD 레이아웃·PNG 에셋: play-hud.css */
 
-.play-hud__stage {
-  justify-self: start;
-  max-width: min(360px, 34vw);
-}
-
-.play-hud__round {
-  justify-self: center;
-}
-
-.play-hud__right {
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.play-hud__help-glyph {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--gold);
-  line-height: 1;
-}
-
-/* ===== HUD 공통 프레임 (에셋 슬롯 + HTML 텍스트) ===== */
+/* ===== HUD 공통 프레임 (스테이지 패널 전용) ===== */
 .hud-frame {
   position: relative;
   border: none;
@@ -1251,9 +1223,7 @@ body {
   font-family: var(--font-display);
   font-size: clamp(1rem, 1.5vw, 1.35rem);
   font-weight: 700;
-  color: #fff8e7;
   line-height: 1.15;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1264,173 +1234,11 @@ body {
   max-width: 100%;
   padding: 2px 8px;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.22);
   font-size: clamp(0.68rem, 0.95vw, 0.78rem);
-  color: #ffe8c8;
   line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* --- Round 패널 (청록·파란 둥근 프레임) --- */
-.hud-frame--round .hud-frame__asset-layer {
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, transparent 40%),
-    linear-gradient(180deg, #7ec8e8 0%, #4a9fd4 45%, #2d6a9f 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.18),
-    0 3px 0 #1a4a72,
-    0 6px 14px rgba(0, 0, 0, 0.28),
-    0 0 12px rgba(90, 180, 220, 0.25);
-}
-
-.hud-frame--round .hud-frame__content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 22px 8px;
-  white-space: nowrap;
-}
-
-.play-hud__round-label {
-  font-family: var(--font-display);
-  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.play-hud__round-value {
-  font-family: var(--font-display);
-  font-size: clamp(0.95rem, 1.25vw, 1.08rem);
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-}
-
-.play-hud__round-value strong {
-  font-size: 1.12em;
-  color: #fff8dc;
-}
-
-.play-hud__round-sep {
-  margin: 0 3px;
-  opacity: 0.75;
-  font-weight: 500;
-}
-
-/* --- 점수 패널 (금색 포인트) --- */
-.hud-frame--score .hud-frame__asset-layer {
-  border-radius: 12px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 38%),
-    linear-gradient(180deg, #d4a574 0%, var(--wood) 55%, #4a2f18 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 209, 102, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 3px 0 #3d2512,
-    0 6px 12px rgba(0, 0, 0, 0.28);
-}
-
-.hud-frame--score .hud-frame__content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 14px 8px;
-  min-height: 44px;
-}
-
-.play-hud__score-icon-slot {
-  position: relative;
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.play-hud__star-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.play-hud__star-img:not([hidden]) + .play-hud__star-fallback {
-  display: none;
-}
-
-.play-hud__star-fallback {
-  color: var(--gold);
-  font-size: 1rem;
-  line-height: 1;
-  text-shadow: 0 0 8px rgba(255, 209, 102, 0.65);
-}
-
-.play-hud__score-text {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  line-height: 1.1;
-}
-
-.play-hud__score-label {
-  font-size: 0.62rem;
-  color: #ffe8c8;
-  letter-spacing: 0.02em;
-}
-
-.play-hud__score-value {
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 1.3vw, 1.15rem);
-  font-weight: 700;
-  color: #fff8e7;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-
-/* --- 메뉴 버튼 --- */
-.hud-frame--menu {
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: transform 0.12s ease, filter 0.12s ease;
-}
-
-.hud-frame--menu:hover {
-  filter: brightness(1.08);
-}
-
-.hud-frame--menu:active {
-  transform: translateY(2px);
-}
-
-.hud-frame--menu .hud-frame__asset-layer {
-  border-radius: 12px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 42%),
-    linear-gradient(180deg, #5a7a52 0%, #3d5a38 55%, #2a4028 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    0 3px 0 #1a2e18,
-    0 5px 10px rgba(0, 0, 0, 0.28);
-}
-
-.hud-frame--menu .hud-frame__content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  color: #e8f4e4;
-}
-
-.hud-menu-btn__icon {
-  display: block;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
 
 /* ===== 보드 (오솔길 + 타일 공통 좌표계) ===== */
@@ -1942,48 +1750,6 @@ body {
   margin: 0 auto;
 }
 
-.hud-frame--timer .hud-frame__asset-layer {
-  border-radius: 12px;
-  background: linear-gradient(180deg, #c4a06a 0%, var(--wood) 60%, #4a2f18 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 3px 0 #3d2512, 0 6px 12px rgba(0,0,0,0.28);
-}
-
-.control-bar__timer {
-  grid-column: 1;
-  align-self: center;
-  flex-shrink: 0;
-  min-width: 132px;
-  max-width: 160px;
-}
-
-.control-bar__timer-inner {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-}
-
-.control-bar__hourglass { font-size: 1.35rem; line-height: 1; }
-.control-bar__timer-text span { display: block; font-size: 0.68rem; color: #ffe8c8; }
-.control-bar__timer-text strong {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  color: #fff8e7;
-  margin: 1px 0 4px;
-}
-.control-bar__timer-track {
-  height: 5px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.28);
-  overflow: hidden;
-}
-.control-bar__timer-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #ffd166, #f4a261);
-  border-radius: 3px;
-}
-
 .control-bar__center {
   display: none;
 }
@@ -1997,11 +1763,11 @@ body {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-width: 240px;
-  max-width: 360px;
-  max-height: calc(var(--play-control-height) - 24px);
-  overflow: hidden;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.38));
+  min-width: 0;
+  max-width: min(200px, 30vw);
+  max-height: calc(var(--play-control-height) - 20px);
+  overflow: visible;
+  filter: none;
 }
 
 .current-card-wrapper {

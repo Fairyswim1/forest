@@ -1,7 +1,6 @@
-import { ASSETS } from '../types/game'
+import { HUD_ASSETS } from '../assets/hudAssets'
 import type { CardPanelPhase, CardValue } from '../types/card'
 import { CardValueText } from './CardValueText'
-import { useAssetLoaded } from '../utils/assetLoad'
 
 interface CurrentCardPanelProps {
   value: CardValue | null
@@ -19,7 +18,6 @@ export function CurrentCardPanel({
   className,
 }: CurrentCardPanelProps) {
   const isEmpty = value === null
-  const { loaded, onLoad, onError } = useAssetLoaded()
 
   const valueLabel =
     displayLabel ??
@@ -35,10 +33,10 @@ export function CurrentCardPanel({
     <article
       className={[
         'current-card-panel',
+        'current-card-panel--v2',
         variant === 'reveal' ? 'current-card-panel--hero' : 'current-card-panel--dock',
         isEmpty ? 'current-card-panel--empty' : '',
         phase === 'hidden' ? 'current-card-panel--phase-hidden' : '',
-        loaded ? 'current-card-panel--has-asset' : '',
         className ?? '',
       ]
         .filter(Boolean)
@@ -46,38 +44,21 @@ export function CurrentCardPanel({
       data-phase={phase}
       aria-label={isEmpty ? '현재 카드 없음' : `현재 카드 ${valueLabel}`}
     >
-      <div className="current-card-panel__frame-wrap" aria-hidden>
-        <img
-          className="current-card-panel__frame-img"
-          src={ASSETS.cardFrame}
-          alt=""
-          draggable={false}
-          onLoad={onLoad}
-          onError={onError}
-        />
-      </div>
-
-      <div className="current-card-panel__content">
-        <header className="current-card-panel__ribbon">
-          <span className="current-card-panel__ribbon-text">현재 카드</span>
-        </header>
-
-        <div className="current-card-panel__face">
-          <div className="current-card-panel__face-inner">
-            {isEmpty ? (
-              <span className="current-card-panel__placeholder" aria-hidden>
-                —
-              </span>
-            ) : (
-              <CardValueText value={value} displayLabel={displayLabel} />
-            )}
-          </div>
-        </div>
-
-        <footer className="current-card-panel__ornaments" aria-hidden>
-          <span className="current-card-panel__star">✦</span>
-          <span className="current-card-panel__star">✦</span>
-        </footer>
+      <img
+        className="current-card-panel__frame"
+        src={HUD_ASSETS.currentCardPanel}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+      />
+      <div className="current-card-panel__value">
+        {isEmpty ? (
+          <span className="current-card-panel__placeholder" aria-hidden>
+            —
+          </span>
+        ) : (
+          <CardValueText value={value} displayLabel={displayLabel} />
+        )}
       </div>
     </article>
   )

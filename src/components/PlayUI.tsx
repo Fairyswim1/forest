@@ -3,6 +3,7 @@ import type { ReactNode, RefObject } from 'react'
 import { CurrentCardPanel } from './CurrentCardPanel'
 import { PlayHud } from './hud/PlayHud'
 import { ControlActions } from './hud/ControlActions'
+import { HudTimerPanel } from './hud/HudTimerPanel'
 
 export { PlayHud }
 
@@ -72,24 +73,10 @@ export function ControlBar({
   highlightConfirm = false,
   liveScore,
 }: ControlBarProps) {
-  const pct = Math.max(0, Math.min(100, (timeLeft / TURN_SECONDS) * 100))
-
   return (
     <div className="control-bar">
-      <aside className="control-bar__timer hud-frame hud-frame--timer">
-        <div className="control-bar__timer-inner">
-          <span className="control-bar__hourglass" aria-hidden>⏳</span>
-          <div className="control-bar__timer-text">
-            <span>남은 시간</span>
-            <strong>
-              {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:
-              {String(timeLeft % 60).padStart(2, '0')}
-            </strong>
-            <div className="control-bar__timer-track">
-              <div className="control-bar__timer-fill" style={{ width: `${pct}%` }} />
-            </div>
-          </div>
-        </div>
+      <aside className="control-bar__timer-wrap">
+        <HudTimerPanel timeLeft={timeLeft} totalSeconds={TURN_SECONDS} />
 
         {liveScore && (
           <div className="live-score-mini" aria-label="현재 점수 요약">
