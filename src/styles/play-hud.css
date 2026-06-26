@@ -70,7 +70,7 @@
   position: absolute;
   left: 11%;
   right: 7%;
-  top: 62%;
+  top: 62.5%;
   height: 15%;
   display: flex;
   align-items: center;
@@ -248,7 +248,7 @@
   pointer-events: none;
 }
 
-/* --- 타이머 패널 --- */
+/* --- 타이머 패널 (프레임 only + CSS 오버레이) --- */
 .control-bar__timer-wrap {
   grid-column: 1;
   align-self: center;
@@ -265,6 +265,7 @@
   width: clamp(118px, 13vw, 156px);
   aspect-ratio: 1;
   line-height: 0;
+  pointer-events: none;
 }
 
 .hud-timer__frame {
@@ -277,15 +278,15 @@
 
 .hud-timer__label {
   position: absolute;
-  left: 20%;
-  right: 20%;
-  top: 33%;
-  height: 11%;
+  left: 22%;
+  right: 22%;
+  top: 35%;
+  height: 9%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-game-body);
-  font-size: clamp(0.52rem, 0.65vw, 0.62rem);
+  font-size: clamp(0.5rem, 0.62vw, 0.6rem);
   font-weight: 600;
   color: #5a3a14;
   line-height: 1;
@@ -296,44 +297,59 @@
   position: absolute;
   left: 20%;
   right: 20%;
-  top: 46%;
-  bottom: 26%;
+  top: 49%;
+  height: 24%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-game-title);
-  font-size: clamp(0.82rem, 1.05vw, 0.98rem);
+  font-size: clamp(0.88rem, 1.1vw, 1.05rem);
   font-weight: 400;
   color: #3a2408;
   line-height: 1;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
   pointer-events: none;
 }
 
-.hud-timer__value--urgent {
+.hud-timer__value--mid {
+  color: #6b3f10;
+}
+
+.hud-timer__value--low {
   color: #8b2e14;
 }
 
-.hud-timer__progress-track {
+.hud-timer__bar-track {
   position: absolute;
   left: 22%;
   right: 22%;
-  bottom: 16%;
-  height: clamp(4px, 0.55vh, 6px);
+  top: 77.5%;
+  height: 5%;
   border-radius: 999px;
-  background: rgba(74, 48, 20, 0.22);
   overflow: hidden;
+  background: transparent;
+  pointer-events: none;
 }
 
-.hud-timer__progress-fill {
+.hud-timer__bar-fill {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #c9953a 0%, #e8b84a 55%, #f0cc6a 100%);
-  transition: width 0.25s linear;
+  transition: width 0.25s linear, background 0.35s ease;
 }
 
-.hud-timer:has(.hud-timer__value--urgent) .hud-timer__progress-fill {
-  background: linear-gradient(90deg, #c45a32 0%, #e07840 100%);
+.hud-timer__bar-fill--high {
+  background: linear-gradient(90deg, #2eb8c4 0%, #5ed4e8 45%, #8ee8f4 100%);
+  box-shadow: 0 0 6px rgba(46, 184, 196, 0.45);
+}
+
+.hud-timer__bar-fill--mid {
+  background: linear-gradient(90deg, #d4881c 0%, #f0b030 50%, #ffd060 100%);
+  box-shadow: 0 0 5px rgba(240, 176, 48, 0.4);
+}
+
+.hud-timer__bar-fill--low {
+  background: linear-gradient(90deg, #c43828 0%, #e85038 55%, #ff7050 100%);
+  box-shadow: 0 0 6px rgba(228, 80, 56, 0.45);
 }
 
 /* --- 현재 카드 패널 v2 --- */

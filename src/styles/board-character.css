@@ -33,8 +33,8 @@
 .play-board-hero__sprite {
   display: block;
   width: auto;
-  height: clamp(165px, 36%, 300px);
-  max-width: min(40%, 280px);
+  height: clamp(180px, 40%, 330px);
+  max-width: min(44%, 310px);
   object-fit: contain;
   object-position: center bottom;
   background: transparent;
@@ -65,7 +65,7 @@
 
 @media (max-height: 760px) {
   .play-board-hero__sprite {
-    height: clamp(135px, 30%, 240px);
+    height: clamp(148px, 34%, 265px);
   }
 }
 

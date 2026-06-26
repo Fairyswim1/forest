@@ -1,7 +1,7 @@
 import { COMMON_PATH_OVERLAY_HEIGHT } from '../game/pathLayouts/commonPathLayout'
 
-/** 가로 5등분 — 왼쪽 1/5 칸 중앙(10%)에서 살짝 왼쪽 */
-const HERO_X_PERCENT = 0
+/** 가로 5등분 — 왼쪽 1/5 칸 중앙에서 살짝 왼쪽 */
+const HERO_X_PERCENT = -2
 
 const HERO_Y = 855
 

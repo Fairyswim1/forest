@@ -24,8 +24,8 @@ HUD_FILES = [
     "hud-help-button.png",
     "hud-score-panel.png",
     "hud-round-pill.png",
-    "hud-timer-panel.png",
     "current-card-panel-frame-v2.png",
+    "timer-hud-frame-empty-groove.png",
 ]
 
 # (원본 경로, 출력 파일명) — hud/ 밖 에셋

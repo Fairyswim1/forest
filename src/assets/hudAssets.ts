@@ -4,6 +4,6 @@ export const HUD_ASSETS = {
   stageInfoPanel: '/assets/processed/hud/hud-stage-info-panel.png',
   scorePanel: '/assets/processed/hud/hud-score-panel.png',
   roundPill: '/assets/processed/hud/hud-round-pill.png',
-  timerPanel: '/assets/processed/hud/hud-timer-panel.png',
+  timerFrame: '/assets/processed/hud/timer-hud-frame-empty-groove.png',
   currentCardPanel: '/assets/processed/hud/current-card-panel-frame-v2.png',
 } as const
