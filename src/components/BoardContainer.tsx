@@ -51,7 +51,7 @@ export function BoardContainer({
 
       <div className="tiles-layer">{children}</div>
 
-      {mapOverlay && <div className="board-character-layer">{mapOverlay}</div>}
+      {mapOverlay && <div className="play-board-hero-layer">{mapOverlay}</div>}
 
       {showDirectionMarkers && (
         <BoardDirectionOverlay variant={directionMarkerVariant} />
