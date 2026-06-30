@@ -23,9 +23,8 @@ CHAR_DIR = ROOT / "public" / "assets" / "characters"
 SENTINEL = (255, 0, 255)
 FLOOD_THRESH = 95
 
-# 흰 머리/후드 내부가 flood-fill로 뚫리는 캐릭터 — 실루엣 envelope 방식
-# (현재 목록 비움 — mage는 flood-fill thresh=95로 처리)
-ENVELOPE_CHARACTERS = frozenset()
+# 밝은 날개가 flood/checkerboard에 같이 지워지는 캐릭터
+FAIRY_CHARACTERS = frozenset({"character-fairy-01.png"})
 
 
 def remove_white_flood(im: Image.Image, *, thresh: int = FLOOD_THRESH) -> Image.Image:
@@ -63,11 +62,35 @@ def remove_character_envelope(im: Image.Image) -> Image.Image:
     return Image.fromarray(np.dstack([arr, alpha]), mode="RGBA")
 
 
+def remove_fairy_character(im: Image.Image) -> Image.Image:
+    """밝은 크림색 날개가 배경과 비슷해 flood/checkerboard에 지워지는 요정용."""
+    rgb = im.convert("RGB")
+    arr_rgb = np.array(rgb)
+    max_c = arr_rgb.max(axis=2).astype(np.float32)
+    min_c = arr_rgb.min(axis=2).astype(np.float32)
+    sat = (max_c - min_c) / (max_c + 1.0)
+
+    flooded = remove_white_flood(rgb, thresh=FLOOD_THRESH)
+    core = np.array(flooded)[:, :, 3] > 127
+
+    mask = binary_dilation(core, iterations=35)
+    mask = binary_fill_holes(mask)
+
+    h, _ = mask.shape
+    upper = np.zeros((h, mask.shape[1]), dtype=bool)
+    upper[: int(h * 0.72), :] = True
+    light_wing = upper & mask & (max_c > 195) & (max_c < 253) & (sat < 0.14)
+    final = binary_fill_holes(mask | light_wing)
+
+    alpha = np.where(final, 255, 0).astype(np.uint8)
+    return Image.fromarray(np.dstack([arr_rgb, alpha]), mode="RGBA")
+
+
 def process_character(path: Path) -> None:
     im = Image.open(path)
-    if path.name in ENVELOPE_CHARACTERS:
-        result = remove_character_envelope(im.convert("RGB"))
-        method = "envelope"
+    if path.name in FAIRY_CHARACTERS:
+        result = remove_fairy_character(im)
+        method = "fairy"
     elif im.mode == "RGB":
         result = remove_white_flood(im)
         method = "flood"

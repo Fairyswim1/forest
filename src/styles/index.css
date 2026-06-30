@@ -338,10 +338,12 @@ body {
 
 /* ===== 플레이 화면 ===== */
 .play-screen {
-  --play-hud-height: clamp(92px, 12.5vh, 112px);
-  --play-card-panel-height: clamp(108px, 12vh, 132px);
-  --play-control-height: calc(var(--play-card-panel-height) + 48px);
-  --play-board-padding: 10px;
+  --play-hud-height: clamp(96px, 12vh, 118px);
+  --play-card-panel-height: clamp(100px, 11vh, 124px);
+  --play-control-height: calc(var(--play-card-panel-height) + 36px);
+  --play-board-padding: 6px;
+  --play-side-panel-width: clamp(340px, 22vw, 420px);
+  --play-board-shift-x: 10%;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
@@ -400,10 +402,23 @@ body {
   z-index: 2;
   min-height: 0;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--play-side-panel-width);
+  align-items: stretch;
+  gap: clamp(8px, 0.8vw, 14px);
+  padding: 0 clamp(10px, 1vw, 16px) var(--play-board-padding);
+}
+
+.play-screen__board-main {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2px 16px var(--play-board-padding);
+  justify-content: flex-start;
+  padding-top: 0;
+  gap: 0;
 }
 
 .play-screen__board-stage {
@@ -412,8 +427,10 @@ body {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   max-height: 100%;
+  transform: translateX(var(--play-board-shift-x, 10%));
 }
 
 .play-screen__board-stage::before {
@@ -443,13 +460,13 @@ body {
 
 .play-screen__board-area .board-container {
   --board-fit-height: calc(
-    100dvh - var(--play-hud-height) - var(--play-control-height) - var(--play-board-padding) - 24px
+    100dvh - var(--play-hud-height) - var(--play-control-height) - var(--play-board-padding) - 56px
   );
-  width: min(88vw, calc(var(--board-fit-height) * 1672 / 941), 1320px);
-  max-width: 88vw;
+  width: min(100%, calc(var(--board-fit-height) * 1672 / 941));
+  max-width: 100%;
   max-height: min(var(--board-fit-height), 100%);
   aspect-ratio: 1672 / 941;
-  transform: scale(0.9);
+  transform: scale(0.88);
   transform-origin: center center;
 }
 
@@ -460,7 +477,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 20px;
+  padding: 6px 20px 8px;
   min-height: var(--play-control-height);
   overflow: hidden;
   background:

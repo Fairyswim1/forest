@@ -11,6 +11,7 @@ import {
 } from '../utils/gameEngine'
 import { countPlacedTiles, hasTemporaryPlacement } from '../utils/placement'
 import { canResetCurrentPlacement } from '../utils/undo'
+import { getLiveBoardScore } from '../utils/scoring'
 
 export function useGameLoop(stage: StageConfig, paused = false) {
   const [state, dispatch] = useReducer(gameReducer, gameInitialState)
@@ -64,6 +65,8 @@ export function useGameLoop(stage: StageConfig, paused = false) {
   const placedCount = useMemo(() => countPlacedTiles(state.board), [state.board])
   const displayBoard = useMemo(() => getDisplayBoard(state), [state])
 
+  const liveBoardScore = useMemo(() => getLiveBoardScore(displayBoard), [displayBoard])
+
   const displayCardLabel = useMemo(() => {
     if (state.cardPhase !== 'panel' || !state.currentCard) return undefined
     if (hasTemporaryPlacement(state.currentTurnPlacement)) return undefined
@@ -106,6 +109,8 @@ export function useGameLoop(stage: StageConfig, paused = false) {
     ...state,
     placedCount,
     displayBoard,
+    score: liveBoardScore.currentScore,
+    liveLongestRunLength: liveBoardScore.longestRunLength,
     displayCardValue,
     displayCardLabel,
     revealCardValue,

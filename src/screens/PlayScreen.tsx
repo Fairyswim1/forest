@@ -3,6 +3,8 @@ import { type TileId } from '../types/game'
 import type { StageConfig } from '../types/stage'
 import { useGameLoop } from '../hooks/useGameLoop'
 import { ControlBar, CurrentCard, PlayHud } from '../components/PlayUI'
+import { HudAscendingGuideBanner } from '../components/hud/HudAscendingGuideBanner'
+import { PlayLiveScorePanel } from '../components/hud/PlayLiveScorePanel'
 import { CardRevealFlight } from '../components/CardRevealFlight'
 import { CardPanelPlacementFlight } from '../components/CardPanelPlacementFlight'
 import { TrailBoard } from '../components/TrailBoard'
@@ -163,30 +165,38 @@ export function PlayScreen({
       </header>
 
       <main ref={boardAreaRef} className="play-screen__board-area">
-        <div
-          ref={boardRef}
-          className={[
-            'play-screen__board-stage',
-            tutorialActive && tutorialStep === 4 ? 'play-screen__board-stage--tutorial-soft' : '',
-          ]
-            .filter(Boolean)
-            .join(' ')}
-        >
-          <TrailBoard
-            layout={pathLayout}
-            board={game.displayBoard}
-            selectedTileId={tempTileId}
-            forcedSelectedTileId={tutorialSelectedTile}
-            successTileIds={game.successTileIds}
-            onSelectTile={interactionsBlocked ? () => {} : game.placeOnTile}
-            disabled={interactionsBlocked}
-            tutorialEmptyPulse={tutorialActive && tutorialStep === 1}
-            placingTileId={placementFlightTileId}
-            placingCell={placingCell}
-            characterAssetUrl={playerCharacter?.assetUrl ?? null}
-            characterNickname={playerProfile?.nickname ?? null}
-          />
+        <div className="play-screen__board-main">
+          <HudAscendingGuideBanner className="hud-ascending-banner--board" />
+          <div
+            ref={boardRef}
+            className={[
+              'play-screen__board-stage',
+              tutorialActive && tutorialStep === 4 ? 'play-screen__board-stage--tutorial-soft' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <TrailBoard
+              layout={pathLayout}
+              board={game.displayBoard}
+              selectedTileId={tempTileId}
+              forcedSelectedTileId={tutorialSelectedTile}
+              successTileIds={game.successTileIds}
+              onSelectTile={interactionsBlocked ? () => {} : game.placeOnTile}
+              disabled={interactionsBlocked}
+              tutorialEmptyPulse={tutorialActive && tutorialStep === 1}
+              placingTileId={placementFlightTileId}
+              placingCell={placingCell}
+              characterAssetUrl={playerCharacter?.assetUrl ?? null}
+              characterNickname={playerProfile?.nickname ?? null}
+            />
+          </div>
         </div>
+
+        <PlayLiveScorePanel
+          longestRunLength={game.liveLongestRunLength}
+          currentScore={game.score}
+        />
       </main>
 
       <footer className="play-screen__control-bar">

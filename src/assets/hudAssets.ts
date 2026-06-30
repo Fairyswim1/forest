@@ -6,4 +6,6 @@ export const HUD_ASSETS = {
   roundPill: '/assets/processed/hud/hud-round-pill.png',
   timerFrame: '/assets/processed/hud/timer-hud-frame-empty-groove.png',
   currentCardPanel: '/assets/processed/hud/current-card-panel-frame-v2.png',
+  ascendingGuideBanner: '/assets/processed/hud/ascending-order-scoring-guide-banner.png',
+  liveScorePanelFrame: '/assets/processed/hud/play-live-score-panel-frame.png',
 } as const
