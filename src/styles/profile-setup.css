@@ -110,7 +110,7 @@ html.profile-setup-active #root {
 .profile-header-zone {
   position: absolute;
   z-index: 2;
-  top: 8.5%;
+  top: 9.6%;
   left: 17%;
   right: 17%;
   display: flex;
@@ -380,7 +380,7 @@ html.profile-setup-active #root {
 
 @media (max-height: 760px) {
   .profile-header-zone {
-    top: 9%;
+    top: 10%;
     left: 18%;
     right: 18%;
   }
