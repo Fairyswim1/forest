@@ -12,6 +12,13 @@ export function TitleScreen({ onStart }: TitleScreenProps) {
 
   return (
     <div className="title-screen">
+      <div
+        className="title-screen__bg"
+        style={{ backgroundImage: `url(${ASSETS.titleScreenBg})` }}
+        aria-hidden
+      />
+      <div className="title-screen__vignette" aria-hidden />
+
       <main className="title-screen__main">
         <img
           className="title-screen__logo"

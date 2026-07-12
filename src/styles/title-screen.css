@@ -5,13 +5,34 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: #0b1a24;
+  background: #081820;
   color: var(--text);
+}
+
+.title-screen__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: saturate(1.08) brightness(0.88);
+  pointer-events: none;
+}
+
+.title-screen__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 42%, transparent 22%, rgba(4, 12, 18, 0.4) 100%),
+    linear-gradient(180deg, rgba(6, 16, 24, 0.45) 0%, transparent 28%, transparent 62%, rgba(4, 12, 16, 0.72) 100%);
 }
 
 .title-screen__main {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   height: 100%;
   display: flex;

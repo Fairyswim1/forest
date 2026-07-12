@@ -50,8 +50,10 @@ export const ASSETS = {
   starlightNodeOpen: '/assets/processed/real-starlight-space/node-open.png',
   starlightNodeLocked: '/assets/processed/real-starlight-space/node-locked.png',
   starlightNodeComplete: '/assets/processed/real-starlight-space/node-complete.png',
-  /** 타이틀 화면 로고 */
-  titleLogo: '/assets/title.png',
+  /** 타이틀 화면 배경 */
+  titleScreenBg: '/assets/real-starlight-space-play-bg.png',
+  /** 타이틀 로고 (흰 배경 제거) */
+  titleLogo: '/assets/processed/title.png',
   scoreBreakdownPanel: '/assets/processed/panels/score-breakdown-panel.png',
   // 결과 화면 프레임 (체커보드 배경 제거된 투명 PNG — 콘텐츠는 HTML/CSS로 오버레이)
   resultBannerFrame: '/assets/processed/result/result-completion-banner-frame.png',
