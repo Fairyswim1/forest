@@ -13,8 +13,7 @@ import { WORLDS } from './config/worlds'
 import { touchLastPlayedAt, getLocalGuestUid } from './services/playerProfileService'
 import { buildDemoResultPayload } from './utils/demoResultBoard'
 import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
-import { getStageBestScore, markStageComplete, updateStageBestScore } from './utils/gameRecords'
-import { getStageProgressStatus } from './utils/stageProgress'
+import { updateStageBestScore } from './utils/gameRecords'
 
 type Screen = 'title' | 'map' | 'play' | 'result'
 
@@ -43,27 +42,18 @@ function GameApp() {
 
   const [screen, setScreen] = useState<Screen>(initialScreen)
   const [visible, setVisible] = useState(true)
+  const [profileSetupVisible, setProfileSetupVisible] = useState(false)
   const [playKey, setPlayKey] = useState(0)
   const [forceTutorial, setForceTutorial] = useState(false)
   const [resultPayload, setResultPayload] = useState<ResultPayload | null>(initialPreviewResult)
-  const [progressTick, setProgressTick] = useState(0)
-
-  const [totalStars, setTotalStars] = useState(() => {
-    const scores = [NATURAL_1_1, ...WORLDS.map((w) => getStageByWorldId(w.id)).filter(Boolean)]
-      .map((stage) => getStageBestScore(stage!.id))
-      .filter((score): score is number => score !== null)
-    if (scores.length === 0) return 0
-    return Math.floor(Math.max(...scores) / 10)
-  })
 
   const regions = useMemo(
     () =>
       WORLDS.map((world) => {
         const stage = getStageByWorldId(world.id)
-        const status = stage ? getStageProgressStatus(stage.id) : 'locked'
-        return { world, stage, status }
+        return { world, stage }
       }),
-    [screen, progressTick],
+    [],
   )
 
   const transitionTo = useCallback((next: Screen) => {
@@ -76,14 +66,8 @@ function GameApp() {
 
   const handleComplete = useCallback(
     (payload: Omit<ResultPayload, 'isNewRecord'>) => {
-      const { isNewRecord, bestScore } = updateStageBestScore(
-        selectedStage.id,
-        payload.result.finalScore,
-      )
-      markStageComplete(selectedStage.id)
+      const { isNewRecord } = updateStageBestScore(selectedStage.id, payload.result.finalScore)
       setResultPayload({ ...payload, isNewRecord })
-      setTotalStars((prev) => Math.max(prev, Math.floor(bestScore / 10)))
-      setProgressTick((tick) => tick + 1)
       transitionTo('result')
     },
     [selectedStage.id, transitionTo],
@@ -124,14 +108,15 @@ function GameApp() {
   const handleProfileComplete = useCallback(
     (profile: Parameters<typeof bootstrap.completeProfileSetup>[0]) => {
       bootstrap.completeProfileSetup(profile)
-      transitionTo('title')
+      setProfileSetupVisible(false)
+      transitionTo('map')
     },
     [bootstrap, transitionTo],
   )
 
   const handleTitleStart = useCallback(() => {
-    transitionTo('map')
-  }, [transitionTo])
+    setProfileSetupVisible(true)
+  }, [])
 
   if (bootstrap.authLoading || bootstrap.profileLoading) {
     return <AppBootstrapLoading />
@@ -141,7 +126,7 @@ function GameApp() {
     return <AppBootstrapError message={bootstrap.bootstrapError} onRetry={bootstrap.retryBootstrap} />
   }
 
-  if (bootstrap.profileSetupRequired) {
+  if (profileSetupVisible) {
     return (
       <ProfileSetupScreen
         uid={bootstrap.firebaseUser?.uid ?? getLocalGuestUid()}
@@ -163,7 +148,6 @@ function GameApp() {
         {screen === 'map' && (
           <WorldMap
             regions={regions}
-            totalStars={totalStars}
             onEnterStage={handleEnterStage}
             onReplayTutorial={handleReplayTutorial}
           />

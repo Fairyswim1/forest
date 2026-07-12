@@ -38,7 +38,7 @@ export const GUIDE_RULE_SECTIONS: GuideRuleSection[] = [
     id: 'world',
     icon: GUIDE_ICONS.world,
     title: '월드',
-    body: '자연수의 숲 → 정수의 동굴 → 유리수의 초원 → 실수의 별빛 우주로, 점점 더 다양한 수의 크기를 비교하게 됩니다.',
+    body: '자연수의 숲, 정수의 동굴, 유리수의 초원, 실수의 별빛 우주 — 네 맵 중 원하는 곳을 골라 플레이할 수 있어요. 각 맵에서 다루는 수의 종류가 다릅니다.',
   },
   {
     id: 'tip',

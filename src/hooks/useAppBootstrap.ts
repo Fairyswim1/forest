@@ -79,9 +79,9 @@ export function useAppBootstrap(): AppBootstrapState {
           setProfileSetupInitial(getLocalPlayerProfile())
         }
 
-        // 접속할 때마다 캐릭터·닉네임 선택 화면 표시 (기존 프로필은 폼에만 채움)
+        // 기존 프로필은 캐릭터 선택 폼에만 채움 (표시 순서는 앱에서 제어)
         setPlayerProfile(null)
-        setProfileSetupRequired(true)
+        setProfileSetupRequired(false)
       } catch (error) {
         if (cancelled) return
         // Firebase 오류 시에도 로컬 프로필로 모험 준비 화면 표시
@@ -89,7 +89,7 @@ export function useAppBootstrap(): AppBootstrapState {
         setFirebaseUser(null)
         setProfileSetupInitial(getLocalPlayerProfile())
         setPlayerProfile(null)
-        setProfileSetupRequired(true)
+        setProfileSetupRequired(false)
         setBootstrapError(null)
         console.warn('Firebase bootstrap failed; using local profile.', error)
       } finally {

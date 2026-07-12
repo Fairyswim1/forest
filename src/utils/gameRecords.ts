@@ -35,32 +35,3 @@ export function updateStageBestScore(
 
   return { isNewRecord: false, bestScore: prev }
 }
-
-/* ── 스테이지 완료 상태 (complete) — localStorage 기반 ─────────────────── */
-
-const PROGRESS_KEY = 'number-trail-stage-progress'
-
-function readProgress(): Record<string, boolean> {
-  try {
-    const raw = localStorage.getItem(PROGRESS_KEY)
-    if (!raw) return {}
-    return JSON.parse(raw) as Record<string, boolean>
-  } catch {
-    return {}
-  }
-}
-
-export function isStageComplete(stageId: string): boolean {
-  return readProgress()[stageId] === true
-}
-
-export function markStageComplete(stageId: string): void {
-  const progress = readProgress()
-  if (progress[stageId]) return
-  progress[stageId] = true
-  try {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress))
-  } catch {
-    /* 저장 실패는 무시 (진행 상태는 보조 정보) */
-  }
-}

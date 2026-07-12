@@ -1,8 +1,6 @@
 import { useState, type CSSProperties } from 'react'
 import { ASSETS, GAME_TITLE } from '../types/game'
 import { WORLDS } from '../config/worlds'
-import { getCharacterById } from '../data/characters'
-import { usePlayerProfileContext } from '../context/PlayerProfileContext'
 import { GameRulesModal } from '../components/GameRulesModal'
 import { FantasyImageButton } from '../components/ui/FantasyImageButton'
 import { ResultHeaderRibbon } from '../components/result/ResultHeaderRibbon'
@@ -31,8 +29,6 @@ function previewNodeAsset(worldId: string): string {
 }
 
 export function TitleScreen({ onStart }: TitleScreenProps) {
-  const { playerProfile } = usePlayerProfileContext()
-  const character = playerProfile ? getCharacterById(playerProfile.characterId) : null
   const [rulesOpen, setRulesOpen] = useState(false)
 
   return (
@@ -83,32 +79,13 @@ export function TitleScreen({ onStart }: TitleScreenProps) {
           </ul>
         </div>
 
-        <div className="title-screen__center">
-          {character && (
-            <div className="title-screen__character" aria-hidden>
-              <img
-                className="title-screen__character-sprite"
-                src={character.assetUrl}
-                alt=""
-                draggable={false}
-              />
-              {playerProfile && (
-                <p className="title-screen__welcome">
-                  <span className="title-screen__welcome-name">{playerProfile.nickname}</span>
-                  <span className="title-screen__welcome-role">{character.name}</span>
-                </p>
-              )}
-            </div>
-          )}
-
-          <div className="title-screen__actions">
-            <FantasyImageButton variant="confirm" size="lg" onClick={onStart}>
-              모험 시작
-            </FantasyImageButton>
-            <FantasyImageButton variant="undo" size="md" onClick={() => setRulesOpen(true)}>
-              게임 방법
-            </FantasyImageButton>
-          </div>
+        <div className="title-screen__actions">
+          <FantasyImageButton variant="confirm" size="lg" onClick={onStart}>
+            모험 시작
+          </FantasyImageButton>
+          <FantasyImageButton variant="undo" size="md" onClick={() => setRulesOpen(true)}>
+            게임 방법
+          </FantasyImageButton>
         </div>
 
         <div className="title-screen__worlds" aria-hidden>
