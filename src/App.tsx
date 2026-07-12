@@ -6,6 +6,7 @@ import { useAppBootstrap } from './hooks/useAppBootstrap'
 import { PlayScreen } from './screens/PlayScreen'
 import { ProfileSetupScreen } from './screens/ProfileSetupScreen'
 import { ResultScreen, type ResultPayload } from './screens/ResultScreen'
+import { TitleScreen } from './screens/TitleScreen'
 import { NATURAL_1_1 } from './config/stages'
 import { getActiveStage, getStageById, getStageByWorldId } from './config/stageRegistry'
 import { WORLDS } from './config/worlds'
@@ -15,7 +16,7 @@ import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
 import { getStageBestScore, markStageComplete, updateStageBestScore } from './utils/gameRecords'
 import { getStageProgressStatus } from './utils/stageProgress'
 
-type Screen = 'map' | 'play' | 'result'
+type Screen = 'title' | 'map' | 'play' | 'result'
 
 const FADE_MS = 420
 
@@ -26,11 +27,11 @@ function initialPreviewResult(): ResultPayload | null {
 }
 
 function initialScreen(): Screen {
-  if (typeof window === 'undefined') return 'map'
+  if (typeof window === 'undefined') return 'title'
   const params = new URLSearchParams(window.location.search)
   if (isUnlockAllMode() && getStageIdFromUrl()) return 'play'
   if (import.meta.env.DEV && params.get('previewResult') === '1') return 'result'
-  return 'map'
+  return 'title'
 }
 
 function GameApp() {
@@ -123,10 +124,14 @@ function GameApp() {
   const handleProfileComplete = useCallback(
     (profile: Parameters<typeof bootstrap.completeProfileSetup>[0]) => {
       bootstrap.completeProfileSetup(profile)
-      transitionTo('map')
+      transitionTo('title')
     },
     [bootstrap, transitionTo],
   )
+
+  const handleTitleStart = useCallback(() => {
+    transitionTo('map')
+  }, [transitionTo])
 
   if (bootstrap.authLoading || bootstrap.profileLoading) {
     return <AppBootstrapLoading />
@@ -153,6 +158,8 @@ function GameApp() {
       setPlayerProfile={bootstrap.setPlayerProfile}
     >
       <div className={`app-root ${visible ? 'app-root--visible' : 'app-root--hidden'}`}>
+        {screen === 'title' && <TitleScreen onStart={handleTitleStart} />}
+
         {screen === 'map' && (
           <WorldMap
             regions={regions}
