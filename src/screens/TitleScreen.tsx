@@ -36,7 +36,9 @@ export function TitleScreen({ onStart }: TitleScreenProps) {
       <main className="title-screen__main">
         <header className="title-screen__brand">
           <p className="title-screen__eyebrow">수의 모험</p>
-          <h1 className="title-screen__title">{GAME_TITLE}</h1>
+          <h1 className="title-screen__title">
+            <span className="title-screen__title-text">{GAME_TITLE}</span>
+          </h1>
           <p className="title-screen__subtitle">작은 수에서 큰 수로, 길게 이어가는 길</p>
         </header>
 
