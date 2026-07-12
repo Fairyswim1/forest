@@ -506,12 +506,13 @@
 
 .hud-ascending-banner--board {
   position: absolute;
-  top: 0;
-  right: 2%;
+  top: clamp(-28px, -3vh, -12px);
+  right: 0;
   left: auto;
   z-index: 4;
-  width: min(42%, 480px);
-  min-width: 280px;
+  width: min(24%, 260px);
+  min-width: 180px;
+  max-width: 280px;
   aspect-ratio: 1672 / 941;
 }
 
