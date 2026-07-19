@@ -7,55 +7,75 @@ import {
   INTEGER_FIXED_DECK,
   NATURAL_FIXED_DECK,
 } from './generators'
-import { BASIC_SQRT_VALUES } from './realValues'
+import { REAL_VALUE_POOL } from './realValues'
 
-const KNOWN_SQRT_VALUES = new Set(BASIC_SQRT_VALUES.map((d) => d.value.toFixed(5)))
+const KNOWN_REAL_VALUES = new Set(REAL_VALUE_POOL.map((d) => d.value.toFixed(5)))
 
 describe('generateBasicSqrtDeck', () => {
-  it('generates 23 real cards using only integers and known square roots', () => {
+  it('generates 23 real cards from the mixed real value pool', () => {
     for (let trial = 0; trial < 40; trial++) {
       const deck = generateBasicSqrtDeck()
       expect(deck).toHaveLength(23)
 
       for (const card of deck) {
         expect(card.type).toBe('real')
-        // 분수/소수 표기가 없어야 한다
-        expect(card.displayValue).not.toMatch(/[./]/)
-        // numericValue는 풀의 알려진 값(정수 또는 √n)이어야 한다
-        expect(KNOWN_SQRT_VALUES.has(card.numericValue.toFixed(5))).toBe(true)
+        expect(KNOWN_REAL_VALUES.has(card.numericValue.toFixed(5))).toBe(true)
       }
     }
   })
 
-  it('always includes 0, an integer, and a square root', () => {
+  it('includes a mix of integers, decimals, and irrationals across trials', () => {
+    let sawInteger = false
+    let sawDecimal = false
+    let sawSqrt = false
+    let sawPi = false
+    let sawNegative = false
+
     for (let trial = 0; trial < 40; trial++) {
       const deck = generateBasicSqrtDeck()
-      expect(deck.some((c) => c.numericValue === 0)).toBe(true)
-      expect(deck.some((c) => c.displayValue === '2' || c.displayValue === '3')).toBe(true)
-      expect(deck.some((c) => c.displayValue.startsWith('√'))).toBe(true)
+      if (deck.some((c) => /^-?\d+$/.test(c.displayValue))) sawInteger = true
+      if (deck.some((c) => c.displayValue.includes('.'))) sawDecimal = true
+      if (deck.some((c) => c.displayValue.includes('√'))) sawSqrt = true
+      if (deck.some((c) => c.displayValue === 'π')) sawPi = true
+      if (deck.some((c) => c.numericValue < 0)) sawNegative = true
+    }
+
+    expect(sawInteger).toBe(true)
+    expect(sawDecimal).toBe(true)
+    expect(sawSqrt).toBe(true)
+    expect(sawPi).toBe(true)
+    expect(sawNegative).toBe(true)
+  })
+
+  it('avoids forced duplicates when the pool is larger than the deck', () => {
+    expect(REAL_VALUE_POOL.length).toBeGreaterThanOrEqual(23)
+    for (let trial = 0; trial < 40; trial++) {
+      const displays = generateBasicSqrtDeck().map((c) => c.displayValue)
+      expect(new Set(displays).size).toBe(23)
     }
   })
 
-  it('fixed dev deck contains the full comparison chain', () => {
+  it('fixed dev deck contains mixed number types', () => {
     expect(BASIC_SQRT_FIXED_DECK).toHaveLength(23)
-    for (const token of ['0', '1', '√2', '√3', '2', '√5', '√6', '√7', '3', '√10']) {
-      expect(BASIC_SQRT_FIXED_DECK).toContain(token)
-    }
+    expect(BASIC_SQRT_FIXED_DECK.some((t) => t.includes('√'))).toBe(true)
+    expect(BASIC_SQRT_FIXED_DECK).toContain('π')
+    expect(BASIC_SQRT_FIXED_DECK.some((t) => t.includes('.'))).toBe(true)
+    expect(BASIC_SQRT_FIXED_DECK.some((t) => t.startsWith('-'))).toBe(true)
   })
 
-  it('orders by numericValue as 0 < 1 < √2 < √3 < 2 < √5 < √6 < √7 < 3 < √10', () => {
-    const sorted = [...BASIC_SQRT_VALUES].sort((a, b) => a.value - b.value)
-    expect(sorted.map((d) => d.display)).toEqual([
-      '0', '1', '√2', '√3', '2', '√5', '√6', '√7', '3', '√10',
-    ])
+  it('orders the pool by numericValue as a mixed real comparison chain', () => {
+    const sorted = [...REAL_VALUE_POOL].sort((a, b) => a.value - b.value)
+    expect(sorted.map((d) => d.display)).toEqual(REAL_VALUE_POOL.map((d) => d.display))
 
-    const by = (label: string) => BASIC_SQRT_VALUES.find((d) => d.display === label)!.value
+    const by = (label: string) => REAL_VALUE_POOL.find((d) => d.display === label)!.value
+    expect(by('-5') < by('-√2')).toBe(true)
+    expect(by('-√2') < by('0')).toBe(true)
     expect(by('1') < by('√2')).toBe(true)
-    expect(by('√2') < by('√3')).toBe(true)
+    expect(by('√2') < by('1.5')).toBe(true)
     expect(by('√3') < by('2')).toBe(true)
-    expect(by('2') < by('√5')).toBe(true)
-    expect(by('√5') < by('3')).toBe(true)
-    expect(by('√7') < by('3')).toBe(true)
+    expect(by('3') < by('π')).toBe(true)
+    expect(by('π') < by('√10')).toBe(true)
+    expect(by('√10') < by('5')).toBe(true)
   })
 })
 

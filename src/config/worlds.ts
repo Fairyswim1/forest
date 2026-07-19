@@ -25,7 +25,7 @@ export const WORLDS: WorldConfig[] = [
   {
     id: 'real-starlight-space',
     title: '실수의 별빛 우주',
-    subtitle: '제곱근의 대소관계',
+    subtitle: '실수의 대소관계',
     theme: 'space',
   },
 ]

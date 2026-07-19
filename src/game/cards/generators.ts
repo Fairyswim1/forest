@@ -5,7 +5,7 @@ import {
   createRealCard,
   type NumberCard,
 } from '../../types/card'
-import { BASIC_SQRT_VALUES, realValueByDisplay, type RealValueDef } from './realValues'
+import { REAL_VALUE_POOL, realValueByDisplay, type RealValueDef } from './realValues'
 
 const INTEGER_MAX = 20
 const INTEGER_DECK_SIZE = 23
@@ -114,18 +114,17 @@ export function generateNaturalDeck(): NumberCard[] {
   return toNaturalCards(values)
 }
 
-/* ── 실수 덱: 양의 제곱근 + 정수 (실수의 별빛 우주 1-1 / real-1-1) ────── */
+/* ── 실수 덱: 자연수·소수·정수·제곱근·π 혼합 (실수의 별빛 우주 / real-1-1) ── */
 
 const REAL_DECK_SIZE = 23
 
 /**
- * 개발용 고정 덱 — 0 < 1 < √2 < √3 < 2 < √5 < √6 < √7 < 3 < √10 비교 사슬을
- * 모두 포함하고 23장으로 채운다.
+ * 개발용 고정 덱 — 음수·소수·정수·제곱근·π가 섞인 23장.
  */
 export const BASIC_SQRT_FIXED_DECK = [
-  '0', '1', '√2', '√3', '2', '√5', '√6', '√7', '3', '√10',
-  '1', '√2', '2', '√3', '√5', '3', '√6', '√7', '√10', '0',
-  '2', '√5', '√7',
+  '-3', '-√2', '-0.5', '0', '0.5', '1', '√2', '1.5', '√3', '2',
+  '√5', '2.5', '√7', '3', 'π', '√10', '4', '5', '-5', '-1.5',
+  '√6', '-2', '1',
 ]
 
 function toRealCards(defs: RealValueDef[]): NumberCard[] {
@@ -135,9 +134,9 @@ function toRealCards(defs: RealValueDef[]): NumberCard[] {
 }
 
 /**
- * 양의 제곱근 덱 생성 (real-1-1).
- * 0·정수·제곱근이 모두 포함되며 분수/소수/음의 제곱근은 넣지 않는다.
- * 비교·점수는 numericValue, 표시는 displayValue(√n)로 분리된다.
+ * 혼합 실수 덱 생성 (실수의 별빛 우주).
+ * 자연수·소수 표기·정수·제곱근·π를 포함하며, 풀이 덱보다 커서 대부분 중복 없이 뽑힌다.
+ * 비교·점수는 numericValue, 표시는 displayValue로 분리된다.
  */
 export function generateBasicSqrtDeck(size = REAL_DECK_SIZE): NumberCard[] {
   if (isFixedDeckMode()) {
@@ -147,10 +146,13 @@ export function generateBasicSqrtDeck(size = REAL_DECK_SIZE): NumberCard[] {
     return toRealCards(defs)
   }
 
-  // 풀의 모든 값(0·정수·제곱근)을 한 번씩 보장한 뒤 나머지를 무작위로 채운다.
-  const defs: RealValueDef[] = [...BASIC_SQRT_VALUES]
+  if (REAL_VALUE_POOL.length >= size) {
+    return toRealCards(shuffle([...REAL_VALUE_POOL]).slice(0, size))
+  }
+
+  const defs: RealValueDef[] = [...REAL_VALUE_POOL]
   while (defs.length < size) {
-    defs.push(BASIC_SQRT_VALUES[Math.floor(Math.random() * BASIC_SQRT_VALUES.length)]!)
+    defs.push(REAL_VALUE_POOL[Math.floor(Math.random() * REAL_VALUE_POOL.length)]!)
   }
   return toRealCards(shuffle(defs.slice(0, size)))
 }

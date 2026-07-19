@@ -14,7 +14,7 @@ import type { StageConfig } from '../types/stage'
 export const NATURAL_1_1: StageConfig = {
   id: 'natural-1-1',
   worldId: 'natural-forest',
-  title: '자연수의 숲 1-1',
+  title: '자연수의 숲',
   subtitle: '자연수의 대소관계',
   worldTitle: '자연수의 숲',
   cardType: 'natural',
@@ -36,7 +36,7 @@ export const NATURAL_1_1: StageConfig = {
 export const INTEGER_1_1: StageConfig = {
   id: 'integer-1-1',
   worldId: 'integer-cave',
-  title: '정수의 동굴 1-1',
+  title: '정수의 동굴',
   subtitle: '정수의 대소관계',
   worldTitle: '정수의 동굴',
   cardType: 'integer',
@@ -58,7 +58,7 @@ export const INTEGER_1_1: StageConfig = {
 export const RATIONAL_1_1: StageConfig = {
   id: 'rational-1-1',
   worldId: 'rational-meadow',
-  title: '유리수의 초원 1-1',
+  title: '유리수의 초원',
   subtitle: '유리수의 대소관계',
   worldTitle: '유리수의 초원',
   cardType: 'rational',
@@ -80,8 +80,8 @@ export const RATIONAL_1_1: StageConfig = {
 export const REAL_1_1: StageConfig = {
   id: 'real-1-1',
   worldId: 'real-starlight-space',
-  title: '실수의 별빛 우주 1-1',
-  subtitle: '제곱근의 대소관계',
+  title: '실수의 별빛 우주',
+  subtitle: '실수의 대소관계',
   worldTitle: '실수의 별빛 우주',
   cardType: 'real',
   deckSize: 23,
@@ -90,10 +90,10 @@ export const REAL_1_1: StageConfig = {
   trailAsset: ASSETS.starlightTrailOverlay,
   scoringMode: 'nonDecreasingRuns',
   guide: {
-    numberRangeLabel: '$0$부터 $\\sqrt{10}$까지의 수',
-    numberRangeDescription: '정수와 제곱근이 함께 나옵니다.',
+    numberRangeLabel: '$-5$부터 $5$ 부근의 실수',
+    numberRangeDescription: '음수, 0, 양수가 모두 나올 수 있습니다.',
     objectiveText: STAGE_GUIDE_STRATEGY_DEFAULT,
-    strategyHint: `${STAGE_GUIDE_STRATEGY_DEFAULT}\n$\\sqrt{n}$의 크기는 $n$이 어떤 두 완전제곱수 사이에 있는지\n생각하면 알 수 있습니다.`,
+    strategyHint: `${STAGE_GUIDE_STRATEGY_DEFAULT}\n$\\sqrt{2}\\approx 1.41$, $\\pi\\approx 3.14$처럼 어림값이 도움이 됩니다.`,
   },
   feedback: sqrtFeedback,
   cardGenerator: generateBasicSqrtDeck,
@@ -102,7 +102,7 @@ export const REAL_1_1: StageConfig = {
 export const REAL_1_2: StageConfig = {
   id: 'real-1-2',
   worldId: 'real-starlight-space',
-  title: '실수의 별빛 우주 1-2',
+  title: '실수의 별빛 우주',
   subtitle: '음의 제곱근의 대소관계',
   worldTitle: '실수의 별빛 우주',
   cardType: 'real',
@@ -124,7 +124,7 @@ export const REAL_1_2: StageConfig = {
 export const REAL_1_3: StageConfig = {
   id: 'real-1-3',
   worldId: 'real-starlight-space',
-  title: '실수의 별빛 우주 1-3',
+  title: '실수의 별빛 우주',
   subtitle: '무리수의 대소관계',
   worldTitle: '실수의 별빛 우주',
   cardType: 'real',
