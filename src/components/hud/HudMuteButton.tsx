@@ -21,7 +21,7 @@ export function HudMuteButton({ className = '' }: HudMuteButtonProps) {
         if (!next) playSfx('click')
       }}
     >
-      <span className="hud-mute-button__label">{muted ? '소리 끔' : '소리 켬'}</span>
+      <span className="hud-mute-button__label">{muted ? '소리 켜기' : '소리 끄기'}</span>
     </button>
   )
 }
