@@ -6,7 +6,7 @@ export const AUDIO_ASSETS = {
   bgmMap: '/assets/audio/bgm-map.mp3',
   bgmForest: '/assets/audio/bgm-forest.mp3',
   bgmCave: '/assets/audio/bgm-cave.mp3',
-  bgmMeadow: '/assets/audio/bgm-meadow.ogg',
+  bgmMeadow: '/assets/audio/bgm-meadow.mp3',
   bgmSpace: '/assets/audio/bgm-space.ogg',
   sfxClick: '/assets/audio/sfx-click.wav',
   sfxPlace: '/assets/audio/sfx-place.wav',

@@ -12,6 +12,7 @@ import './styles/board-direction.css'
 import './styles/board-character.css'
 import './styles/play-hud.css'
 import './styles/fonts.css'
+import './styles/mobile-landscape.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

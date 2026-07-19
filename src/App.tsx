@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AppBootstrapError, AppBootstrapLoading } from './components/AppBootstrapGate'
+import { LandscapeRotateHint } from './components/LandscapeRotateHint'
 import { PlayerProfileProvider } from './context/PlayerProfileContext'
 import { WorldMap } from './components/WorldMap'
 import { useAppBootstrap } from './hooks/useAppBootstrap'
@@ -158,6 +159,7 @@ function GameApp() {
       playerProfile={bootstrap.playerProfile}
       setPlayerProfile={bootstrap.setPlayerProfile}
     >
+      <LandscapeRotateHint />
       <div className={`app-root ${visible ? 'app-root--visible' : 'app-root--hidden'}`}>
         {screen === 'title' && <TitleScreen onStart={handleTitleStart} />}
 

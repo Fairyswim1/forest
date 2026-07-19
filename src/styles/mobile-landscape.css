@@ -1,0 +1,151 @@
+/* ===== 세로 모드 모바일 — 가로 전환 안내 ===== */
+.landscape-rotate-hint {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right))
+    max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(40, 70, 45, 0.55), rgba(8, 18, 12, 0.92)),
+    #0b1a10;
+}
+
+.landscape-rotate-hint__card {
+  max-width: 320px;
+  padding: 28px 24px;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 209, 102, 0.65);
+  background: linear-gradient(180deg, rgba(255, 250, 236, 0.96), rgba(240, 220, 175, 0.92));
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.landscape-rotate-hint__title {
+  margin: 0 0 10px;
+  font-family: var(--font-game-display, var(--font-display));
+  font-size: 1.35rem;
+  color: #3d2a12;
+}
+
+.landscape-rotate-hint__body {
+  margin: 0;
+  font-family: var(--font-game-body, var(--font-body));
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: #5a4220;
+}
+
+/* ===== 가로 모드 모바일 최적화 ===== */
+@media (orientation: landscape) and (max-height: 560px),
+  (orientation: landscape) and (max-width: 1024px) and (max-height: 700px) {
+  html,
+  body,
+  #root {
+    min-width: 0 !important;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .app-root {
+    min-width: 0;
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+  }
+
+  .play-screen {
+    --play-hud-height: clamp(56px, 14vh, 72px);
+    --play-card-panel-height: clamp(72px, 18vh, 96px);
+    --play-control-height: calc(var(--play-card-panel-height) + 28px);
+    --play-board-padding: 2px;
+    --play-side-panel-width: clamp(160px, 22vw, 240px);
+    --play-board-shift-x: 4%;
+    padding:
+      max(2px, env(safe-area-inset-top)) max(4px, env(safe-area-inset-right))
+      max(2px, env(safe-area-inset-bottom)) max(4px, env(safe-area-inset-left));
+  }
+
+  .play-screen__board-area .board-container {
+    transform: scale(0.72);
+    transform-origin: center center;
+  }
+
+  .play-live-score-panel {
+    min-width: 150px;
+    width: var(--play-side-panel-width);
+    max-width: 240px;
+  }
+
+  .play-hud__icon-group {
+    gap: 4px;
+  }
+
+  .hud-mute-button {
+    min-width: 58px;
+    height: 34px;
+    padding: 0 8px;
+  }
+
+  .hud-mute-button__label {
+    font-size: 0.68rem;
+  }
+
+  .hud-icon-button {
+    width: clamp(40px, 8vh, 52px);
+    height: clamp(40px, 8vh, 52px);
+  }
+
+  .control-bar {
+    gap: 8px;
+    padding-inline: 8px;
+  }
+
+  .world-map__hud {
+    padding-top: max(6px, env(safe-area-inset-top));
+    padding-inline: max(10px, env(safe-area-inset-left)) max(10px, env(safe-area-inset-right));
+  }
+
+  .world-map__nodes {
+    gap: clamp(16px, 4vw, 48px);
+    transform: scale(0.88);
+    transform-origin: center center;
+  }
+
+  .world-stage-node__visual {
+    width: clamp(120px, 18vw, 180px);
+  }
+
+  .result-screen__main {
+    gap: 8px;
+  }
+
+  .result-screen__actions {
+    gap: 10px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+
+  .title-screen__main {
+    transform: scale(0.92);
+    transform-origin: center center;
+  }
+}
+
+/* 아주 낮은 가로 화면 — 점수판 축소 */
+@media (orientation: landscape) and (max-height: 430px) {
+  .play-live-score-panel {
+    display: none;
+  }
+
+  .play-screen {
+    --play-side-panel-width: 0px;
+    --play-board-shift-x: 0%;
+  }
+
+  .play-screen__board-area .board-container {
+    transform: scale(0.64);
+  }
+}

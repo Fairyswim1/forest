@@ -1,6 +1,7 @@
 import { TOTAL_ROUNDS } from '../../types/game'
 import { HudStageInfoPanel } from './HudStageInfoPanel'
 import { HudIconButton } from './HudIconButton'
+import { HudMuteButton } from './HudMuteButton'
 import { HudRoundPanel } from './HudRoundPanel'
 import { HudScorePanel } from './HudScorePanel'
 
@@ -37,6 +38,7 @@ export function PlayHud({
       <div className="play-hud__right">
         <HudScorePanel score={score} />
         <div className="play-hud__icon-group">
+          <HudMuteButton />
           {onGuide && (
             <HudIconButton variant="help" ariaLabel="스테이지 안내 다시보기" onClick={onGuide} />
           )}

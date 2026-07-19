@@ -62,7 +62,15 @@
   z-index: 5;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   padding: 10px 20px 0;
+}
+
+.result-screen__mute-btn {
+  position: absolute;
+  top: 12px;
+  right: max(16px, env(safe-area-inset-right));
+  z-index: 6;
 }
 
 /* ── 상단 완료 배너 (이미지 프레임 + HTML 텍스트 오버레이) ── */

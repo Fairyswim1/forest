@@ -7,6 +7,7 @@ import { ResultBoardPanel } from '../components/result/ResultBoardPanel'
 import { ResultHeaderRibbon } from '../components/result/ResultHeaderRibbon'
 import { ResultRunScorePanel } from '../components/result/ResultRunScorePanel'
 import { ResultSummaryPanel } from '../components/result/ResultSummaryPanel'
+import { HudMuteButton } from '../components/hud/HudMuteButton'
 import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import { useCountUp } from '../hooks/useCountUp'
 import {
@@ -81,6 +82,7 @@ export function ResultScreen({
           subtitle={stage.subtitle}
           isNewRecord={isNewRecord}
         />
+        <HudMuteButton className="result-screen__mute-btn" />
       </header>
 
       <main className="result-screen__main">

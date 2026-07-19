@@ -22,13 +22,16 @@ describe('audioPreferences', () => {
     installMemoryLocalStorage()
   })
 
-  it('defaults to unmuted', () => {
+  it('defaults to unmuted and ignores legacy muted key', () => {
+    localStorage.setItem('forest-audio-muted', '1')
     expect(isAudioMuted()).toBe(false)
+    expect(localStorage.getItem('forest-audio-muted')).toBeNull()
   })
 
-  it('persists mute preference', () => {
+  it('persists mute preference on v2 key', () => {
     setAudioMuted(true)
     expect(isAudioMuted()).toBe(true)
+    expect(localStorage.getItem('forest-audio-muted-v2')).toBe('1')
     setAudioMuted(false)
     expect(isAudioMuted()).toBe(false)
   })

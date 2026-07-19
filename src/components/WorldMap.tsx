@@ -4,6 +4,7 @@ import { ASSETS, GAME_TITLE } from '../types/game'
 import type { StageConfig, WorldConfig } from '../types/stage'
 import { GameMenuModal } from './GameMenuModal'
 import { GameRulesModal } from './GameRulesModal'
+import { HudMuteButton } from './hud/HudMuteButton'
 import { hasSeenRules, markRulesSeen } from '../utils/rulesStorage'
 
 export interface WorldMapRegion {
@@ -60,6 +61,7 @@ export function WorldMap({ regions, onEnterStage, onReplayTutorial }: WorldMapPr
           >
             게임 방법
           </button>
+          <HudMuteButton className="world-map__mute-btn" />
           <button
             type="button"
             className="world-map__menu-btn fantasy-menu-btn"

@@ -111,6 +111,60 @@
   flex-shrink: 0;
 }
 
+/* --- 소리 켜기/끄기 --- */
+.hud-mute-button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(64px, 7vw, 84px);
+  height: clamp(40px, 4.8vw, 52px);
+  max-height: calc(var(--play-hud-height) - 8px);
+  padding: 0 12px;
+  border: 2px solid rgba(255, 209, 102, 0.72);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 252, 245, 0.94) 0%,
+    rgba(255, 230, 170, 0.9) 100%
+  );
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transition: transform 0.14s ease, filter 0.14s ease, opacity 0.14s ease;
+}
+
+.hud-mute-button:hover {
+  transform: translateY(-1px) scale(1.03);
+  filter: brightness(1.05);
+}
+
+.hud-mute-button:active {
+  transform: scale(0.98);
+}
+
+.hud-mute-button--muted {
+  opacity: 0.78;
+  border-color: rgba(140, 120, 90, 0.55);
+  background: linear-gradient(
+    180deg,
+    rgba(230, 222, 210, 0.92) 0%,
+    rgba(190, 178, 160, 0.88) 100%
+  );
+}
+
+.hud-mute-button__label {
+  font-family: var(--font-game-ui, var(--font-body));
+  font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+  font-weight: 700;
+  color: #4a3010;
+  white-space: nowrap;
+}
+
+.world-map__mute-btn.hud-mute-button {
+  height: 40px;
+  min-width: 76px;
+}
+
 /* --- 아이콘 버튼 (도움말 / 월드맵) --- */
 .hud-icon-button {
   position: relative;
