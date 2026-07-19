@@ -2,9 +2,11 @@ import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { TOTAL_ROUNDS, type TileId } from '../types/game'
 import { gameCardToCardValue, getCardDisplayLabel } from '../types/card'
 import type { StageConfig } from '../types/stage'
+import { playSfx } from '../audio/audioManager'
 import {
   PLACEMENT_ANIMATION_MS,
   canCommitTurn,
+  canPlaceOnTile,
   gameInitialState,
   gameReducer,
   getDisplayBoard,
@@ -53,14 +55,24 @@ export function useGameLoop(stage: StageConfig, paused = false) {
   }, [paused, state.phase, state.cardPhase, state.timeLeft, state.turnWarning])
 
   const placeOnTile = useCallback(
-    (tileId: TileId) => dispatch({ type: 'PLACE_ON_TILE', tileId }),
-    [],
+    (tileId: TileId) => {
+      if (canPlaceOnTile(state, tileId) && state.currentCard) {
+        playSfx('place')
+      }
+      dispatch({ type: 'PLACE_ON_TILE', tileId })
+    },
+    [state],
   )
   const resetCurrentPlacement = useCallback(
     () => dispatch({ type: 'RESET_CURRENT_PLACEMENT' }),
     [],
   )
-  const confirmTurn = useCallback(() => dispatch({ type: 'COMMIT_TURN' }), [])
+  const confirmTurn = useCallback(() => {
+    if (canCommitTurn(state)) {
+      playSfx('confirm')
+    }
+    dispatch({ type: 'COMMIT_TURN' })
+  }, [state])
 
   const placedCount = useMemo(() => countPlacedTiles(state.board), [state.board])
   const displayBoard = useMemo(() => getDisplayBoard(state), [state])

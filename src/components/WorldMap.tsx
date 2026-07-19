@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { playSfx } from '../audio/audioManager'
 import { ASSETS, GAME_TITLE } from '../types/game'
 import type { StageConfig, WorldConfig } from '../types/stage'
 import { GameMenuModal } from './GameMenuModal'
@@ -48,14 +49,20 @@ export function WorldMap({ regions, onEnterStage, onReplayTutorial }: WorldMapPr
           <button
             type="button"
             className="world-map__rules-btn fantasy-menu-btn"
-            onClick={() => setRulesOpen(true)}
+            onClick={() => {
+              playSfx('click')
+              setRulesOpen(true)
+            }}
           >
             게임 방법
           </button>
           <button
             type="button"
             className="world-map__menu-btn fantasy-menu-btn"
-            onClick={() => setMenuOpen(true)}
+            onClick={() => {
+              playSfx('click')
+              setMenuOpen(true)
+            }}
             aria-label="메뉴"
           >
             ⚙
@@ -82,7 +89,11 @@ export function WorldMap({ regions, onEnterStage, onReplayTutorial }: WorldMapPr
                 ]
                   .filter(Boolean)
                   .join(' ')}
-                onClick={() => stage && onEnterStage(stage.id)}
+                onClick={() => {
+                  if (!stage) return
+                  playSfx('click')
+                  onEnterStage(stage.id)
+                }}
                 disabled={!enterable}
                 aria-label={world.title}
               >

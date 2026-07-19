@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AppBootstrapError, AppBootstrapLoading } from './components/AppBootstrapGate'
 import { PlayerProfileProvider } from './context/PlayerProfileContext'
 import { WorldMap } from './components/WorldMap'
@@ -14,6 +14,7 @@ import { touchLastPlayedAt, getLocalGuestUid } from './services/playerProfileSer
 import { buildDemoResultPayload } from './utils/demoResultBoard'
 import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
 import { updateStageBestScore } from './utils/gameRecords'
+import { playBgm, unlockAudio } from './audio/audioManager'
 
 type Screen = 'title' | 'map' | 'play' | 'result'
 
@@ -115,7 +116,22 @@ function GameApp() {
   )
 
   const handleTitleStart = useCallback(() => {
+    unlockAudio()
+    playBgm()
     setProfileSetupVisible(true)
+  }, [])
+
+  useEffect(() => {
+    const unlockOnGesture = () => {
+      unlockAudio()
+      playBgm()
+    }
+    window.addEventListener('pointerdown', unlockOnGesture, { once: true })
+    window.addEventListener('keydown', unlockOnGesture, { once: true })
+    return () => {
+      window.removeEventListener('pointerdown', unlockOnGesture)
+      window.removeEventListener('keydown', unlockOnGesture)
+    }
   }, [])
 
   if (bootstrap.authLoading || bootstrap.profileLoading) {

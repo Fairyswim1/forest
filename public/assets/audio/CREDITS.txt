@@ -1,0 +1,12 @@
+Audio credits (CC0 / public domain)
+
+bgm-main.mp3
+  "Forest Ambience" by TinyWorlds
+  https://opengameart.org/content/forest-ambience
+  License: CC0 (public domain)
+
+sfx-click.wav, sfx-place.wav, sfx-confirm.wav, sfx-result.wav
+  From Kenney Interface Sounds (www.kenney.nl)
+  https://kenney.nl/assets/interface-sounds
+  License: CC0 1.0 Universal
+  Files used: click_001, drop_002, confirmation_002, maximize_008

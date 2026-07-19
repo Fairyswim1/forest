@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { playSfx } from '../audio/audioManager'
 import type { GameBoard } from '../types/board'
 import type { StageConfig } from '../types/stage'
 import { getWorldById } from '../config/worlds'
@@ -58,6 +59,10 @@ export function ResultScreen({
   const scoringRuns = useMemo(() => buildScoringRunViews(result.runs, board), [result.runs, board])
   const [highlightedRunId, setHighlightedRunId] = useState<number | null>(null)
 
+  useEffect(() => {
+    playSfx('result')
+  }, [])
+
   return (
     <div
       className={`result-screen result-screen--${worldTheme} ${debug ? 'result-screen--debug' : ''}`}
@@ -116,10 +121,24 @@ export function ResultScreen({
       )}
 
       <footer className="result-screen__actions">
-        <FantasyImageButton variant="retry" size="lg" onClick={onRetry}>
+        <FantasyImageButton
+          variant="retry"
+          size="lg"
+          onClick={() => {
+            playSfx('click')
+            onRetry()
+          }}
+        >
           다시 도전
         </FantasyImageButton>
-        <FantasyImageButton variant="worldMap" size="lg" onClick={onWorldMap}>
+        <FantasyImageButton
+          variant="worldMap"
+          size="lg"
+          onClick={() => {
+            playSfx('click')
+            onWorldMap()
+          }}
+        >
           월드맵으로
         </FantasyImageButton>
       </footer>

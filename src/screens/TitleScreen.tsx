@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { playSfx } from '../audio/audioManager'
 import { ASSETS, GAME_TITLE } from '../types/game'
 import { GameRulesModal } from '../components/GameRulesModal'
 import { FantasyImageButton } from '../components/ui/FantasyImageButton'
@@ -32,11 +33,21 @@ export function TitleScreen({ onStart }: TitleScreenProps) {
             variant="confirm"
             size="lg"
             className="title-screen__start-btn"
-            onClick={onStart}
+            onClick={() => {
+              playSfx('click')
+              onStart()
+            }}
           >
             모험 시작
           </FantasyImageButton>
-          <FantasyImageButton variant="undo" size="md" onClick={() => setRulesOpen(true)}>
+          <FantasyImageButton
+            variant="undo"
+            size="md"
+            onClick={() => {
+              playSfx('click')
+              setRulesOpen(true)
+            }}
+          >
             게임 방법
           </FantasyImageButton>
         </div>

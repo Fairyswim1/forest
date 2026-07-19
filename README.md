@@ -40,3 +40,8 @@ npm run dev
 
 - 타일 번호 표시: 개발 모드에서만 (`SHOW_TILE_INDEX`)
 - 고정 덱 테스트: `?deck=fixed` (개발 모드)
+
+## 오디오
+
+CC0 BGM·효과음: `public/assets/audio/` (출처는 같은 폴더의 `CREDITS.txt`)
+월드맵 메뉴에서 소리 켜기/끄기 가능.
