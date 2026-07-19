@@ -160,11 +160,6 @@
   white-space: nowrap;
 }
 
-.world-map__mute-btn.hud-mute-button {
-  height: 40px;
-  min-width: 76px;
-}
-
 /* --- 아이콘 버튼 (도움말 / 월드맵) --- */
 .hud-icon-button {
   position: relative;

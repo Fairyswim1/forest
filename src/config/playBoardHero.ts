@@ -12,7 +12,7 @@ import type { WorldTheme } from '../types/stage'
  * 같은 좌표면 물 위에 서 있는 것처럼 보이므로 meadow만 잔디 쪽으로 보정한다.
  */
 const DEFAULT_HERO = { x: 11, y: 785 }
-const MEADOW_HERO = { x: 250, y: 800 }
+const MEADOW_HERO = { x: 140, y: 800 }
 
 function toPercent(px: { x: number; y: number }) {
   return {
