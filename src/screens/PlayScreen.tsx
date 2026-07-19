@@ -17,6 +17,8 @@ import { getPathLayoutForTrailAsset } from '../game/pathLayouts'
 import type { ResultPayload } from '../screens/ResultScreen'
 import { hasSeenDirectionHint, markDirectionHintSeen } from '../utils/directionHintStorage'
 import { isTutorialCompleted, markTutorialCompleted } from '../utils/tutorialStorage'
+import { bgmIdForWorldTheme, playBgmTrack } from '../audio/audioManager'
+import { getWorldById } from '../config/worlds'
 
 const TUTORIAL_DEMO_CARD = 5
 const TUTORIAL_DEMO_TILE: TileId = 7
@@ -43,6 +45,7 @@ export function PlayScreen({
 
   const game = useGameLoop(stage, helpOpen || guideOpen)
   const pathLayout = getPathLayoutForTrailAsset(stage.trailAsset)
+  const worldTheme = getWorldById(stage.worldId)?.theme ?? 'forest'
   const playerProfile = useOptionalPlayerProfile()?.playerProfile ?? null
   const playerCharacter = playerProfile?.characterId
     ? getCharacterById(playerProfile.characterId)
@@ -59,6 +62,10 @@ export function PlayScreen({
   )
   const [tutorialStep, setTutorialStep] = useState(0)
   const [directionHintVisible, setDirectionHintVisible] = useState(false)
+
+  useEffect(() => {
+    playBgmTrack(bgmIdForWorldTheme(worldTheme))
+  }, [worldTheme])
 
   useEffect(() => {
     if (guideOpen || tutorialActive || hasSeenDirectionHint()) return
@@ -189,6 +196,7 @@ export function PlayScreen({
               placingCell={placingCell}
               characterAssetUrl={playerCharacter?.assetUrl ?? null}
               characterNickname={playerProfile?.nickname ?? null}
+              worldTheme={worldTheme}
             />
           </div>
         </div>

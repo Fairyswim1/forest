@@ -43,5 +43,5 @@ npm run dev
 
 ## 오디오
 
-CC0 BGM·효과음: `public/assets/audio/` (출처는 같은 폴더의 `CREDITS.txt`)
+월드별 CC0 BGM·효과음: `public/assets/audio/` (출처는 `CREDITS.txt`)
 월드맵 메뉴에서 소리 켜기/끄기 가능.

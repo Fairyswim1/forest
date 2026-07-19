@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import type { GameBoard } from '../types/board'
 import type { TileId } from '../types/game'
+import type { WorldTheme } from '../types/stage'
 import type { StagePathLayout } from '../game/pathLayouts/types'
 import { getTilePositions } from '../utils/pathLayout'
 import { BoardContainer } from './BoardContainer'
@@ -21,6 +22,7 @@ interface TrailBoardProps {
   className?: string
   characterAssetUrl?: string | null
   characterNickname?: string | null
+  worldTheme?: WorldTheme
 }
 
 export function TrailBoard({
@@ -37,12 +39,17 @@ export function TrailBoard({
   className,
   characterAssetUrl = null,
   characterNickname = null,
+  worldTheme = 'forest',
 }: TrailBoardProps) {
   const positions = useMemo(() => getTilePositions(layout), [layout])
 
   const heroOverlay =
     characterAssetUrl != null ? (
-      <PlayBoardHero assetUrl={characterAssetUrl} nickname={characterNickname ?? undefined} />
+      <PlayBoardHero
+        assetUrl={characterAssetUrl}
+        nickname={characterNickname ?? undefined}
+        theme={worldTheme}
+      />
     ) : null
 
   return (

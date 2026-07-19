@@ -1,18 +1,22 @@
-import { PLAY_BOARD_HERO_POSITION } from '../../config/playBoardHero'
+import { getPlayBoardHeroPosition } from '../../config/playBoardHero'
+import type { WorldTheme } from '../../types/stage'
 
 interface PlayBoardHeroProps {
   assetUrl: string
   nickname?: string
+  theme?: WorldTheme
 }
 
 /** 스테이지 플레이 보드 잔디밭 — 선택 모험가를 크게 표시 (타일 위 아님) */
-export function PlayBoardHero({ assetUrl, nickname }: PlayBoardHeroProps) {
+export function PlayBoardHero({ assetUrl, nickname, theme = 'forest' }: PlayBoardHeroProps) {
+  const position = getPlayBoardHeroPosition(theme)
+
   return (
     <div
       className="play-board-hero"
       style={{
-        left: `${PLAY_BOARD_HERO_POSITION.x}%`,
-        top: `${PLAY_BOARD_HERO_POSITION.y}%`,
+        left: `${position.x}%`,
+        top: `${position.y}%`,
       }}
       aria-hidden={!nickname}
       aria-label={nickname ? `${nickname} 모험가` : undefined}

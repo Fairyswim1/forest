@@ -220,6 +220,11 @@ body {
   cursor: not-allowed;
 }
 
+/* 초원 노드 하단 리본이 커서 원형 플랫폼이 위로 치우쳐 보임 → 살짝 내려 맞춤 */
+.world-stage-node--meadow .world-stage-node__visual {
+  transform: translateY(8%);
+}
+
 .world-stage-node__visual {
   position: relative;
   width: clamp(200px, 22vw, 260px);

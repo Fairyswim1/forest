@@ -1,12 +1,32 @@
 Audio credits (CC0 / public domain)
 
-bgm-main.mp3
-  "Forest Ambience" by TinyWorlds
-  https://opengameart.org/content/forest-ambience
-  License: CC0 (public domain)
+bgm-map.mp3
+  "Happy Adventure (Loop)" by TinyWorlds
+  https://opengameart.org/content/happy-adventure-loop
+  License: CC0
+
+bgm-forest.mp3
+  "Chill (Loopable)" by Pro Sensory (Alex McCulloch)
+  https://opengameart.org/content/chill-loopable
+  License: CC0 / public domain
+
+bgm-cave.mp3
+  "Crystal Caves" by outer123
+  https://opengameart.org/content/crystal-caves-0
+  License: CC0
+
+bgm-meadow.ogg
+  "Meadow Thoughts" by Écrivain
+  https://opengameart.org/content/meadow-thoughts
+  License: CC0
+
+bgm-space.ogg
+  "Observing The Star" by yd (from Another space background track)
+  https://opengameart.org/content/another-space-background-track
+  License: CC0
 
 sfx-click.wav, sfx-place.wav, sfx-confirm.wav, sfx-result.wav
   From Kenney Interface Sounds (www.kenney.nl)
   https://kenney.nl/assets/interface-sounds
   License: CC0 1.0 Universal
-  Files used: click_001, drop_002, confirmation_002, maximize_008
+  Files used: click_001, drop_002, select_003, maximize_008

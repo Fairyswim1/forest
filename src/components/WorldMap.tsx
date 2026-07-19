@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { playSfx } from '../audio/audioManager'
+import { useEffect, useState } from 'react'
+import { playBgm, playSfx } from '../audio/audioManager'
 import { ASSETS, GAME_TITLE } from '../types/game'
 import type { StageConfig, WorldConfig } from '../types/stage'
 import { GameMenuModal } from './GameMenuModal'
@@ -27,6 +27,10 @@ function regionNodeAsset(world: WorldConfig): string {
 export function WorldMap({ regions, onEnterStage, onReplayTutorial }: WorldMapProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [rulesOpen, setRulesOpen] = useState(() => !hasSeenRules())
+
+  useEffect(() => {
+    playBgm()
+  }, [])
 
   const closeRules = () => {
     markRulesSeen()
