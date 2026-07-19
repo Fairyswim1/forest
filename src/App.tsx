@@ -16,6 +16,7 @@ import { buildDemoResultPayload } from './utils/demoResultBoard'
 import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
 import { updateStageBestScore } from './utils/gameRecords'
 import { playBgm, unlockAudio } from './audio/audioManager'
+import { useLayoutMode } from './hooks/useLayoutMode'
 
 type Screen = 'title' | 'map' | 'play' | 'result'
 
@@ -36,6 +37,7 @@ function initialScreen(): Screen {
 }
 
 function GameApp() {
+  useLayoutMode()
   const bootstrap = useAppBootstrap()
   const [selectedStageId, setSelectedStageId] = useState(
     () => getStageIdFromUrl() ?? getActiveStage().id,
