@@ -18,7 +18,8 @@ describe('buildResultFeedback', () => {
     const result = calculateGameResult(board)
     const messages = buildResultFeedback(result, integerFeedback)
 
-    expect(messages.some((m) => m.includes('칸까지 만들었어요'))).toBe(true)
+    expect(result.longestSegmentLength).toBe(3)
+    expect(messages.some((m) => /오름차순.*3칸/.test(m))).toBe(true)
     expect(messages.some((m) => m.includes('0 다음에 음수'))).toBe(true)
   })
 
@@ -42,7 +43,7 @@ describe('buildResultFeedback', () => {
     const result = calculateGameResult(board)
     const messages = buildResultFeedback(result, naturalFeedback)
 
-    expect(messages.some((m) => m.includes('보다 작은 수'))).toBe(true)
+    expect(messages.some((m) => m.includes('3는 5보다 작'))).toBe(true)
     expect(messages.every((m) => !m.includes('절댓값') && !m.includes('음수'))).toBe(true)
   })
 })

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "checkedAt": "2026-10-27T09:21:14.680Z",
+  "sourceHash": "e250cf9d41c4e6548d3800edcaac95529248e0e597567c073b3892ae50097c03",
+  "screenshots": [
+    "evidence/assessment-mobile.png"
+  ],
+  "scope": "Assessment revision. Previously verified gameplay engines unchanged; game entry links checked. Synthetic learner records only.",
+  "assessment": {
+    "codes": [
+      "9수01-04",
+      "9수01-09"
+    ],
+    "independent": true,
+    "hint": true,
+    "retry": true,
+    "persistence": true,
+    "report": true,
+    "export": true,
+    "mobile": true,
+    "width": 390,
+    "teacherReview": "Shared module: moon-clockwork explanation and review saved, reloaded and checked",
+    "exportEvidence": "All four final export previews parsed from live DOM: correct game, criteria, attempt history and downloadable Blob. Earlier moon JSON downloaded and independently parsed.",
+    "consoleErrors": 0
+  },
+  "checks": [
+    "False factorization with correct final number rejected",
+    "Hint and retry successes excluded from independent evidence",
+    "Coordinate order and plotting; reading and constructing graphs",
+    "Forest separates integer/rational and real extension",
+    "Prime factorization meaning, construction and exponents",
+    "Reload persistence and teacher review",
+    "Mobile 390px without horizontal overflow",
+    "Per-game JSON export preview and download link"
+  ],
+  "priorGameplayReview": {
+    "checkedAt": "2026-10-27T09:20:35.749Z",
+    "sourceHash": "d7b26fedb7605fc42e25b5991b8d565d4b8a3757e7e45a8f18cc64537a08ac86"
+  }
+}

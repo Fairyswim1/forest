@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-27T09:21:14.680Z",
+  "sourceHash": "e250cf9d41c4e6548d3800edcaac95529248e0e597567c073b3892ae50097c03",
+  "testsPassed": true,
+  "buildPassed": true,
+  "browser": "passed",
+  "assessment": true
+}
