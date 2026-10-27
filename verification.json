@@ -1,9 +1,10 @@
 {
   "status": "passed",
-  "checkedAt": "2026-10-27T09:21:14.680Z",
-  "sourceHash": "e250cf9d41c4e6548d3800edcaac95529248e0e597567c073b3892ae50097c03",
+  "checkedAt": "2026-10-27T09:48:31.914Z",
+  "sourceHash": "1406ce72c995fe7d33b3f50b1db6fd3a9973f39638a806d18f55c8c7ab76ab29",
   "testsPassed": true,
   "buildPassed": true,
   "browser": "passed",
-  "assessment": true
+  "assessment": true,
+  "typography": "passed"
 }
