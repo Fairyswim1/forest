@@ -39,7 +39,7 @@ export function PlayScreen({
   onTutorialFinished,
 }: PlayScreenProps) {
   // 시작 안내 모달: 스테이지 진입 시 카드 공개 전에 먼저 보여준다.
-  const [guideOpen, setGuideOpen] = useState(true)
+  const [guideOpen, setGuideOpen] = useState(() => !forceTutorial && isTutorialCompleted())
   // 플레이 중 ? 버튼으로 다시 여는 재확인 패널 (열려 있는 동안 게임 일시정지)
   const [helpOpen, setHelpOpen] = useState(false)
 

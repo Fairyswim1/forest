@@ -16,6 +16,7 @@ import { buildDemoResultPayload } from './utils/demoResultBoard'
 import { getStageIdFromUrl, isUnlockAllMode } from './utils/devUnlock'
 import { updateStageBestScore } from './utils/gameRecords'
 import { playBgm, unlockAudio } from './audio/audioManager'
+import { isTutorialCompleted } from './utils/tutorialStorage'
 import { useLayoutMode } from './hooks/useLayoutMode'
 
 type Screen = 'title' | 'map' | 'play' | 'result'
@@ -30,6 +31,7 @@ function initialPreviewResult(): ResultPayload | null {
 
 function initialScreen(): Screen {
   if (typeof window === 'undefined') return 'title'
+  if (!isTutorialCompleted()) return 'play'
   const params = new URLSearchParams(window.location.search)
   if (isUnlockAllMode() && getStageIdFromUrl()) return 'play'
   if (import.meta.env.DEV && params.get('previewResult') === '1') return 'result'
@@ -40,7 +42,7 @@ function GameApp() {
   useLayoutMode()
   const bootstrap = useAppBootstrap()
   const [selectedStageId, setSelectedStageId] = useState(
-    () => getStageIdFromUrl() ?? getActiveStage().id,
+    () => !isTutorialCompleted() ? NATURAL_1_1.id : getStageIdFromUrl() ?? getActiveStage().id,
   )
   const selectedStage = getStageById(selectedStageId) ?? NATURAL_1_1
 
@@ -48,7 +50,8 @@ function GameApp() {
   const [visible, setVisible] = useState(true)
   const [profileSetupVisible, setProfileSetupVisible] = useState(false)
   const [playKey, setPlayKey] = useState(0)
-  const [forceTutorial, setForceTutorial] = useState(false)
+  const [firstVisitTutorial, setFirstVisitTutorial] = useState(() => !isTutorialCompleted())
+  const [forceTutorial, setForceTutorial] = useState(() => !isTutorialCompleted())
   const [resultPayload, setResultPayload] = useState<ResultPayload | null>(initialPreviewResult)
 
   const regions = useMemo(
@@ -178,7 +181,10 @@ function GameApp() {
             key={`${selectedStage.id}-${playKey}`}
             stage={selectedStage}
             forceTutorial={forceTutorial && selectedStage.id === NATURAL_1_1.id}
-            onTutorialFinished={() => setForceTutorial(false)}
+            onTutorialFinished={() => {
+              setForceTutorial(false)
+              if (firstVisitTutorial) { setFirstVisitTutorial(false); transitionTo('title') }
+            }}
             onBack={() => transitionTo('map')}
             onComplete={handleComplete}
           />

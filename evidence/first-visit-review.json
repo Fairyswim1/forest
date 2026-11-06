@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-06T04:52:10.098Z",
+  "scope": "Original tutorial auto-entry; existing gameplay and artwork retained",
+  "firstVisitOldOffUrl": true,
+  "firstVisitShowsExistingTutorial": true,
+  "completionPersistsAfterReload": true,
+  "unitTests": true,
+  "productionBuild": true,
+  "mobileLandscape": {
+    "width": 844,
+    "height": 390
+  },
+  "portraitUsesExistingRotateHint": true,
+  "keyboard": "Enter through tutorial verified",
+  "screenshots": [
+    "evidence/first-visit-landscape.png"
+  ]
+}

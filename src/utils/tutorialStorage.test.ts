@@ -1,0 +1,6 @@
+import { afterEach, expect, it, vi } from 'vitest'
+const memory=()=>{const m=new Map<string,string>();return {getItem:(k:string)=>m.get(k)??null,setItem:(k:string,v:string)=>m.set(k,v)}}
+afterEach(()=>{vi.unstubAllGlobals();vi.resetModules()})
+it('first visit stays unseen until explicit finish; completion survives module reload',async()=>{vi.stubGlobal('localStorage',memory());vi.stubGlobal('sessionStorage',memory());let m=await import('./tutorialStorage');expect(m.isTutorialCompleted()).toBe(false);expect(m.isTutorialCompleted()).toBe(false);m.markTutorialCompleted();vi.resetModules();m=await import('./tutorialStorage');expect(m.isTutorialCompleted()).toBe(true)})
+it('storage denial falls back to the tab session',async()=>{vi.stubGlobal('localStorage',{getItem(){throw Error()},setItem(){throw Error()}});vi.stubGlobal('sessionStorage',memory());let m=await import('./tutorialStorage');expect(m.isTutorialCompleted()).toBe(false);m.markTutorialCompleted();vi.resetModules();m=await import('./tutorialStorage');expect(m.isTutorialCompleted()).toBe(true)})
+it('malformed completion does not suppress first visit',async()=>{const s=memory();s.setItem('number-trail-play-tutorial-v1','false');vi.stubGlobal('localStorage',s);vi.stubGlobal('sessionStorage',memory());expect((await import('./tutorialStorage')).isTutorialCompleted()).toBe(false)})
